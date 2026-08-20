@@ -1,0 +1,346 @@
+/* ======================================================
+   LA LEYENDA DE AANG — ESTILOS
+   ====================================================== */
+
+:root {
+    --bg-1: #0b0f1a;
+    --bg-2: #1a1208;
+    --panel: rgba(20, 18, 30, 0.65);
+    --border: rgba(255, 180, 90, 0.18);
+    --amber: #f4a13c;
+    --amber-soft: #ffd28a;
+    --ink: #ece6d7;
+    --ink-dim: #a59c8a;
+    --fuego: #ff5b3a;
+    --agua: #4ec9ff;
+    --tierra: #7bbf4a;
+    --aire: #f0e07a;
+    --win: #7bbf4a;
+    --lose: #ff5b3a;
+    --tie: #c9b37a;
+}
+
+/* ====== BASE ====== */
+/* REQUERIMIENTO: Background a todo el sitio */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2.5rem 1rem 3rem;
+    background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(244, 161, 60, 0.18), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(78, 201, 255, 0.10), transparent 60%),
+        linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    background-attachment: fixed;
+}
+
+/* Textura sutil de "papel" */
+body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+        radial-gradient(circle at 25% 30%, rgba(255,255,255,0.015) 0, transparent 1px),
+        radial-gradient(circle at 75% 70%, rgba(255,255,255,0.015) 0, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ====== TIPOGRAFÍA ====== */
+/* REQUERIMIENTO: Tipografía (importada desde Google Fonts en el HTML) */
+/* REQUERIMIENTO: Color y background al h1 */
+/* REQUERIMIENTO: Formato y layout a los titulos */
+h1 {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 2rem;
+    background: linear-gradient(180deg, var(--amber-soft) 0%, var(--amber) 60%, #b8731e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 40px rgba(244, 161, 60, 0.25);
+}
+
+h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--amber-soft);
+    font-size: 1.25rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ====== LAYOUT GENERAL ====== */
+/* REQUERIMIENTO: Flexbox y los tipos de display */
+section {
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.6rem 1.8rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.5);
+}
+
+/* ====== TARJETAS DE PERSONAJE ====== */
+.personajes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+}
+
+.personaje-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.1rem 0.6rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.personaje-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.personaje-card input[type="radio"] { display: none; }
+
+.personaje-card:has(input:checked) {
+    border-color: var(--amber);
+    background: rgba(244, 161, 60, 0.12);
+    box-shadow: 0 0 0 1px var(--amber), 0 8px 24px -8px rgba(244, 161, 60, 0.35);
+}
+
+.emoji {
+    font-size: 2.4rem;
+    margin-bottom: 0.4rem;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+.nombre {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+}
+
+/* ====== TARJETA DEL ENEMIGO ====== */
+.enemigo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem 0.8rem;
+    background: rgba(255, 91, 58, 0.1);
+    border: 2px solid rgba(255, 91, 58, 0.3);
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
+}
+
+.enemigo-card .emoji {
+    font-size: 2.8rem;
+    margin-bottom: 0.6rem;
+    filter: drop-shadow(0 3px 8px rgba(255, 91, 58, 0.4));
+}
+
+.enemigo-card .nombre {
+    font-size: 1.1rem;
+    color: var(--lose);
+    letter-spacing: 0.06em;
+}
+
+/* ====== BOTONES ====== */
+button {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(244, 161, 60, 0.18), rgba(244, 161, 60, 0.06));
+    color: var(--amber-soft);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: linear-gradient(180deg, rgba(244, 161, 60, 0.28), rgba(244, 161, 60, 0.12));
+    box-shadow: 0 6px 18px -6px rgba(244, 161, 60, 0.5);
+}
+
+button:active:not(:disabled) { transform: translateY(0); }
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#boton-personaje { width: 100%; }
+
+/* ====== PANEL DE VIDAS ====== */
+.vidas {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.6rem 0 1.3rem;
+}
+
+.vida-box {
+    flex: 1;
+    text-align: center;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.vida-box .label {
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+}
+
+.vida-box .valor {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    color: var(--amber);
+    font-weight: 700;
+}
+
+/* ====== BOTONES DE ATAQUE ====== */
+.ataques {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.7rem;
+}
+
+#boton-fuego  { color: var(--fuego);  border-color: rgba(255, 91, 58, 0.35); }
+#boton-agua   { color: var(--agua);   border-color: rgba(78, 201, 255, 0.35); }
+#boton-tierra { color: var(--tierra); border-color: rgba(123, 191, 74, 0.35); }
+#boton-aire   { color: var(--aire);   border-color: rgba(240, 224, 122, 0.35); }
+
+/* ====== MENSAJES DE COMBATE ====== */
+#contenedor-mensajes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 0.3rem;
+}
+
+#contenedor-mensajes p {
+    padding: 0.75rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    animation: slideIn 0.3s ease-out;
+}
+
+#contenedor-mensajes p.win  { border-left-color: var(--win); }
+#contenedor-mensajes p.lose { border-left-color: var(--lose); }
+#contenedor-mensajes p.tie  { border-left-color: var(--tie); }
+#contenedor-mensajes p.final {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    text-align: center;
+    border-left: none;
+    background: rgba(244, 161, 60, 0.1);
+    padding: 1rem;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar */
+#contenedor-mensajes::-webkit-scrollbar { width: 6px; }
+#contenedor-mensajes::-webkit-scrollbar-track { background: transparent; }
+#contenedor-mensajes::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+#boton-reiniciar {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+    color: var(--ink);
+}
+
+#reglamento .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+#reglamento h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    color: var(--amber-soft);
+}
+
+#reglamento ul,
+#reglamento ol {
+    padding-left: 1rem;
+    color: var(--ink-dim);
+}
+
+#reglamento li {
+    margin-bottom: 0.65rem;
+    line-height: 1.5;
+}
+
+#reglamento li::marker {
+    color: var(--amber);
+}
+
+/* ====== UTILIDADES ====== */
+.oculto { display: none; }
+
+/* ====== RESPONSIVE ====== */
+/* REQUERIMIENTO: Que sea responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem 0.5rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    section {
+        padding: 1.2rem 1rem;
+    }
+    
+    .personajes, .ataques {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .vidas {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    #reglamento .info-grid {
+        grid-template-columns: 1fr;
+    }
+}

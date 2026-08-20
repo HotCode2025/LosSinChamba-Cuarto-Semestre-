@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  LA LEYENDA DE AANG — Juego Avatar
+  ============================================================
+  EQUIPO SCRUM
+  Scrum Master + Developer : Lautaro Martinez
+  Developers   : Samira Baz | Gabriel Maculus | Leandro Orozco
+
+  Metodología  : SCRUM (sprints + daily standup en Discord)
+  Colaboración : VS Code Live Share
+  Ver detalle  : SCRUM.md
+  ============================================================
+  Secciones:
+    - <style>       → CSS / diseño visual  (Lautaro + Gabriel)
+                      Tarjetas y botones   (Samira + Leandro)
+    - <body>        → Estructura HTML      (Lautaro + Samira)
+                      Personajes/ataques   (Gabriel + Leandro)
+  ============================================================
+-->
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Leyenda de Aang: Avatar</title>
+
+    <!-- Tipografías: Cinzel para títulos (epic), Outfit para el cuerpo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./avatar.css">
+</head>
+<body>
+    <h1>AVATAR 🔥 💧 🌱 🌪</h1>
+
+    <!-- Selección de personaje -->
+    <section id="seleccionar-personaje">
+        <h2>Elige tu Personaje</h2>
+        <div class="personajes">
+            <label class="personaje-card" for="zuko">
+                <span class="emoji">🔥</span>
+                <input type="radio" name="personaje" id="zuko" />
+                <span class="nombre">Zuko</span>
+            </label>
+            <label class="personaje-card" for="katara">
+                <span class="emoji">💧</span>
+                <input type="radio" name="personaje" id="katara" />
+                <span class="nombre">Katara</span>
+            </label>
+            <label class="personaje-card" for="aang">
+                <span class="emoji">🌪️</span>
+                <input type="radio" name="personaje" id="aang" />
+                <span class="nombre">Aang</span>
+            </label>
+            <label class="personaje-card" for="toph">
+                <span class="emoji">🌱</span>
+                <input type="radio" name="personaje" id="toph" />
+                <span class="nombre">Toph</span>
+            </label>
+        </div>
+        <button id="boton-personaje">Seleccionar</button>
+        <div id="reglamento">
+            <h2>Poderes y Reglamento</h2>
+            <div class="info-grid">
+                <div>
+                    <h3>Poderes disponibles</h3>
+                    <ul>
+                        <li><strong>Fuego</strong> 🔥 vence a Aire y pierde contra Agua.</li>
+                        <li><strong>Agua</strong> 💧 vence a Fuego y pierde contra Tierra.</li>
+                        <li><strong>Tierra</strong> 🌱 vence a Agua y pierde contra Aire.</li>
+                        <li><strong>Aire</strong> 🌪️ vence a Tierra y pierde contra Fuego.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Reglamento del combate</h3>
+                    <ol>
+                        <li>Elegí tu personaje: Zuko, Katara, Aang o Toph.</li>
+                        <li>Seleccioná un ataque: Fuego, Agua, Tierra o Aire.</li>
+                        <li>El enemigo ataca con un ataque aleatorio.</li>
+                        <li>Si tu ataque vence al enemigo, él pierde 1 vida.</li>
+                        <li>Si el enemigo vence tu ataque, perdés 1 vida.</li>
+                        <li>Si hay empate, nadie pierde vida.</li>
+                        <li>El juego termina cuando uno llega a 0 vidas.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selección de ataque (oculto hasta elegir personaje) -->
+    <section id="seleccionar-ataque" class="oculto">
+        <h2>Elige tu Ataque</h2>
+
+        <!-- Contenedor del enemigo -->
+        <div id="contenedor-enemigo"></div>
+
+        <div class="vidas">
+            <div class="vida-box">
+                <div class="label">Tu personaje</div>
+                <div class="valor"><span id="nombre-jugador">—</span></div>
+                <div class="label" style="margin-top:0.4rem;">Vidas: <span id="vidas-jugador">3</span></div>
+            </div>
+            <div class="vida-box">
+                <div class="label">Enemigo</div>
+                <div class="valor"><span id="nombre-enemigo">—</span></div>
+                <div class="label" style="margin-top:0.4rem;">Vidas: <span id="vidas-enemigo">3</span></div>
+            </div>
+        </div>
+
+        <div class="ataques">
+            <button id="boton-fuego">Fuego 🔥</button>
+            <button id="boton-agua">Agua 💧</button>
+            <button id="boton-tierra">Tierra 🌱</button>
+            <button id="boton-aire">Aire 🌪️</button>
+        </div>
+    </section>
+
+    <!-- Mensajes del combate -->
+    <section id="mensajes" class="oculto">
+        <h2>Combate</h2>
+        <div id="contenedor-mensajes"></div>
+    </section>
+
+    <!-- Reiniciar -->
+    <section id="reiniciar" class="oculto">
+        <button id="boton-reiniciar">Reiniciar Combate</button>
+    </section>
+
+    <script src="./avatar.js"></script>
+</body>
+</html>
