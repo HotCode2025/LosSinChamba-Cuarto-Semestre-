@@ -1,6 +1,10 @@
 # E-commerce - Clase 02
 
-Tienda simple hecha con HTML, CSS y JavaScript puro. Los productos salen de un array y se dibujan en pantalla con JS.
+Tienda simple hecha con HTML, CSS y JavaScript puro, desarrollada de forma grupal por el equipo Los Sin Chamba. Los productos salen de un array y se dibujan en pantalla con JS.
+
+## Proyecto grupal
+
+Este trabajo fue realizado en conjunto por el grupo Los Sin Chamba, aplicando conceptos de HTML, CSS y JavaScript para crear una pequeña tienda online funcional.
 
 ## Qué hice en esta clase
 
@@ -36,3 +40,6 @@ js/
 media/          -> imágenes
 ```
 
+## Conclusión
+
+Este proyecto nos permitió poner en práctica conceptos fundamentales de JavaScript, organización del código y lógica de interacción en una página web. Gracias al trabajo en equipo del grupo Los Sin Chamba, logramos crear una pequeña tienda funcional con carrito y modal, reforzando habilidades de programación, colaboración y resolución de problemas.
