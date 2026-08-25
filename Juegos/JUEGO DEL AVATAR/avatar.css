@@ -1,0 +1,608 @@
+/* ======================================================
+   LA LEYENDA DE AANG — ESTILOS
+   ====================================================== */
+
+:root {
+    --bg-1: #0a0e1a;
+    --bg-2: #0d1526;
+    --panel: rgba(15, 23, 42, 0.92);
+    --panel-2: rgba(2, 6, 23, 0.35);
+    --border: rgba(148, 163, 184, 0.16);
+    --border-strong: rgba(148, 163, 184, 0.3);
+
+    --blue: #38bdf8;
+    --blue-soft: #93d9ff;
+    --blue-strong: #2563eb;
+    --red: #ef4444;
+    --red-strong: #dc2626;
+    --green: #22c55e;
+
+    --ink: #e7edf7;
+    --ink-dim: #8a97ac;
+
+    --win: #22c55e;
+    --lose: #ef4444;
+    --tie: #eab308;
+}
+
+/* ====== BASE ====== */
+/* REQUERIMIENTO: Background a todo el sitio */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2.5rem 1rem 3rem;
+    background:
+        radial-gradient(1100px 550px at 85% -10%, rgba(56, 189, 248, 0.14), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(37, 99, 235, 0.14), transparent 60%),
+        linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    background-attachment: fixed;
+}
+
+/* Textura sutil */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.015) 0, transparent 1px),
+        radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.015) 0, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ====== TIPOGRAFÍA ====== */
+/* REQUERIMIENTO: Tipografía (importada desde Google Fonts en el HTML) */
+/* REQUERIMIENTO: Color y background al h1 */
+/* REQUERIMIENTO: Formato y layout a los titulos */
+h1 {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    max-width: 680px;
+    margin: 0 auto 2rem;
+    padding: 1.1rem 1.6rem;
+    color: #fff;
+    background: linear-gradient(90deg, #c2410c 0%, #ef4444 32%, #2563eb 100%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 20px 50px -20px rgba(37, 99, 235, 0.55);
+}
+
+h2 {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    color: var(--blue-soft);
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ====== LAYOUT GENERAL ====== */
+/* REQUERIMIENTO: Flexbox y los tipos de display */
+section {
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.6rem 1.8rem;
+    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.55);
+}
+
+/* ====== TARJETAS DE PERSONAJE ====== */
+.personajes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+}
+
+.personaje-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.1rem 0.6rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.personaje-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.personaje-card input[type="radio"] {
+    display: none;
+}
+
+.personaje-card:has(input:checked) {
+    border-color: var(--blue);
+    background: rgba(56, 189, 248, 0.12);
+    box-shadow: 0 0 0 1px var(--blue), 0 8px 24px -8px rgba(56, 189, 248, 0.4);
+}
+
+/* Tinte sutil por elemento, igual que en la referencia */
+.personaje-card.aang   { background: linear-gradient(180deg, rgba(226, 232, 240, 0.12), rgba(255, 255, 255, 0.02)); }
+.personaje-card.katara { background: linear-gradient(180deg, rgba(56, 189, 248, 0.14), rgba(255, 255, 255, 0.02)); }
+.personaje-card.sokka  { background: linear-gradient(180deg, rgba(148, 163, 184, 0.16), rgba(255, 255, 255, 0.02)); }
+.personaje-card.haru   { background: linear-gradient(180deg, rgba(34, 197, 94, 0.14), rgba(255, 255, 255, 0.02)); }
+
+/* ====== AVATAR (imagen del personaje con fallback a emoji) ====== */
+.avatar-img {
+    position: relative;
+    display: block;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 0.5rem;
+}
+
+.avatar-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 10px;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+.avatar-img .emoji-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 2.4rem;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+}
+
+/* .oculto (1 clase) pierde por especificidad CSS contra ".avatar-img img"
+   y ".avatar-img .emoji-fallback"; estas reglas más específicas fuerzan
+   que gane el ocultado */
+.avatar-img img.oculto {
+    display: none;
+}
+
+.avatar-img .emoji-fallback.oculto {
+    display: none;
+}
+
+.avatar-img-arena {
+    width: 92px;
+    height: 92px;
+    margin-bottom: 0.7rem;
+}
+
+.avatar-img-arena .emoji-fallback {
+    font-size: 2.8rem;
+}
+
+.nombre {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+}
+
+.subtitulo {
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+    margin-top: 0.2rem;
+}
+
+/* ====== FILA DE BOTONES (Confirmar + Reglas) ====== */
+.fila-botones {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.fila-botones .boton-primario {
+    flex: 2.2;
+}
+
+.fila-botones .boton-reglas {
+    flex: 1;
+}
+
+/* ====== BOTONES ====== */
+button {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.boton-primario,
+#boton-personaje {
+    width: 100%;
+    color: #fff;
+    background: linear-gradient(180deg, #3b9bf0, var(--blue-strong));
+    box-shadow: 0 10px 24px -10px rgba(37, 99, 235, 0.6);
+}
+
+.boton-primario:hover:not(:disabled),
+#boton-personaje:hover:not(:disabled) {
+    box-shadow: 0 12px 28px -10px rgba(37, 99, 235, 0.75);
+}
+
+.boton-reglas {
+    color: #fff;
+    background: linear-gradient(180deg, #f16565, var(--red-strong));
+    box-shadow: 0 10px 24px -10px rgba(220, 38, 38, 0.6);
+}
+
+.boton-reglas:hover:not(:disabled) {
+    box-shadow: 0 12px 28px -10px rgba(220, 38, 38, 0.75);
+}
+
+/* ====== ARENA DE ELEMENTOS ====== */
+.arena-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.arena-header h2 {
+    flex: 1;
+    text-align: left;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.arena-header .boton-reglas {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.arena {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+}
+
+.arena-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.2rem 1rem;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.arena-card .emoji {
+    font-size: 2.8rem;
+}
+
+.arena-card .nombre {
+    font-size: 1.05rem;
+    margin-bottom: 0.9rem;
+}
+
+.vs {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+}
+
+/* ====== BARRA DE VIDA ====== */
+.barra-vida {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+}
+
+.barra-vida-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #16a34a, var(--green));
+    border-radius: 999px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.barra-vida-fill.critica {
+    background: linear-gradient(90deg, var(--red-strong), var(--red));
+}
+
+.vidas-texto {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.03em;
+}
+
+/* ====== PANEL DE MOVIMIENTOS ====== */
+.panel-movimientos {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+}
+
+.panel-movimientos h3 {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+    margin-bottom: 0.9rem;
+}
+
+/* ====== BOTONES DE MOVIMIENTO ====== */
+.ataques {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.7rem;
+}
+
+.ataques button {
+    color: #fff;
+    text-align: center;
+}
+
+#boton-puno {
+    background: linear-gradient(180deg, #f16565, var(--red-strong));
+}
+
+#boton-patada {
+    background: linear-gradient(180deg, #3b9bf0, var(--blue-strong));
+}
+
+#boton-barrida {
+    background: linear-gradient(180deg, #34d67f, #16a34a);
+}
+
+/* ====== MENSAJES DE COMBATE ====== */
+#contenedor-mensajes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 0.3rem;
+}
+
+#contenedor-mensajes p {
+    padding: 0.75rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--blue);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    animation: slideIn 0.3s ease-out;
+}
+
+#contenedor-mensajes p.win {
+    border-left-color: var(--win);
+}
+
+#contenedor-mensajes p.lose {
+    border-left-color: var(--lose);
+}
+
+#contenedor-mensajes p.tie {
+    border-left-color: var(--tie);
+}
+
+#contenedor-mensajes p.final {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    text-align: center;
+    border-left: none;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 1rem;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scrollbar */
+#contenedor-mensajes::-webkit-scrollbar {
+    width: 6px;
+}
+
+#contenedor-mensajes::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#contenedor-mensajes::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+#boton-reiniciar {
+    width: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+    color: var(--ink);
+    border: 1px solid var(--border);
+}
+
+/* ====== MODAL DE REGLAS ====== */
+#modal-reglas {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+#modal-reglas.oculto {
+    display: none;
+}
+
+.modal-fondo {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.72);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+#reglamento {
+    position: relative;
+    max-width: 640px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 1.8rem;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+}
+
+.boton-cerrar {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--ink-dim);
+    border-radius: 50%;
+}
+
+.boton-cerrar:hover {
+    color: var(--ink);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#reglamento .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+#reglamento h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    color: var(--blue-soft);
+}
+
+#reglamento ul,
+#reglamento ol {
+    padding-left: 1rem;
+    color: var(--ink-dim);
+}
+
+#reglamento li {
+    margin-bottom: 0.65rem;
+    line-height: 1.5;
+}
+
+#reglamento li::marker {
+    color: var(--blue);
+}
+
+/* ====== UTILIDADES ====== */
+.oculto {
+    display: none;
+}
+
+/* ====== RESPONSIVE ====== */
+/* REQUERIMIENTO: Que sea responsive */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem 0.5rem;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+        padding: 0.9rem 1rem;
+    }
+
+    section {
+        padding: 1.2rem 1rem;
+    }
+
+    .personajes,
+    .ataques {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fila-botones {
+        flex-direction: column;
+    }
+
+    .arena-header {
+        flex-wrap: wrap;
+    }
+
+    .arena {
+        flex-direction: column;
+    }
+
+    .vs {
+        transform: rotate(90deg);
+        margin: 0.2rem 0;
+    }
+
+    #reglamento .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
