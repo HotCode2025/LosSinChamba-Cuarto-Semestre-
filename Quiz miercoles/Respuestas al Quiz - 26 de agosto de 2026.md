@@ -1,4 +1,4 @@
-**![][image1]**
+
 
 ## Quiz de hoy: Miércoles 26 de agosto del 2026
 
