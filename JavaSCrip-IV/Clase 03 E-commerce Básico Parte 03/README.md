@@ -33,3 +33,7 @@ Este proyecto continúa el desarrollo colaborativo del equipo **Los Sin Chamba**
 * Utilizamos el método `cart.reduce()` en el footer para calcular de forma acumulativa la suma total:
   ```javascript
   const total = cart.reduce((acc, el) => acc + el.price * el.quanty, 0);
+
+## Conclusión
+
+En esta tercera clase logramos que el carrito sea 100% interactivo y funcional. Aprendimos a controlar el estado de los datos usando métodos clave de arrays (`some`, `map`, `reduce` y `splice`) para resolver problemas reales: evitar productos duplicados, actualizar cantidades, calcular el total automáticamente y permitir eliminar ítems. Además, la técnica de volver a llamar a `displayCart()` nos permitió mantener la interfaz siempre sincronizada con los datos sin recargar la página. Gracias al trabajo en equipo de **Los Sin Chamba**, dimos un paso fundamental para transformar un catálogo estático en una verdadera experiencia de compra.
