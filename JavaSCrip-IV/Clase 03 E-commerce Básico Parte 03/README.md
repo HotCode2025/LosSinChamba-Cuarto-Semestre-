@@ -1,45 +1,35 @@
-# E-commerce - Clase 02
+# E-commerce - Clase 03
 
-Tienda simple hecha con HTML, CSS y JavaScript puro, desarrollada de forma grupal por el equipo Los Sin Chamba. Los productos salen de un array y se dibujan en pantalla con JS.
+Ampliación de la tienda web desarrollada con HTML, CSS y JavaScript por el equipo **Los Sin Chamba**. En esta clase completamos la funcionalidad interna del modal del carrito: renderizado dinámico de productos, gestión de cantidades, cálculo total y eliminación de items.
+
+---
 
 ## Proyecto grupal
 
-Este trabajo fue realizado en conjunto por el grupo Los Sin Chamba, aplicando conceptos de HTML, CSS y JavaScript para crear una pequeña tienda online funcional.
+Este proyecto continúa el desarrollo colaborativo del equipo **Los Sin Chamba**, profundizando en la manipulación del DOM, eventos dinámicos y métodos avanzados de arrays en JavaScript (`some`, `map`, `reduce`, `splice`).
 
-## Qué hice en esta clase
+---
 
-### 2.1 Botón de compra
+## Qué hicimos en esta clase
 
-A cada tarjeta de producto le agregué un botón "Comprar".
+### 3.1 Avanzamos en el Body del Modal
+* Recorremos el array `cart` mediante un `forEach` para renderizar dinámicamente cada producto agregado.
+* En cada iteración creamos un contenedor `modal-body` con la imagen, título, controles de cantidad, precio unitario/subtotal y un botón de eliminación (`❌`).
 
-Lo creo con `createElement` en vez de escribirlo dentro del template string, porque después necesito engancharle un evento de click a ese botón en particular. Si lo metía en el HTML tendría que salir a buscarlo con un `querySelector`.
+### 3.2 Ahora vamos al Footer
+* Creamos el elemento `modal-footer` y lo añadimos al final del contenedor del modal.
+* Este contenedor funciona como el bloque fijo inferior donde se mostrará el resumen de la compra y el monto total acumulado.
 
-### 2.2 Carrito
+### 3.3 Configuramos las cantidades de productos
+* Implementamos una validación en `index.js` usando `cart.some()` para verificar si el producto ya existe en el carrito antes de agregarlo.
+* Si el producto ya está en el carrito, usamos `cart.map()` para incrementar su propiedad `quanty` en lugar de duplicar el elemento en el array; si no está, se pushea como un producto nuevo.
 
-Declaré `const cart = []` **afuera** del `forEach`. Si lo ponía adentro se me reiniciaba en cada vuelta.
+### 3.4 Botones de suma y resta de productos
+* Capturamos los botones `+` (`quantity-btn-increse`) y `-` (`quantity-btn-decrese`) dentro del flujo de creación de cada tarjeta del modal.
+* Al hacer click en `+`, incrementamos `product.quanty` y ejecutamos `displayCart()` para re-renderizar la vista con los nuevos valores.
+* Al hacer click en `-`, validamos mediante un condicional (`product.quanty !== 1`) para evitar cantidades en cero o negativas, y actualizamos el modal.
 
-Cuando hago click en "Comprar", se pushea al array un objeto con los datos del producto (id, nombre, precio, cantidad e imagen). Lo fui probando con `console.log(cart)` en la consola.
-
-### 2.3 Modal del carrito
-
-Agregué el botón 🛒 fijo arriba a la derecha. Al clickearlo llama a `displayCart()`.
-
-Esa función pasa el `display` del modal y del overlay (el fondo oscuro) de `none` a `block`. El contenido del modal lo armo por JS: un header con el título "Carrito" y una ❌ que vuelve a ponerlos en `none` para cerrarlo.
-
-Esto lo puse en un archivo aparte, `cart.js`, que va después de `index.js` en el HTML porque usa el array `cart` que se declara ahí.
-
-## Archivos
-
-```
-index.html
-styles.css
-js/
-  products.js   -> array con los productos
-  index.js      -> dibuja los productos + botón + carrito
-  cart.js       -> modal del carrito
-media/          -> imágenes
-```
-
-## Conclusión
-
-Este proyecto nos permitió poner en práctica conceptos fundamentales de JavaScript, organización del código y lógica de interacción en una página web. Gracias al trabajo en equipo del grupo Los Sin Chamba, logramos crear una pequeña tienda funcional con carrito y modal, reforzando habilidades de programación, colaboración y resolución de problemas.
+### 3.5 Calcular el total de la compra
+* Utilizamos el método `cart.reduce()` en el footer para calcular de forma acumulativa la suma total:
+  ```javascript
+  const total = cart.reduce((acc, el) => acc + el.price * el.quanty, 0);
