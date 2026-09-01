@@ -134,7 +134,7 @@ El proceso de diseño de la interfaz de usuario se compone por:
 
 ### Teoria del color:
 
-![infografia teoria del color](<DiseñoDevelopers/Diseño Clase 02/Psicología del color infografía.png>)
+![infografia teoria del color](<./Diseño Clase 02/Psicología del color infografía.png>)
 
 > Segun la teoria del color los colores tienen asociaciones psicologicas con ideas o emociones, las marcas los utilizan para transmitir identidad.
 
