@@ -134,6 +134,8 @@ El proceso de diseño de la interfaz de usuario se compone por:
 
 ### Teoria del color:
 
+![infografia teoria del color](<DiseñoDevelopers/Diseño Clase 02/Psicología del color infografía.png>)
+
 > Segun la teoria del color los colores tienen asociaciones psicologicas con ideas o emociones, las marcas los utilizan para transmitir identidad.
 
 tips/buenas practicas para trabajar con colores:
@@ -150,6 +152,8 @@ Para armar la paleta hay que tener en cuenta que puede contener:
 - colores primarios rojo, verde, amarillo
 - colores secundarios, la mezcla entre dos colores primarios
 - colores terciarios, mezcla entre un primario y un secundario adyacente
+
+![Rueda de color](./color_wheel.jpg)
 
 #### Armonias:
 - monocromatica: diferentes tonos del mismo color
