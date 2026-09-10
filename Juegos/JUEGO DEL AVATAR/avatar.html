@@ -33,11 +33,19 @@
     <link rel="stylesheet" href="./avatar.css">
 </head>
 <body>
-    <h1>AVATAR 🔥 💧 🌱 🌪</h1>
+    <div class="titulo-principal">
+        <h1 class="logo-avatar">AVATAR</h1>
+        <p class="subtitulo-combate">Combate Elemental</p>
+    </div>
 
     <!-- Selección de personaje -->
     <section id="seleccionar-personaje">
         <h2>Elige tu Personaje</h2>
+
+        <!-- Los 4 elementos del juego (solo decorativo, referencia visual) -->
+        <div class="fila-elementos" aria-hidden="true">
+            <span>🔥</span><span>💧</span><span>🌪️</span><span>🌱</span>
+        </div>
 
         <!-- El buscador aparece solo cuando el catálogo supera los 8 personajes -->
         <div class="barra-catalogo">
@@ -49,10 +57,26 @@
         <!-- Las tarjetas las dibuja Personaje.crearTarjeta() -->
         <div class="personajes" id="lista-personajes"></div>
 
+        <!-- Forma alternativa de elegir personaje sin clickear la tarjeta.
+             Las <option> las arma Personaje.crearOpcion(); elegir acá marca
+             el mismo radio de la tarjeta (y viceversa), es el mismo estado. -->
+        <select id="selector-personaje" class="selector-personaje" aria-label="Elegir personaje desde la lista">
+            <option value="">— Elegí un personaje —</option>
+        </select>
+
         <div class="fila-botones">
             <button id="boton-personaje" class="boton-primario">Confirmar Selección</button>
+            <button id="boton-crear-personaje" class="boton-crear">Crear Personaje</button>
             <button id="boton-reglas-personaje" class="boton-reglas">Reglas</button>
+            <button id="boton-terminar-juego" class="boton-terminar">Terminar el juego</button>
         </div>
+    </section>
+
+    <!-- Pantalla de despedida (aparece al tocar "Terminar el juego") -->
+    <section id="despedida" class="oculto">
+        <h2>¡Gracias por jugar!</h2>
+        <p class="mensaje-despedida">Esperamos que hayas disfrutado el combate elemental. ¡Volvé cuando quieras!</p>
+        <button id="boton-volver-inicio" class="boton-primario">Volver a jugar</button>
     </section>
 
     <!-- Selección de movimiento (oculto hasta elegir personaje) -->
@@ -108,6 +132,35 @@
                     </ol>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal de crear personaje: acá se instancia un objeto Personaje nuevo -->
+    <div id="modal-crear-personaje" class="oculto">
+        <div class="modal-fondo" id="modal-crear-fondo"></div>
+        <div id="formulario-crear-personaje">
+            <button id="boton-cerrar-crear" class="boton-cerrar" aria-label="Cerrar formulario">✕</button>
+            <h2>Crear Personaje</h2>
+            <p class="form-ayuda">
+                Al confirmar, el juego ejecuta <code>new Personaje({ ... })</code> con estos
+                datos: eso es <em>instanciar</em> la clase, igual que <code>new Avatar('Zuko', ...)</code>.
+                El personaje nuevo se suma al catálogo sin recargar la página.
+            </p>
+            <form id="form-nuevo-personaje">
+                <label for="input-nombre-nuevo">Nombre</label>
+                <input type="text" id="input-nombre-nuevo" name="nombre" maxlength="20" required
+                       placeholder="Ej: Iroh" autocomplete="off" />
+
+                <label for="select-elemento-nuevo">Elemento</label>
+                <select id="select-elemento-nuevo" name="elemento" required>
+                    <option value="fuego">🔥 Fuego</option>
+                    <option value="agua">💧 Agua</option>
+                    <option value="aire">🌪️ Aire</option>
+                    <option value="tierra">🌱 Tierra</option>
+                </select>
+
+                <button type="submit" class="boton-primario">Instanciar Personaje</button>
+            </form>
         </div>
     </div>
 

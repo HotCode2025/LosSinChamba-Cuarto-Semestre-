@@ -20,6 +20,24 @@
 //      Resultado: agregar un personaje nuevo es UNA línea de código y no
 //      se toca el HTML. Sirve para 4, para 100 o para 1000 personajes.
 // ============================================================
+//
+//  RELACIÓN CON LA TEORÍA DE LA CLASE (video "Clases y Objetos"):
+//
+//      El video explica la POO con dos ejemplos:
+//        · "Plano de Casa" (clase) → cada "Casa" construida (objeto).
+//        · Clase "Animal" (molde)  → objetos "Perro", "Gato", "Elefante".
+//
+//      Acá el mismo patrón se repite tres veces:
+//        · class Ataque    (molde) → objetos Puño, Patada, Barrida.
+//        · class Personaje (molde) → objetos Aang, Katara, Sokka, Haru...
+//        · class Juego     (molde) → el objeto "juego" que arranca al final.
+//
+//      Así como una Casa tiene ATRIBUTOS (color, cant. de ventanas) y
+//      MÉTODOS (abrirPuerta, pintar), y un Animal tiene ATRIBUTOS (tamaño,
+//      peso) y MÉTODOS (hacerSonido, comer, dormir) — acá un Personaje
+//      tiene ATRIBUTOS (nombre, emoji, vidas) y MÉTODOS (recibirGolpe,
+//      curarse, crearTarjeta). Ver el detalle en cada clase más abajo.
+// ============================================================
 
 'use strict';
 
@@ -29,6 +47,10 @@
    ------------------------------------------------------------
    ATRIBUTOS : id, nombre, emoji, venceA, colorClaro, colorOscuro
    MÉTODOS   : leGanaA(), empataCon(), crearBoton()
+
+   Analogía del video: esta clase es el "plano", igual que "Plano de
+   Casa". Puño, Patada y Barrida (más abajo, en el array ATAQUES) son
+   las "Casas" ya construidas: mismos atributos, distinto valor cada uno.
    ============================================================ */
 class Ataque {
 
@@ -79,9 +101,20 @@ class Ataque {
                porcentajeVida(), presentarse(), elegirAtaque(),
                coincideCon(), clonar(), crearAvatar(), crearTarjeta(),
                crearTarjetaArena(), refrescarVida()
+
+   Analogía del video: esta clase cumple el mismo rol que la clase
+   "Animal" del ejemplo (molde para Perro, Gato, Elefante...). Cada
+   Personaje (Aang, Katara, Sokka, Haru) es un objeto distinto hecho
+   con el mismo molde: mismos ATRIBUTOS (nombre, emoji, vidas...),
+   valores propios; mismos MÉTODOS (recibirGolpe, curarse...), pero
+   cada uno los ejecuta sobre SUS PROPIOS datos.
    ============================================================ */
 class Personaje {
 
+    // Todo lo que se guarda acá adentro con "this." es un ATRIBUTO: un
+    // dato propio de CADA objeto (como el color o el peso del Animal del
+    // video). Las funciones definidas más abajo en la clase son los
+    // MÉTODOS: las acciones que ese objeto puede hacer.
     constructor({ id, nombre, emoji, titulo = '', descripcion = '', foto, tinte = 'rgba(255, 255, 255, 0.03)', vidas = 3 }) {
         this.id          = id;           // 'aang'  → también el nombre del .webp
         this.nombre      = nombre;       // 'Aang'
@@ -147,6 +180,9 @@ class Personaje {
     // Devuelve una COPIA nueva del personaje. Es clave: si el jugador y el
     // enemigo eligen el mismo personaje del catálogo, sin clonar estarían
     // compartiendo el mismo objeto (y las mismas vidas).
+    // Es como construir DOS casas con el mismo plano: se parecen, pero
+    // si a una le rompés una ventana, la otra sigue intacta porque son
+    // objetos distintos, aunque vengan del mismo molde (misma clase).
     clonar() {
         return new Personaje({
             id: this.id,
@@ -218,6 +254,16 @@ class Personaje {
         return tarjeta;
     }
 
+    // <option> para el selector alternativo. Es la misma idea que
+    // crearTarjeta(): el objeto se dibuja a sí mismo, solo que en otro
+    // formato de HTML. Ambos leen los mismos atributos (id, nombre, emoji).
+    crearOpcion() {
+        const opcion = document.createElement('option');
+        opcion.value = this.id;
+        opcion.textContent = `${this.emoji} ${this.nombre} — ${this.titulo}`;
+        return opcion;
+    }
+
     // Tarjeta de la arena (foto grande + barra de vida)
     crearTarjetaArena() {
         const tarjeta = document.createElement('div');
@@ -286,6 +332,18 @@ const PERSONAJES = [
         id: 'haru', nombre: 'Haru', emoji: '🪨', titulo: 'Maestro Tierra',
         descripcion: 'Usa el dominio de la tierra para arrojar rocas a los enemigos.',
         tinte: 'rgba(34, 197, 94, 0.14)'
+    }),
+    // Zuko y Toph: mismo molde Personaje, foto todavía no subida a /img
+    // (zuko.webp y toph.webp), así que por ahora se dibujan con su emoji.
+    new Personaje({
+        id: 'zuko', nombre: 'Zuko', emoji: '🔥', titulo: 'Maestro Fuego',
+        descripcion: 'Príncipe desterrado de la Nación del Fuego, domina las llamas con precisión.',
+        tinte: 'rgba(239, 68, 68, 0.14)'
+    }),
+    new Personaje({
+        id: 'toph', nombre: 'Toph', emoji: '🪨', titulo: 'Maestra Tierra',
+        descripcion: 'Maestra Tierra ciega que "ve" con vibraciones; inventora del metalcontrol.',
+        tinte: 'rgba(34, 197, 94, 0.14)'
     })
 ];
 
@@ -296,6 +354,11 @@ const PERSONAJES = [
    ATRIBUTOS : catalogo, ataques, jugador, enemigo, terminado + DOM
    MÉTODOS   : iniciar(), dibujarCatalogo(), comenzarCombate(),
                atacar(), revisarFinDelJuego(), reiniciar(), etc.
+
+   Esta clase no representa una "cosa" del mundo real como Casa o Animal,
+   sino la PARTIDA en sí: agrupa todo lo que antes (clases 1 a 3) eran
+   variables sueltas (jugador, enemigo, terminado) en un solo objeto,
+   el que se crea al final del archivo con "new Juego(...)".
    ============================================================ */
 class Juego {
 
@@ -311,14 +374,18 @@ class Juego {
         this.seccionAtaque      = document.getElementById('seleccionar-ataque');
         this.seccionMensajes    = document.getElementById('mensajes');
         this.seccionReiniciar   = document.getElementById('reiniciar');
+        this.seccionDespedida   = document.getElementById('despedida');
         this.listaPersonajes    = document.getElementById('lista-personajes');
         this.listaAtaques       = document.getElementById('lista-ataques');
         this.listaMovimientos   = document.getElementById('lista-movimientos');
         this.contadorPersonajes = document.getElementById('contador-personajes');
         this.buscador           = document.getElementById('buscador-personajes');
+        this.selectorPersonaje  = document.getElementById('selector-personaje');
         this.arena              = document.getElementById('arena');
         this.contenedorMensajes = document.getElementById('contenedor-mensajes');
         this.modalReglas        = document.getElementById('modal-reglas');
+        this.modalCrear         = document.getElementById('modal-crear-personaje');
+        this.formNuevoPersonaje = document.getElementById('form-nuevo-personaje');
     }
 
     // ---------- ARRANQUE ----------
@@ -348,6 +415,30 @@ class Juego {
 
         // El buscador aparece solo cuando el catálogo se hace grande
         this.buscador.classList.toggle('oculto', this.catalogo.length <= 8);
+
+        this.dibujarSelector(visibles);
+    }
+
+    // El <select> es una segunda forma de elegir personaje, además de las
+    // tarjetas. Se arma con el mismo catálogo (crearOpcion() en vez de
+    // crearTarjeta()), y queda sincronizado con la tarjeta seleccionada.
+    dibujarSelector(visibles = this.catalogo) {
+        const elegidoActual = this.selectorPersonaje.value;
+
+        const fragmento = document.createDocumentFragment();
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '— Elegí un personaje —';
+        fragmento.append(placeholder);
+        visibles.forEach(personaje => fragmento.append(personaje.crearOpcion()));
+
+        this.selectorPersonaje.replaceChildren(fragmento);
+
+        // Si el personaje que estaba elegido sigue en la lista filtrada,
+        // se lo dejamos marcado en el selector.
+        if (visibles.some(p => p.id === elegidoActual)) {
+            this.selectorPersonaje.value = elegidoActual;
+        }
     }
 
     // Los botones de ataque también salen de los objetos
@@ -392,8 +483,41 @@ class Juego {
 
         this.buscador.addEventListener('input', () => this.dibujarCatalogo(this.buscador.value));
         document.addEventListener('keydown', evento => {
-            if (evento.key === 'Escape') this.mostrarReglas(false);
+            if (evento.key === 'Escape') {
+                this.mostrarReglas(false);
+                this.mostrarCrearPersonaje(false);
+            }
         });
+
+        // ---- Selector <-> tarjetas: son dos vistas del MISMO estado ----
+        // Elegir del <select> marca el radio de la tarjeta correspondiente.
+        this.selectorPersonaje.addEventListener('change', () => {
+            const radio = this.selectorPersonaje.value
+                ? document.getElementById(`pj-${this.selectorPersonaje.value}`)
+                : null;
+            if (radio) radio.checked = true;
+        });
+
+        // Clickear una tarjeta actualiza el <select> (delegación de eventos:
+        // un solo listener sirve para 4 o para 1000 tarjetas).
+        this.listaPersonajes.addEventListener('change', evento => {
+            if (evento.target.name === 'personaje') {
+                this.selectorPersonaje.value = evento.target.value;
+            }
+        });
+
+        // ---- Crear personaje (instanciar un objeto nuevo en vivo) ----
+        document.getElementById('boton-crear-personaje').addEventListener('click', () => this.mostrarCrearPersonaje(true));
+        document.getElementById('boton-cerrar-crear').addEventListener('click', () => this.mostrarCrearPersonaje(false));
+        document.getElementById('modal-crear-fondo').addEventListener('click', () => this.mostrarCrearPersonaje(false));
+        this.formNuevoPersonaje.addEventListener('submit', evento => {
+            evento.preventDefault();
+            this.crearPersonajePersonalizado();
+        });
+
+        // ---- Terminar el juego ----
+        document.getElementById('boton-terminar-juego').addEventListener('click', () => this.terminarJuego());
+        document.getElementById('boton-volver-inicio').addEventListener('click', () => location.reload());
     }
 
     // ---------- COMBATE ----------
@@ -512,6 +636,66 @@ class Juego {
         this.modalReglas.classList.toggle('oculto', !mostrar);
     }
 
+    mostrarCrearPersonaje(mostrar) {
+        this.modalCrear.classList.toggle('oculto', !mostrar);
+        if (!mostrar) this.formNuevoPersonaje.reset();
+    }
+
+    // Traduce el elemento elegido en el <select> a los atributos visuales
+    // del Personaje (emoji, tinte, título). Es solo un mapa de datos, no
+    // cambia nada de la clase Personaje en sí.
+    datosDelElemento(elemento) {
+        const elementos = {
+            fuego:  { emoji: '🔥', tinte: 'rgba(239, 68, 68, 0.14)',  titulo: 'Maestro/a Fuego' },
+            agua:   { emoji: '💧', tinte: 'rgba(56, 189, 248, 0.14)', titulo: 'Maestro/a Agua' },
+            aire:   { emoji: '🌪️', tinte: 'rgba(252, 211, 77, 0.14)', titulo: 'Maestro/a Aire' },
+            tierra: { emoji: '🌱', tinte: 'rgba(34, 197, 94, 0.14)',  titulo: 'Maestro/a Tierra' }
+        };
+        return elementos[elemento] ?? elementos.fuego;
+    }
+
+    // Lee el formulario y hace exactamente lo que explica la teoría de
+    // "instanciar": new Personaje({...}) crea el objeto, agregarPersonajes()
+    // lo suma al catálogo, y el propio objeto se dibuja solo (crearTarjeta()).
+    crearPersonajePersonalizado() {
+        const datosForm = new FormData(this.formNuevoPersonaje);
+        const nombre     = datosForm.get('nombre').trim();
+        const elemento   = datosForm.get('elemento');
+
+        if (!nombre) return;
+
+        const { emoji, tinte, titulo } = this.datosDelElemento(elemento);
+        const id = `${nombre.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`;
+
+        const nuevoPersonaje = new Personaje({
+            id, nombre, emoji, titulo,
+            descripcion: `Personaje creado por el jugador. Elemento: ${elemento}.`,
+            foto: null,   // no tiene .webp propio, se dibuja con su emoji
+            tinte
+        });
+
+        this.agregarPersonajes(nuevoPersonaje);
+        this.mostrarCrearPersonaje(false);
+        this.mostrarMensajeTemporal(`✨ Se creó a ${nuevoPersonaje.presentarse()} y ya está en el catálogo.`);
+    }
+
+    // Mensaje corto que no depende de que el combate haya arrancado
+    // (a diferencia de mostrarMensaje(), que escribe en la sección de combate).
+    mostrarMensajeTemporal(texto) {
+        this.contadorPersonajes.textContent = texto;
+        setTimeout(() => this.dibujarCatalogo(this.buscador.value), 2200);
+    }
+
+    // "Terminar el juego": oculta todo lo demás y muestra la despedida.
+    // No borra el catálogo ni el progreso, solo saca la interfaz de juego.
+    terminarJuego() {
+        this.seccionPersonaje.classList.add('oculto');
+        this.seccionAtaque.classList.add('oculto');
+        this.seccionMensajes.classList.add('oculto');
+        this.seccionReiniciar.classList.add('oculto');
+        this.seccionDespedida.classList.remove('oculto');
+    }
+
     crearSeparadorVS() {
         const separador = document.createElement('div');
         separador.classList.add('vs');
@@ -532,6 +716,8 @@ class Juego {
    5) FABRICAR 100, 1000 O LOS PERSONAJES QUE SEAN
    ------------------------------------------------------------
    Esto es lo que la POO nos regala: un for y el molde hacen el resto.
+   Es la consigna final del video: "generar 100, 1000 o los personajes
+   que sean" a partir de UNA clase, sin escribir cada objeto a mano.
    Probalo en la consola del navegador (F12):
 
         juego.agregarPersonajes(fabricarPersonajes(100));

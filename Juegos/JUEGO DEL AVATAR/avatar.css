@@ -81,6 +81,44 @@ h1 {
     box-shadow: 0 20px 50px -20px rgba(245, 158, 11, 0.55);
 }
 
+/* ====== TÍTULO "AVATAR / COMBATE ELEMENTAL" ====== */
+.titulo-principal {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 2rem;
+}
+
+.logo-avatar {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.3rem;
+    padding: 0;
+    background: linear-gradient(90deg, #7c2d12 0%, #ea580c 35%, #f59e0b 70%, #fde68a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 12px rgba(245, 158, 11, 0.35);
+}
+
+.subtitulo-combate {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+}
+
+/* Fila decorativa de los 4 elementos, arriba del catálogo */
+.fila-elementos {
+    display: flex;
+    justify-content: center;
+    gap: 1.4rem;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
 h2 {
     font-family: 'Cinzel', serif;
     text-align: center;
@@ -142,6 +180,31 @@ section {
     font-size: 0.78rem;
     letter-spacing: 0.03em;
     color: var(--ink-dim);
+}
+
+/* ====== SELECTOR (forma alternativa de elegir sin clickear la tarjeta) ====== */
+.selector-personaje {
+    display: block;
+    width: 100%;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1.2rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+
+.selector-personaje:focus {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.selector-personaje option {
+    background: #2b1206;
+    color: var(--ink);
 }
 
 /* ====== TARJETAS DE PERSONAJE ====== */
@@ -267,18 +330,11 @@ section {
     margin-top: 0.2rem;
 }
 
-/* ====== FILA DE BOTONES (Confirmar + Reglas) ====== */
+/* ====== FILA DE BOTONES (Confirmar + Crear + Reglas + Terminar) ====== */
 .fila-botones {
-    display: flex;
-    gap: 0.8rem;
-}
-
-.fila-botones .boton-primario {
-    flex: 2.2;
-}
-
-.fila-botones .boton-reglas {
-    flex: 1;
+    display: grid;
+    grid-template-columns: 1.6fr 1.3fr 1fr 1.3fr;
+    gap: 0.7rem;
 }
 
 /* ====== BOTONES ====== */
@@ -328,6 +384,26 @@ button:disabled {
 
 .boton-reglas:hover:not(:disabled) {
     box-shadow: 0 12px 28px -10px rgba(220, 38, 38, 0.75);
+}
+
+.boton-crear {
+    color: #fff;
+    background: linear-gradient(180deg, #4ade80, #16a34a);
+    box-shadow: 0 10px 24px -10px rgba(22, 163, 74, 0.6);
+}
+
+.boton-crear:hover:not(:disabled) {
+    box-shadow: 0 12px 28px -10px rgba(22, 163, 74, 0.75);
+}
+
+.boton-terminar {
+    color: #fff;
+    background: linear-gradient(180deg, #b91c1c, #7f1d1d);
+    box-shadow: 0 10px 24px -10px rgba(127, 29, 29, 0.7);
+}
+
+.boton-terminar:hover:not(:disabled) {
+    box-shadow: 0 12px 28px -10px rgba(127, 29, 29, 0.85);
 }
 
 /* ====== ARENA DE ELEMENTOS ====== */
@@ -608,6 +684,102 @@ button:disabled {
     color: var(--amber);
 }
 
+/* ====== MODAL "CREAR PERSONAJE" (formulario) ====== */
+#modal-crear-personaje {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+#modal-crear-personaje.oculto {
+    display: none;
+}
+
+#formulario-crear-personaje {
+    position: relative;
+    max-width: 420px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 1.8rem;
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+}
+
+#formulario-crear-personaje h2 {
+    text-align: left;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.8rem;
+}
+
+.form-ayuda {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    margin-bottom: 1.3rem;
+}
+
+.form-ayuda code {
+    color: var(--amber-soft);
+    font-family: monospace;
+}
+
+#form-nuevo-personaje {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#form-nuevo-personaje label {
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    margin-top: 0.6rem;
+}
+
+#form-nuevo-personaje input,
+#form-nuevo-personaje select {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    padding: 0.6rem 0.8rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+
+#form-nuevo-personaje input:focus,
+#form-nuevo-personaje select:focus {
+    border-color: var(--amber);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+#form-nuevo-personaje select option {
+    background: #2b1206;
+}
+
+#form-nuevo-personaje button {
+    margin-top: 1.2rem;
+}
+
+/* ====== SECCIÓN DE DESPEDIDA ("Terminar el juego") ====== */
+#despedida {
+    text-align: center;
+}
+
+.mensaje-despedida {
+    color: var(--ink-dim);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+}
+
 /* ====== UTILIDADES ====== */
 .oculto {
     display: none;
@@ -636,7 +808,15 @@ button:disabled {
     }
 
     .fila-botones {
-        flex-direction: column;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .logo-avatar {
+        letter-spacing: 0.06em;
+    }
+
+    .subtitulo-combate {
+        letter-spacing: 0.18em;
     }
 
     .arena-header {
