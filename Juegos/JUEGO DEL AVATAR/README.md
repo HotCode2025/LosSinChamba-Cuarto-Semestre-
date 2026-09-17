@@ -15,6 +15,8 @@ Un juego de combate por turnos inspirado en *Avatar: La Leyenda de Aang*: elegí
 5. Cada derrota cuesta una vida (empezás con 3).
 6. **Gana** quien deje al otro sin vidas primero.
 7. Podés **reiniciar** el combate en cualquier momento.
+8. Tu **historial** (partidas, victorias, derrotas, racha) queda guardado en el navegador entre visitas.
+9. Podés silenciar la música y los efectos con el botón 🔊 de la esquina superior.
 
 ### ⚔️ Tabla de ventajas
 
@@ -65,6 +67,11 @@ JUEGO DEL AVATAR/
 └── SCRUM.md      → Documentación de sprints y metodología
 ```
 
+> ⚠️ Las fotos (`aang.webp`, `katara.webp`, `sokka.webp`, `haru.webp`) tienen que
+> vivir en una carpeta `img/` al lado de `avatar.html`, porque `Personaje` arma
+> la ruta como `./img/${id}.webp`. Si falta el archivo, no rompe nada: el
+> personaje se dibuja con su emoji de respaldo (ver `crearAvatar()`).
+
 ---
 
 ## 🧩 Clase 4 — POO en este proyecto
@@ -101,7 +108,7 @@ Dos ideas importantes de esta clase:
 
 | Atributos | Métodos |
 |---|---|
-| `catalogo`, `ataques`, `jugador`, `enemigo`, `terminado` + referencias al DOM | `iniciar()`, `dibujarCatalogo()`, `dibujarAtaques()`, `dibujarReglas()`, `comenzarCombate()`, `atacar()`, `revisarFinDelJuego()`, `finalizar()`, `mostrarMensaje()`, `reiniciar()`, `agregarPersonajes()` |
+| `catalogo`, `ataques`, `jugador`, `enemigo`, `terminado`, `estadisticas` + referencias al DOM | `iniciar()`, `dibujarCatalogo()`, `dibujarAtaques()`, `dibujarReglas()`, `comenzarCombate()`, `atacar()`, `revisarFinDelJuego()`, `finalizar()`, `mostrarMensaje()`, `reiniciar()`, `agregarPersonajes()`, `registrarResultado()`, `dibujarEstadisticas()` |
 
 ### ➕ Agregar un personaje nuevo (1 línea)
 
@@ -139,6 +146,32 @@ juego.agregarPersonajes(fabricarPersonajes(1000, { nombre: 'Clon' }));     // 10
 
 Las tarjetas se dibujan solas, aparece el buscador y la grilla pasa a scrollear. Probado con **1104 personajes en pantalla**.
 
+### 🏆 Historial persistente (Sprint 4)
+
+La sección **"Tu Historial"**, arriba del todo, guarda en `localStorage` (clave `avatarEstadisticas`) cuántas partidas jugaste, victorias, derrotas, empates, tu racha actual y tu mejor racha. Sigue el mismo patrón que el resto del proyecto:
+
+- El estado vive en un objeto (`Juego.estadisticas`), no en variables sueltas.
+- `registrarResultado(tipo)` se llama una sola vez, desde `revisarFinDelJuego()`, cuando ya se sabe si fue victoria, derrota o empate.
+- `dibujarEstadisticas()` sincroniza los números en pantalla con el objeto, igual que `refrescarVida()` hace con las barras de vida.
+- Hay un botón **"Borrar historial"** que resetea el objeto (con confirmación) y lo vuelve a guardar en cero.
+
+Es la base para, si el proyecto suma un backend más adelante, reemplazar `localStorage` por un ranking global entre jugadores (ver `BRIEF-PROYECTO-FINAL.md`).
+
+### 🔊 Audio sin archivos (Sprint 5)
+
+El botón 🔊 de la esquina prende y apaga música ambiental y efectos de sonido, pero **no hay ningún `.mp3` ni `.wav` en el proyecto**: todo lo genera `class Sonido` en vivo con la **Web Audio API** (osciladores + envolventes de volumen). Se eligió así por dos motivos:
+
+- Evita sumar música con derechos de autor de la serie.
+- El proyecto sigue siendo un único HTML + CSS + JS, sin assets que descargar ni licencias que pedir.
+
+Cómo se organiza:
+
+- `tono()` es el ladrillo básico: un oscilador con una envolvente simple (sube rápido, cae suave).
+- `ataque(idAtaque)`, `resultado(tipo)` y `clic()` arman efectos puntuales combinando uno o varios `tono()`.
+- `iniciarMusica()` agenda un loop ambiental pentatónico usando el reloj del propio `AudioContext`, para que no se desfase con el tiempo.
+- La preferencia de silenciado se guarda en `localStorage` (clave `avatarSonidoSilenciado`), mismo patrón que el historial.
+- El `AudioContext` recién se crea con el primer click del usuario, porque los navegadores bloquean el audio automático sin ese gesto previo.
+
 ### 🔄 Qué cambió respecto de las clases anteriores
 
 | Antes (clases 1 a 3) | Ahora (clase 4, POO) |
@@ -149,6 +182,7 @@ Las tarjetas se dibujan solas, aparece el buscador y la grilla pasa a scrollear.
 | Una regla CSS por personaje para el tinte | El tinte es un atributo del objeto (`--tinte`) |
 | Funciones sueltas manejando variables globales | Todo adentro de la clase `Juego` |
 | Sumar un personaje = tocar HTML + CSS + JS | Sumar un personaje = 1 línea de JS |
+| Sin memoria entre partidas | Historial persistido en `localStorage` |
 
 ---
 
@@ -160,6 +194,7 @@ Quedó como el **esqueleto**: los contenedores están vacíos y el JS los llena 
 
 | Sección HTML | Qué hace | Quién la llena |
 |---|---|---|
+| `#estadisticas` | Historial de partidas del jugador | `Juego.dibujarEstadisticas()` |
 | `#seleccionar-personaje` | Buscador, contador y grilla de personajes | `Personaje.crearTarjeta()` |
 | `#seleccionar-ataque` | Arena (vidas, fotos) y botones de movimiento | `Personaje.crearTarjetaArena()` y `Ataque.crearBoton()` |
 | `#mensajes` | Historial de rondas | `Juego.mostrarMensaje()` |
@@ -187,7 +222,7 @@ Organizado en 6 bloques:
 | 1 | `class Ataque` | Molde de los movimientos |
 | 2 | `class Personaje` | Molde de los peleadores |
 | 3 | `ATAQUES` y `PERSONAJES` | Los objetos concretos del juego |
-| 4 | `class Juego` | Estado, DOM, combate y eventos |
+| 4 | `class Juego` | Estado, DOM, combate, historial y eventos |
 | 5 | `fabricarPersonajes()` | Fábrica para generar N personajes con un `for` |
 | 6 | Arranque | `new Juego(...)` + `juego.iniciar()` |
 

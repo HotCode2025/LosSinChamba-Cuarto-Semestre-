@@ -43,6 +43,153 @@
 
 
 /* ============================================================
+   0) CLASE Sonido — el molde del audio del juego
+   ------------------------------------------------------------
+   ATRIBUTOS : contexto, maestro (nodo de volumen general), silenciado
+   MÉTODOS   : tono(), clic(), ataque(), resultado(), iniciarMusica(),
+               detenerMusica(), alternarMute()
+
+   Nada de archivos de audio: todo se genera en vivo con la Web Audio
+   API (osciladores + envolventes de volumen). Así evitamos depender
+   de MP3s externos (y de sus derechos de autor) y el juego sigue
+   siendo un único HTML + CSS + JS sin nada que descargar.
+   ============================================================ */
+class Sonido {
+
+    constructor() {
+        this.contexto  = null;  // se crea recién con el primer gesto del usuario
+        this.maestro   = null;  // nodo de volumen general (mute/unmute pasa por acá)
+        this.silenciado = this.cargarPreferencia();
+        this.reloj     = null;  // id del setTimeout que agenda el próximo compás
+    }
+
+    cargarPreferencia() {
+        try {
+            return localStorage.getItem('avatarSonidoSilenciado') === 'true';
+        } catch {
+            return false;
+        }
+    }
+
+    guardarPreferencia() {
+        try {
+            localStorage.setItem('avatarSonidoSilenciado', String(this.silenciado));
+        } catch {
+            // Sin localStorage el juego sigue andando, solo que no recuerda la preferencia.
+        }
+    }
+
+    // Los navegadores no dejan arrancar audio hasta que hay un gesto del
+    // usuario (click, tecla, etc.), por eso el AudioContext se crea recién
+    // la primera vez que hace falta, no en el constructor de Juego.
+    asegurarContexto() {
+        if (this.contexto) return;
+        const ContextoAudio = window.AudioContext || window.webkitAudioContext;
+        if (!ContextoAudio) return; // navegador sin Web Audio: el juego sigue mudo, sin romperse
+
+        this.contexto = new ContextoAudio();
+        this.maestro = this.contexto.createGain();
+        this.maestro.gain.value = this.silenciado ? 0 : 1;
+        this.maestro.connect(this.contexto.destination);
+    }
+
+    // El ladrillo con el que se arman todos los sonidos: un oscilador con
+    // una envolvente simple (sube rápido, cae suave) para que no "clickee".
+    tono({ frecuencia, duracion = 0.2, tipo = 'sine', volumen = 0.2, retraso = 0 }) {
+        this.asegurarContexto();
+        if (!this.contexto) return;
+
+        const inicio     = this.contexto.currentTime + retraso;
+        const oscilador  = this.contexto.createOscillator();
+        const ganancia   = this.contexto.createGain();
+
+        oscilador.type = tipo;
+        oscilador.frequency.setValueAtTime(frecuencia, inicio);
+
+        ganancia.gain.setValueAtTime(0, inicio);
+        ganancia.gain.linearRampToValueAtTime(volumen, inicio + 0.02);
+        ganancia.gain.exponentialRampToValueAtTime(0.0001, inicio + duracion);
+
+        oscilador.connect(ganancia).connect(this.maestro);
+        oscilador.start(inicio);
+        oscilador.stop(inicio + duracion + 0.05);
+    }
+
+    // ---------- EFECTOS PUNTUALES ----------
+
+    clic() {
+        this.tono({ frecuencia: 520, duracion: 0.08, tipo: 'triangle', volumen: 0.12 });
+    }
+
+    // Cada movimiento tiene su propia nota: agudo el Puño, medio la Patada,
+    // grave la Barrida. Si el equipo suma un Ataque nuevo (ver ATAQUES más
+    // abajo) y no está en el mapa, usa 440 Hz por defecto.
+    ataque(idAtaque) {
+        const notas = { puno: 660, patada: 392, barrida: 220 };
+        this.tono({ frecuencia: notas[idAtaque] ?? 440, duracion: 0.18, tipo: 'square', volumen: 0.16 });
+    }
+
+    // Un mini-arpegio distinto según cómo termina la ronda o la partida
+    resultado(tipo) {
+        if (tipo === 'victoria') {
+            [523.25, 659.25, 783.99].forEach((frecuencia, i) =>
+                this.tono({ frecuencia, duracion: 0.3, tipo: 'triangle', volumen: 0.18, retraso: i * 0.12 }));
+        } else if (tipo === 'derrota') {
+            [392, 311.13, 220].forEach((frecuencia, i) =>
+                this.tono({ frecuencia, duracion: 0.35, tipo: 'sawtooth', volumen: 0.14, retraso: i * 0.12 }));
+        } else {
+            [440, 440].forEach((frecuencia, i) =>
+                this.tono({ frecuencia, duracion: 0.15, tipo: 'sine', volumen: 0.12, retraso: i * 0.1 }));
+        }
+    }
+
+    // ---------- MÚSICA DE FONDO ----------
+    // Un loop ambiental generado a partir de una escala pentatónica menor
+    // (clima "elemental", nada de melodías con derechos de autor). Se
+    // agenda con el reloj del propio AudioContext en vez de un setInterval
+    // "a ojo", para que las notas no se desfasen con el tiempo.
+    iniciarMusica() {
+        this.asegurarContexto();
+        if (!this.contexto || this.reloj) return;
+
+        const escala = [220, 246.94, 261.63, 329.63, 392];
+        const notasPorCompas = 4;
+        const duracionCompas = notasPorCompas * 1100;
+
+        const agendarProximoCompas = () => {
+            for (let i = 0; i < notasPorCompas; i++) {
+                const nota = escala[Math.floor(Math.random() * escala.length)];
+                this.tono({ frecuencia: nota, duracion: 1.6, tipo: 'sine', volumen: 0.045, retraso: i * 1.1 });
+            }
+            this.reloj = setTimeout(agendarProximoCompas, duracionCompas);
+        };
+
+        agendarProximoCompas();
+    }
+
+    detenerMusica() {
+        clearTimeout(this.reloj);
+        this.reloj = null;
+    }
+
+    // Silencia/reactiva TODO (música + efectos) moviendo un solo nodo de
+    // volumen, en vez de tener que frenar cada sonido individualmente.
+    alternarMute() {
+        this.silenciado = !this.silenciado;
+        this.guardarPreferencia();
+
+        this.asegurarContexto();
+        if (this.maestro) {
+            this.maestro.gain.linearRampToValueAtTime(this.silenciado ? 0 : 1, this.contexto.currentTime + 0.1);
+        }
+        if (!this.silenciado) this.iniciarMusica();
+
+        return this.silenciado;
+    }
+}
+
+
+/* ============================================================
    1) CLASE Ataque — el molde de los movimientos
    ------------------------------------------------------------
    ATRIBUTOS : id, nombre, emoji, venceA, colorClaro, colorOscuro
@@ -386,6 +533,25 @@ class Juego {
         this.modalReglas        = document.getElementById('modal-reglas');
         this.modalCrear         = document.getElementById('modal-crear-personaje');
         this.formNuevoPersonaje = document.getElementById('form-nuevo-personaje');
+
+        // Historial persistente (Sprint 4): referencias a los números
+        // que muestra la sección #estadisticas
+        this.statPartidas    = document.getElementById('stat-partidas');
+        this.statVictorias   = document.getElementById('stat-victorias');
+        this.statDerrotas    = document.getElementById('stat-derrotas');
+        this.statEmpates     = document.getElementById('stat-empates');
+        this.statRacha       = document.getElementById('stat-racha');
+        this.statMejorRacha  = document.getElementById('stat-mejor-racha');
+        this.botonBorrarStats = document.getElementById('boton-reiniciar-stats');
+
+        // Audio (Sprint 5): la música/efectos son otro objeto más,
+        // igual que catalogo o estadisticas.
+        this.sonido      = new Sonido();
+        this.botonSonido = document.getElementById('boton-sonido');
+
+        // El objeto en sí (lo que se guarda en localStorage) es un
+        // ATRIBUTO más de Juego, igual que catalogo o ataques.
+        this.estadisticas = this.cargarEstadisticas();
     }
 
     // ---------- ARRANQUE ----------
@@ -394,7 +560,86 @@ class Juego {
         this.dibujarCatalogo();
         this.dibujarAtaques();
         this.dibujarReglas();
+        this.dibujarEstadisticas();
         this.conectarEventos();
+
+        this.botonSonido.textContent = this.sonido.silenciado ? '🔇' : '🔊';
+        this.botonSonido.setAttribute('aria-label', this.sonido.silenciado ? 'Activar sonido' : 'Silenciar sonido');
+
+        // La música recién puede arrancar tras el primer gesto del usuario
+        // (política de autoplay de los navegadores) — por eso se agenda acá
+        // y no se llama directamente desde iniciar().
+        document.addEventListener('pointerdown', () => {
+            if (!this.sonido.silenciado) this.sonido.iniciarMusica();
+        }, { once: true });
+    }
+
+    // ---------- HISTORIAL PERSISTENTE (Sprint 4, localStorage) ----------
+    // Misma idea que el resto del proyecto: el estado vive en un objeto
+    // (this.estadisticas) y un método se encarga de dibujarlo. Lo único
+    // nuevo es que, además de vivir en memoria, se guarda en el
+    // navegador para que sobreviva a un F5 o a cerrar la pestaña.
+
+    // Si no hay nada guardado (primera visita) arranca todo en cero.
+    cargarEstadisticas() {
+        const porDefecto = {
+            partidas: 0, victorias: 0, derrotas: 0, empates: 0,
+            rachaActual: 0, mejorRacha: 0
+        };
+        try {
+            const guardado = localStorage.getItem('avatarEstadisticas');
+            return guardado ? { ...porDefecto, ...JSON.parse(guardado) } : porDefecto;
+        } catch {
+            // localStorage puede fallar (modo privado, cuotas, etc.):
+            // el juego sigue andando, solo que sin persistencia.
+            return porDefecto;
+        }
+    }
+
+    guardarEstadisticas() {
+        try {
+            localStorage.setItem('avatarEstadisticas', JSON.stringify(this.estadisticas));
+        } catch {
+            // Sin persistencia disponible, no rompemos el combate por esto.
+        }
+    }
+
+    // Se llama una sola vez, cuando revisarFinDelJuego() ya sabe el
+    // resultado final de la partida.
+    registrarResultado(tipo) {
+        const e = this.estadisticas;
+        e.partidas++;
+
+        if (tipo === 'victoria') {
+            e.victorias++;
+            e.rachaActual++;
+            e.mejorRacha = Math.max(e.mejorRacha, e.rachaActual);
+        } else if (tipo === 'derrota') {
+            e.derrotas++;
+            e.rachaActual = 0;
+        } else {
+            e.empates++;
+            e.rachaActual = 0;
+        }
+
+        this.guardarEstadisticas();
+        this.dibujarEstadisticas();
+    }
+
+    dibujarEstadisticas() {
+        const e = this.estadisticas;
+        this.statPartidas.textContent   = e.partidas;
+        this.statVictorias.textContent  = e.victorias;
+        this.statDerrotas.textContent   = e.derrotas;
+        this.statEmpates.textContent    = e.empates;
+        this.statRacha.textContent      = e.rachaActual;
+        this.statMejorRacha.textContent = e.mejorRacha;
+    }
+
+    reiniciarEstadisticas() {
+        this.estadisticas = { partidas: 0, victorias: 0, derrotas: 0, empates: 0, rachaActual: 0, mejorRacha: 0 };
+        this.guardarEstadisticas();
+        this.dibujarEstadisticas();
     }
 
     // Dibuja TODAS las tarjetas de personaje a partir de los objetos.
@@ -518,6 +763,20 @@ class Juego {
         // ---- Terminar el juego ----
         document.getElementById('boton-terminar-juego').addEventListener('click', () => this.terminarJuego());
         document.getElementById('boton-volver-inicio').addEventListener('click', () => location.reload());
+
+        // ---- Historial persistente ----
+        this.botonBorrarStats.addEventListener('click', () => {
+            if (confirm('¿Borrar todo tu historial de partidas? Esto no se puede deshacer.')) {
+                this.reiniciarEstadisticas();
+            }
+        });
+
+        // ---- Sonido ----
+        this.botonSonido.addEventListener('click', () => {
+            const silenciado = this.sonido.alternarMute();
+            this.botonSonido.textContent = silenciado ? '🔇' : '🔊';
+            this.botonSonido.setAttribute('aria-label', silenciado ? 'Activar sonido' : 'Silenciar sonido');
+        });
     }
 
     // ---------- COMBATE ----------
@@ -530,6 +789,8 @@ class Juego {
             this.mostrarMensaje('⚠️ Por favor, elegí un personaje primero.', 'tie');
             return;
         }
+
+        this.sonido.clic();
 
         // clonar() para que el catálogo quede intacto: peleamos con copias
         this.jugador = this.buscarPersonaje(elegido.value).clonar();
@@ -564,6 +825,8 @@ class Juego {
     atacar(ataqueJugador) {
         if (this.terminado || !this.jugador) return;
 
+        this.sonido.ataque(ataqueJugador.id);
+
         const ataqueEnemigo = this.enemigo.elegirAtaque(this.ataques);
         let resultado;
         let claseMensaje;
@@ -594,10 +857,16 @@ class Juego {
         if (this.jugador.estaVivo() && this.enemigo.estaVivo()) return;
 
         if (!this.jugador.estaVivo() && !this.enemigo.estaVivo()) {
+            this.registrarResultado('empate');
+            this.sonido.resultado('empate');
             this.finalizar('🤝 Empate final: ambos cayeron al mismo tiempo.');
         } else if (!this.jugador.estaVivo()) {
+            this.registrarResultado('derrota');
+            this.sonido.resultado('derrota');
             this.finalizar(`💀 ${this.enemigo.nombre} te derrotó. ¡Perdiste!`);
         } else {
+            this.registrarResultado('victoria');
+            this.sonido.resultado('victoria');
             this.finalizar(`🏆 ¡Venciste a ${this.enemigo.nombre}! Sos el Avatar.`);
         }
     }

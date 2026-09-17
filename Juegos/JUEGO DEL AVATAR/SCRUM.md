@@ -82,6 +82,49 @@ SCRUM es un marco ágil que organiza el trabajo en **sprints** (ciclos cortos), 
 
 ---
 
+## Sprint 4 — Historial Persistente
+
+**Objetivo:** Resolver el punto pendiente de la retrospectiva del Sprint 3 ("Incorporar sistema de puntuación persistente") sin romper el patrón de POO ya establecido.
+
+### Backlog del Sprint
+
+| # | Historia de Usuario | Responsable | Estado |
+|---|---------------------|-------------|--------|
+| 18 | Como jugador quiero que mis victorias, derrotas y empates se guarden entre visitas | Todo el equipo | ✅ Completado |
+| 19 | Como jugador quiero ver mi racha actual y mi mejor racha | Todo el equipo | ✅ Completado |
+| 20 | Como jugador quiero poder borrar mi historial si quiero empezar de cero | Todo el equipo | ✅ Completado |
+| 21 | Como desarrollador quiero corregir la carpeta `img/` para que las fotos de los personajes carguen (bug: las fotos estaban en la raíz del proyecto, no en `img/`) | Todo el equipo | ✅ Completado |
+
+### Decisiones técnicas del sprint
+
+- **`localStorage` sobre variables sueltas:** el historial se guarda bajo la clave `avatarEstadisticas` como un único objeto JSON, siguiendo la misma idea de "todo el estado en un objeto" que ya usa `Juego`.
+- **Un evento, un registro:** `registrarResultado()` se llama una sola vez por partida, desde `revisarFinDelJuego()`, para evitar contar una misma partida dos veces.
+- **Resiliencia:** las lecturas/escrituras a `localStorage` están en `try/catch`; si el navegador las bloquea (modo privado, cuotas), el juego sigue funcionando, solo que sin persistencia.
+
+---
+
+## Sprint 5 — Audio
+
+**Objetivo:** Sumarle sonido al juego sin agregar archivos de audio ni depender de música con derechos de autor.
+
+### Backlog del Sprint
+
+| # | Historia de Usuario | Responsable | Estado |
+|---|---------------------|-------------|--------|
+| 22 | Como jugador quiero escuchar música ambiental de fondo | Todo el equipo | ✅ Completado |
+| 23 | Como jugador quiero que cada movimiento tenga su propio sonido | Todo el equipo | ✅ Completado |
+| 24 | Como jugador quiero un sonido distinto al ganar, perder o empatar | Todo el equipo | ✅ Completado |
+| 25 | Como jugador quiero poder silenciar el juego y que recuerde mi preferencia | Todo el equipo | ✅ Completado |
+
+### Decisiones técnicas del sprint
+
+- **Web Audio API en vez de archivos `.mp3`/`.wav`:** todo el sonido (música y efectos) se genera en vivo con osciladores (`class Sonido`). Evita sumar assets pesados y, sobre todo, evita usar música con derechos de autor de la serie.
+- **El AudioContext se crea recién con el primer gesto del usuario** (`pointerdown`), porque los navegadores bloquean el audio autoplay sin interacción previa.
+- **Un solo nodo de volumen maestro:** silenciar/activar mueve un único `GainNode`, no hay que parar cada sonido a mano.
+- **Preferencia de mute persistida** en `localStorage` (clave `avatarSonidoSilenciado`), mismo patrón que el historial del Sprint 4.
+
+---
+
 ## División del Trabajo por Secciones
 
 Todos los integrantes colaboraron en partes iguales a lo largo de ambos sprints mediante **VS Code Live Share**. Las secciones del proyecto y sus responsables conjuntos:
@@ -132,5 +175,5 @@ Una historia se considera terminada cuando:
 | Comunicación fluida por Discord | Planificar los sprints con más detalle al inicio |
 | Live Share permitió trabajar en tiempo real | Definir roles más específicos por tarea |
 | Diseño visual coherente y temático | ~~Agregar más personajes y ataques~~ → resuelto en el Sprint 3 con POO |
-| Mecánica de juego funcional y completa | Incorporar sistema de puntuación persistente |
+| Mecánica de juego funcional y completa | ~~Incorporar sistema de puntuación persistente~~ → resuelto en el Sprint 4 con `localStorage` |
 | Pasar a POO nos sacó código repetido de encima | Separar el catálogo de personajes en su propio archivo |

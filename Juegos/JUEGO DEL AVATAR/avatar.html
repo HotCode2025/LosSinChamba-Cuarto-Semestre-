@@ -33,10 +33,49 @@
     <link rel="stylesheet" href="./avatar.css">
 </head>
 <body>
+    <!-- Botón de sonido: fijo en la esquina para que se pueda silenciar
+         desde cualquier pantalla del juego. La música/efectos los genera
+         la clase Sonido con Web Audio API (nada de archivos de audio). -->
+    <button id="boton-sonido" class="boton-sonido" aria-label="Silenciar sonido" title="Sonido">🔊</button>
+
     <div class="titulo-principal">
         <h1 class="logo-avatar">AVATAR</h1>
         <p class="subtitulo-combate">Combate Elemental</p>
     </div>
+
+    <!-- Historial persistente del jugador (Sprint 4 — localStorage).
+         Los números los llena Juego.dibujarEstadisticas() leyendo el
+         objeto this.estadisticas, que se guarda y se lee de localStorage. -->
+    <section id="estadisticas">
+        <h2>Tu Historial</h2>
+        <div class="stats-grid">
+            <div class="stat">
+                <span class="stat-valor" id="stat-partidas">0</span>
+                <span class="stat-etiqueta">Partidas</span>
+            </div>
+            <div class="stat">
+                <span class="stat-valor" id="stat-victorias">0</span>
+                <span class="stat-etiqueta">Victorias</span>
+            </div>
+            <div class="stat">
+                <span class="stat-valor" id="stat-derrotas">0</span>
+                <span class="stat-etiqueta">Derrotas</span>
+            </div>
+            <div class="stat">
+                <span class="stat-valor" id="stat-empates">0</span>
+                <span class="stat-etiqueta">Empates</span>
+            </div>
+            <div class="stat">
+                <span class="stat-valor" id="stat-racha">0</span>
+                <span class="stat-etiqueta">Racha actual</span>
+            </div>
+            <div class="stat">
+                <span class="stat-valor" id="stat-mejor-racha">0</span>
+                <span class="stat-etiqueta">Mejor racha</span>
+            </div>
+        </div>
+        <button id="boton-reiniciar-stats" class="boton-borrar-historial">Borrar historial</button>
+    </section>
 
     <!-- Selección de personaje -->
     <section id="seleccionar-personaje">
