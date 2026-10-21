@@ -280,6 +280,9 @@ class Personaje {
         // así después sabe actualizar su propia barra de vida.
         this.barraVida  = null;
         this.textoVidas = null;
+
+        //CLASE 6: Cada personaje nace con su propia lista de ataques
+        this.ataques = [];
     }
 
     // ---------- MÉTODOS DE COMBATE ----------
@@ -459,40 +462,52 @@ const ATAQUES = [
     new Ataque({ id: 'barrida', nombre: 'Barrida', emoji: '🌀', venceA: 'patada',  colorClaro: '#34d67f', colorOscuro: '#16a34a' })
 ];
 
-const PERSONAJES = [
-    new Personaje({
-        id: 'aang', nombre: 'Aang', emoji: '🌪️', titulo: 'Maestro Aire',
-        descripcion: 'Usa su bastón y el elemento aire para ataques rápidos y movilidad.',
-        tinte: 'rgba(252, 211, 77, 0.14)'
-    }),
-    new Personaje({
-        id: 'katara', nombre: 'Katara', emoji: '💧', titulo: 'Maestra Agua',
-        descripcion: 'Utiliza un frasco de agua y artes marciales con control de agua.',
-        tinte: 'rgba(56, 189, 248, 0.14)'
-    }),
-    new Personaje({
-        id: 'sokka', nombre: 'Sokka', emoji: '🪃', titulo: 'Guerrero',
-        descripcion: 'Pelea cuerpo a cuerpo con su bumerán y espada de hueso/meteorito.',
-        tinte: 'rgba(214, 178, 140, 0.14)'
-    }),
-    new Personaje({
-        id: 'haru', nombre: 'Haru', emoji: '🪨', titulo: 'Maestro Tierra',
-        descripcion: 'Usa el dominio de la tierra para arrojar rocas a los enemigos.',
-        tinte: 'rgba(34, 197, 94, 0.14)'
-    }),
-    // Zuko y Toph: mismo molde Personaje, foto todavía no subida a /img
-    // (zuko.webp y toph.webp), así que por ahora se dibujan con su emoji.
-    new Personaje({
-        id: 'zuko', nombre: 'Zuko', emoji: '🔥', titulo: 'Maestro Fuego',
-        descripcion: 'Príncipe desterrado de la Nación del Fuego, domina las llamas con precisión.',
-        tinte: 'rgba(239, 68, 68, 0.14)'
-    }),
-    new Personaje({
-        id: 'toph', nombre: 'Toph', emoji: '🪨', titulo: 'Maestra Tierra',
-        descripcion: 'Maestra Tierra ciega que "ve" con vibraciones; inventora del metalcontrol.',
-        tinte: 'rgba(34, 197, 94, 0.14)'
-    })
-];
+// Instanciamos los personajes por separado (Clase 6)
+const aang = new Personaje({
+    id: 'aang', nombre: 'Aang', emoji: '🌪️', titulo: 'Maestro Aire',
+    descripcion: 'Usa su bastón y el elemento aire para ataques rápidos y movilidad.',
+    tinte: 'rgba(252, 211, 77, 0.14)'
+});
+// Le inyectamos los ataques (por ahora usan todos los mismos 3 movimientos básicos)
+aang.ataques.push(...ATAQUES);
+
+const katara = new Personaje({
+    id: 'katara', nombre: 'Katara', emoji: '💧', titulo: 'Maestra Agua',
+    descripcion: 'Utiliza un frasco de agua y artes marciales con control de agua.',
+    tinte: 'rgba(56, 189, 248, 0.14)'
+});
+katara.ataques.push(...ATAQUES);
+
+const sokka = new Personaje({
+    id: 'sokka', nombre: 'Sokka', emoji: '🪃', titulo: 'Guerrero',
+    descripcion: 'Pelea cuerpo a cuerpo con su bumerán y espada de hueso/meteorito.',
+    tinte: 'rgba(214, 178, 140, 0.14)'
+});
+sokka.ataques.push(...ATAQUES);
+
+const haru = new Personaje({
+    id: 'haru', nombre: 'Haru', emoji: '🪨', titulo: 'Maestro Tierra',
+    descripcion: 'Usa el dominio de la tierra para arrojar rocas a los enemigos.',
+    tinte: 'rgba(34, 197, 94, 0.14)'
+});
+haru.ataques.push(...ATAQUES);
+
+const zuko = new Personaje({
+    id: 'zuko', nombre: 'Zuko', emoji: '🔥', titulo: 'Maestro Fuego',
+    descripcion: 'Príncipe desterrado de la Nación del Fuego, domina las llamas con precisión.',
+    tinte: 'rgba(239, 68, 68, 0.14)'
+});
+zuko.ataques.push(...ATAQUES);
+
+const toph = new Personaje({
+    id: 'toph', nombre: 'Toph', emoji: '🪨', titulo: 'Maestra Tierra',
+    descripcion: 'Maestra Tierra ciega que "ve" con vibraciones; inventora del metalcontrol.',
+    tinte: 'rgba(34, 197, 94, 0.14)'
+});
+toph.ataques.push(...ATAQUES);
+
+// Finalmente los metemos todos en el arreglo que lee el juego
+const PERSONAJES = [aang, katara, sokka, haru, zuko, toph];
 
 
 /* ============================================================
