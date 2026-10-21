@@ -283,6 +283,18 @@ class Personaje {
 
         //CLASE 6: Cada personaje nace con su propia lista de ataques
         this.ataques = [];
+        
+        // LO NUEVO DE LA CLASE 10: Propiedades para moverse en el mapa
+        this.x = 20;
+        this.y = 40;
+        this.ancho = 60;
+        this.alto = 80;
+        this.velocidadX = 0;
+        this.velocidadY = 0;
+        
+        // Cargamos la imagen lista para usar en el Canvas
+        this.mapaFoto = new Image();
+        this.mapaFoto.src = this.foto;
     }
 
     // ---------- MÉTODOS DE COMBATE ----------
@@ -495,14 +507,16 @@ haru.ataques.push(...ATAQUES);
 const zuko = new Personaje({
     id: 'zuko', nombre: 'Zuko', emoji: '🔥', titulo: 'Maestro Fuego',
     descripcion: 'Príncipe desterrado de la Nación del Fuego, domina las llamas con precisión.',
-    tinte: 'rgba(239, 68, 68, 0.14)'
+    tinte: 'rgba(239, 68, 68, 0.14)',
+    foto: './img/zuko.jpeg'
 });
 zuko.ataques.push(...ATAQUES);
 
 const toph = new Personaje({
     id: 'toph', nombre: 'Toph', emoji: '🪨', titulo: 'Maestra Tierra',
     descripcion: 'Maestra Tierra ciega que "ve" con vibraciones; inventora del metalcontrol.',
-    tinte: 'rgba(34, 197, 94, 0.14)'
+    tinte: 'rgba(34, 197, 94, 0.14)',
+    foto: './img/toph.jpeg'
 });
 toph.ataques.push(...ATAQUES);
 
@@ -831,12 +845,15 @@ class Juego {
         this.seccionMapa.classList.remove('oculto');
         
         // Dibujamos el personaje elegido en el Canvas
-        const imagenPrueba = new Image();
-        imagenPrueba.src = this.jugador.foto || ''; 
+        //const imagenPrueba = new Image();
+        // CLASE 10: Arrancamos el motor que pinta el mapa cada 50 milisegundos
+        intervalo = setInterval(pintarPersonaje, 50);
+
+        //imagenPrueba.src = this.jugador.foto || ''; 
         
-        imagenPrueba.onload = () => {
-            this.lienzo.drawImage(imagenPrueba, 20, 40, 100, 100);
-        };
+        //imagenPrueba.onload = () => {
+        //    this.lienzo.drawImage(imagenPrueba, 20, 40, 60, 80);
+        //};
 
         this.seccionMensajes.classList.remove('oculto');
         this.mostrarMensaje(
@@ -1063,3 +1080,38 @@ window.juego              = juego;
 window.Personaje          = Personaje;
 window.Ataque             = Ataque;
 window.fabricarPersonajes = fabricarPersonajes;
+
+
+// CLASE 10 - FUNCIONES DE MOVIMIENTO PARA EL MAPA
+
+let intervalo; // Variable para controlar el loop del juego
+
+function pintarPersonaje() {
+    // 1. Limpiamos el canvas entero para borrar el dibujo anterior
+    juego.lienzo.clearRect(0, 0, juego.mapa.width, juego.mapa.height);
+    
+    // 2. Actualizamos la posición sumándole la velocidad
+    juego.jugador.x = juego.jugador.x + juego.jugador.velocidadX;
+    juego.jugador.y = juego.jugador.y + juego.jugador.velocidadY;
+    
+    // 3. Dibujamos al personaje en su nueva posición
+    juego.lienzo.drawImage(
+        juego.jugador.mapaFoto,
+        juego.jugador.x,
+        juego.jugador.y,
+        juego.jugador.ancho,
+        juego.jugador.alto
+    );
+}
+
+// Funciones que cambian la velocidad al mantener apretado el botón
+function moverDerecha()   { juego.jugador.velocidadX = 5; }
+function moverIzquierda() { juego.jugador.velocidadX = -5; }
+function moverAbajo()     { juego.jugador.velocidadY = 5; }
+function moverArriba()    { juego.jugador.velocidadY = -5; }
+
+// Función que frena al personaje cuando soltamos el botón
+function detenerMovimiento() {
+    juego.jugador.velocidadX = 0;
+    juego.jugador.velocidadY = 0;
+}

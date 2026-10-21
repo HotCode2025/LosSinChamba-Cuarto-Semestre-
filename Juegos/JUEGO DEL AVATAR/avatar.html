@@ -118,10 +118,18 @@
         <button id="boton-volver-inicio" class="boton-primario">Volver a jugar</button>
     </section>
 
-    <!-- Mapa del juego (Canvas) Clase 9-->
+    <!-- Mapa del juego (Canvas) Clase 9 y 10 -->
     <section id="ver-mapa" class="oculto">
         <h1 class="titulo">Recorre el mapa con tu personaje</h1>
         <canvas id="mapa" width="600" height="400"></canvas>
+        
+        <!-- CLASE 10: Botones de movimiento -->
+        <div class="controles-mapa" style="margin-top: 1rem; display: flex; gap: 10px;">
+            <button onmouseup="detenerMovimiento()" onmousedown="moverArriba()" class="boton-primario">Arriba</button>
+            <button onmouseup="detenerMovimiento()" onmousedown="moverIzquierda()" class="boton-primario">Izquierda</button>
+            <button onmouseup="detenerMovimiento()" onmousedown="moverAbajo()" class="boton-primario">Abajo</button>
+            <button onmouseup="detenerMovimiento()" onmousedown="moverDerecha()" class="boton-primario">Derecha</button>
+        </div>
     </section>
 
     <!-- Selección de movimiento (oculto hasta elegir personaje) -->
