@@ -910,3 +910,19 @@ button:disabled {
         grid-template-columns: 1fr;
     }
 }
+
+/*MAPA (CANVAS) Clase 9*/
+#ver-mapa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mapa {
+    border: 2px solid var(--border-strong);
+    background: var(--panel-2);
+    border-radius: 8px;
+    margin-top: 1rem;
+    max-width: 100%;
+}

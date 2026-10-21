@@ -534,6 +534,11 @@ class Juego {
         // Referencias al DOM: se buscan una sola vez al arrancar (DRY)
         this.seccionPersonaje   = document.getElementById('seleccionar-personaje');
         this.seccionAtaque      = document.getElementById('seleccionar-ataque');
+        //Clase 9
+        this.seccionMapa = document.getElementById('ver-mapa');
+        this.mapa        = document.getElementById('mapa');
+        this.lienzo      = this.mapa.getContext('2d');
+
         this.seccionMensajes    = document.getElementById('mensajes');
         this.seccionReiniciar   = document.getElementById('reiniciar');
         this.seccionDespedida   = document.getElementById('despedida');
@@ -820,9 +825,20 @@ class Juego {
 
         this.terminado = false;
         this.seccionPersonaje.classList.add('oculto');
-        this.seccionAtaque.classList.remove('oculto');
-        this.seccionMensajes.classList.remove('oculto');
+        
+        // CLASE 9: Comentamos la ida a la arena y mostramos el mapa
+        // this.seccionAtaque.classList.remove('oculto');
+        this.seccionMapa.classList.remove('oculto');
+        
+        // Dibujamos el personaje elegido en el Canvas
+        const imagenPrueba = new Image();
+        imagenPrueba.src = this.jugador.foto || ''; 
+        
+        imagenPrueba.onload = () => {
+            this.lienzo.drawImage(imagenPrueba, 20, 40, 100, 100);
+        };
 
+        this.seccionMensajes.classList.remove('oculto');
         this.mostrarMensaje(
             `Sos ${this.jugador.presentarse()} — el enemigo es ${this.enemigo.presentarse()}. ¡Que empiece el combate!`
         );
