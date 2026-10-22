@@ -4,14 +4,11 @@ JavaScript IV
 
 ### Integrantes
 
-- Lautaro Martinez
-- Gabriel Maculus
-- Leandro Orozco
 - Kevin Castilla
 - Mariano Rasgido
 - Ezequiel Diaz
 - Samira Baz
-- Jose Rodriguez
+- 
 
 Este repositorio reúne el trabajo realizado en las clases de JavaScript IV, con un enfoque en la creación de una tienda online básica y el aprendizaje progresivo de HTML, CSS y JavaScript.
 
