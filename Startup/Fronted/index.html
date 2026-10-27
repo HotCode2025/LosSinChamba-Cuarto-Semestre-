@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de gestión de refugios animales - Los Sin Chamba</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Encabezado Principal -->
+  <header class="bg-emerald-700 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="bg-white/10 p-2.5 rounded-xl border border-white/20">
+          <i class="fa-solid fa-paw text-2xl text-emerald-200"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">Sistema de gestión de refugios animales</h1>
+          <p class="text-xs text-emerald-200 font-medium">Los Sin Chamba • MVP v1.0 (UTN FRSR)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-2 mt-2 sm:mt-0 bg-emerald-800/80 px-3 py-1.5 rounded-lg border border-emerald-600/50 text-xs">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-medium text-emerald-100">Estado MVP: Operativo</span>
+      </div>
+    </div>
+
+    <!-- Navegación por Pestañas / Integrantes -->
+    <nav class="bg-emerald-800/60 border-t border-emerald-600/40">
+      <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-4 overflow-x-auto py-1">
+        
+        <button onclick="switchTab('samira')" id="btn-samira" class="tab-btn active px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center space-x-2 transition-all bg-white text-emerald-800 shadow">
+          <i class="fa-solid fa-chart-line text-emerald-600"></i>
+          <span>Panel & Estadísticas</span>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold uppercase">Samira</span>
+        </button>
+
+        <button onclick="switchTab('mariano')" id="btn-mariano" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-100 hover:bg-emerald-700/50 flex items-center space-x-2 transition-all">
+          <i class="fa-solid fa-dog"></i>
+          <span>Registro y Animales</span>
+          <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded font-medium uppercase">Mariano</span>
+        </button>
+
+        <button onclick="switchTab('kevin')" id="btn-kevin" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-100 hover:bg-emerald-700/50 flex items-center space-x-2 transition-all">
+          <i class="fa-solid fa-notes-medical"></i>
+          <span>Historial Sanitario</span>
+          <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded font-medium uppercase">Kevin C.</span>
+        </button>
+
+        <button onclick="switchTab('ezequiel')" id="btn-ezequiel" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-100 hover:bg-emerald-700/50 flex items-center space-x-2 transition-all">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Stock y Alertas</span>
+          <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded font-medium uppercase">Ezequiel</span>
+        </button>
+
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- SECCIÓN 1: SAMIRA - PANEL PRINCIPAL Y ESTADÍSTICAS -->
+    <section id="tab-samira" class="space-y-6">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Panel Principal e Indicadores</h2>
+          <p class="text-slate-500 text-sm">Resumen general del refugio y alertas en tiempo real</p>
+        </div>
+        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Samira</span>
+      </div>
+
+      <!-- Tarjetas de Métricas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Animales</p>
+            <p class="text-3xl font-extrabold text-slate-800 mt-1" id="stat-total-animals">0</p>
+            <p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-arrow-up"></i> Actualizado</p>
+          </div>
+          <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 text-xl">
+            <i class="fa-solid fa-paw"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Registros Sanitarios</p>
+            <p class="text-3xl font-extrabold text-amber-600 mt-1" id="stat-total-sanitary">0</p>
+            <p class="text-xs text-amber-700 mt-1"><i class="fa-regular fa-clock"></i> Intervenciones clínicas</p>
+          </div>
+          <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 text-xl">
+            <i class="fa-solid fa-syringe"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Insumos Críticos</p>
+            <p class="text-3xl font-extrabold text-rose-600 mt-1" id="stat-low-stock">0</p>
+            <p class="text-xs text-rose-600 mt-1"><i class="fa-solid fa-triangle-exclamation"></i> Reposición urgente</p>
+          </div>
+          <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 text-xl">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">En Tratamiento</p>
+            <p class="text-3xl font-extrabold text-indigo-600 mt-1" id="stat-in-treatment">0</p>
+            <p class="text-xs text-slate-500 mt-1">Bajo supervisión médica</p>
+          </div>
+          <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 text-xl">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen Estadístico y Avisos -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-slate-800 text-lg flex items-center space-x-2">
+            <i class="fa-solid fa-chart-pie text-emerald-600"></i>
+            <span>Distribución de Población del Refugio</span>
+          </h3>
+          <div class="space-y-3 pt-2">
+            <div>
+              <div class="flex justify-between text-sm font-medium mb-1">
+                <span class="text-slate-700"><i class="fa-solid fa-dog text-slate-500 mr-1.5"></i> Perros (<span id="stat-dogs-count">0</span>)</span>
+                <span class="text-slate-600" id="stat-dogs-pct">0%</span>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                <div id="bar-dogs" class="bg-emerald-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-medium mb-1">
+                <span class="text-slate-700"><i class="fa-solid fa-cat text-slate-500 mr-1.5"></i> Gatos (<span id="stat-cats-count">0</span>)</span>
+                <span class="text-slate-600" id="stat-cats-pct">0%</span>
+              </div>
+              <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                <div id="bar-cats" class="bg-teal-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 grid grid-cols-2 gap-4 text-center">
+            <div class="p-3 bg-slate-50 rounded-lg">
+              <p class="text-xs text-slate-500 font-medium">Salud Buena / Estable</p>
+              <p class="text-xl font-bold text-emerald-700 mt-0.5" id="stat-healthy-count">0 animales</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg">
+              <p class="text-xs text-slate-500 font-medium">Requieren Atención</p>
+              <p class="text-xl font-bold text-amber-700 mt-0.5" id="stat-attention-count">0 animales</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-bold text-slate-800 text-lg flex items-center space-x-2">
+            <i class="fa-solid fa-bell text-amber-500"></i>
+            <span>Avisos y Alertas Recientes</span>
+          </h3>
+          <div class="space-y-3" id="dash-alerts-container">
+            <!-- Dinámico -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: MARIANO - REGISTRO Y LISTADO DE ANIMALES -->
+    <section id="tab-mariano" class="space-y-6 hidden">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Registro y Listado de Animales</h2>
+          <p class="text-slate-500 text-sm">Alta de nuevos animales, edición y ficha individual</p>
+        </div>
+        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Mariano</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Formulario Registro -->
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center space-x-2">
+            <i class="fa-solid fa-plus-circle text-emerald-600"></i>
+            <span>Nuevo Registro</span>
+          </h3>
+          <form id="form-animal" onsubmit="addAnimal(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre</label>
+              <input type="text" id="anim-nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Ej. Firulais">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Especie</label>
+                <select id="anim-especie" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                  <option value="Perro">Perro</option>
+                  <option value="Gato">Gato</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Edad aprox.</label>
+                <input type="text" id="anim-edad" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Ej. 2 años">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Fecha de Ingreso</label>
+              <input type="date" id="anim-fecha" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Estado General</label>
+              <select id="anim-estado" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <option value="Bueno / Saludable">Bueno / Saludable</option>
+                <option value="Bajo Tratamiento">Bajo Tratamiento</option>
+                <option value="Observación">En Observación</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-lg hover:bg-emerald-700 transition shadow-sm text-sm">
+              Guardar Ficha de Animal
+            </button>
+          </form>
+        </div>
+
+        <!-- Tabla / Listado de Animales -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center justify-between">
+            <span>Fichas de Animales Registrados</span>
+            <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2 py-1 rounded-md" id="count-animals">0 Registrados</span>
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="p-3">Nombre</th>
+                  <th class="p-3">Especie</th>
+                  <th class="p-3">Edad</th>
+                  <th class="p-3">Ingreso</th>
+                  <th class="p-3">Estado</th>
+                  <th class="p-3 text-center">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-animales" class="divide-y divide-slate-100">
+                <!-- Se carga dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: KEVIN CASTILLA - SEGUIMIENTO E HISTORIAL SANITARIO -->
+    <section id="tab-kevin" class="space-y-6 hidden">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Seguimiento e Historial Sanitario</h2>
+          <p class="text-slate-500 text-sm">Control de vacunas, desparasitaciones, tratamientos y edición</p>
+        </div>
+        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Kevin Castilla</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Formulario Evento Sanitario -->
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center space-x-2">
+            <i class="fa-solid fa-notes-medical text-emerald-600"></i>
+            <span>Cargar Registro Sanitario</span>
+          </h3>
+          <form id="form-sanitario" onsubmit="addSanitary(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Animal Paciente</label>
+              <select id="san-animal" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <!-- Dinámico -->
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Intervención</label>
+              <select id="san-tipo" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <option value="Vacuna">Vacuna</option>
+                <option value="Desparasitación">Desparasitación</option>
+                <option value="Tratamiento">Tratamiento Médico</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Detalle / Fármaco</label>
+              <input type="text" id="san-detalle" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Ej. Vacuna Quintuple">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Fecha de Aplicación</label>
+              <input type="date" id="san-fecha" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-lg hover:bg-emerald-700 transition shadow-sm text-sm">
+              Registrar en Historial
+            </button>
+          </form>
+        </div>
+
+        <!-- Tabla Historial -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center justify-between">
+            <span>Historial Clínico Reciente</span>
+            <span class="text-xs text-slate-500 font-normal">Orden cronológico</span>
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="p-3">Animal</th>
+                  <th class="p-3">Tipo</th>
+                  <th class="p-3">Detalle</th>
+                  <th class="p-3">Fecha</th>
+                  <th class="p-3 text-center">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-sanitario" class="divide-y divide-slate-100">
+                <!-- Se carga dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: EZEQUIEL - CONTROL DE INSUMOS, CANTIDADES Y ALERTAS -->
+    <section id="tab-ezequiel" class="space-y-6 hidden">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Control de Stock y Alertas de Insumos</h2>
+          <p class="text-slate-500 text-sm">Gestión de alimentos, medicamentos, edición y niveles de reposición</p>
+        </div>
+        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Ezequiel</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Formulario Stock -->
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center space-x-2">
+            <i class="fa-solid fa-boxes-stacked text-emerald-600"></i>
+            <span>Nuevo Insumo / Stock</span>
+          </h3>
+          <form id="form-stock" onsubmit="addStock(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre del Insumo</label>
+              <input type="text" id="stk-nombre" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Ej. Balanceado Perros">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Categoría</label>
+              <select id="stk-categoria" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <option value="Alimento">Alimento</option>
+                <option value="Medicamento">Medicamento</option>
+                <option value="Higiene / Otro">Higiene / Otro</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Cantidad Actual</label>
+                <input type="number" id="stk-cantidad" required min="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="0">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Mínimo Requerido</label>
+                <input type="number" id="stk-minimo" required min="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="10">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Unidad de Medida</label>
+              <input type="text" id="stk-unidad" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="Kg, Cajas, Frascos">
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 text-white font-medium py-2.5 rounded-lg hover:bg-emerald-700 transition shadow-sm text-sm">
+              Guardar Insumo
+            </button>
+          </form>
+        </div>
+
+        <!-- Tabla Inventario -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-slate-800 text-lg mb-4 flex items-center justify-between">
+            <span>Inventario Actual</span>
+            <span class="text-xs text-slate-500">Alertas automáticas de bajo stock</span>
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="p-3">Insumo</th>
+                  <th class="p-3">Categoría</th>
+                  <th class="p-3">Disponible</th>
+                  <th class="p-3">Mínimo</th>
+                  <th class="p-3">Estado Alerta</th>
+                  <th class="p-3 text-center">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-stock" class="divide-y divide-slate-100">
+                <!-- Se carga dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DE EDICIÓN MULTIUSO -->
+  <div id="modal-edit" class="fixed inset-0 bg-slate-900/50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+      <div class="bg-emerald-700 text-white p-4 flex justify-between items-center">
+        <h3 class="font-bold text-lg" id="modal-title">Editar Registro</h3>
+        <button onclick="closeModal()" class="text-white/80 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+      <form id="form-edit" onsubmit="saveEdit(event)" class="p-6 space-y-4">
+        <input type="hidden" id="edit-id">
+        <input type="hidden" id="edit-type">
+        
+        <div id="modal-fields" class="space-y-4">
+          <!-- Campos dinámicos de edición -->
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-2">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 text-sm font-medium">
+            Cancelar
+          </button>
+          <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 text-sm font-medium shadow-sm">
+            Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lógica JavaScript -->
+  <script>
+    // Datos Iniciales del MVP
+    let animales = [
+      { id: 1, nombre: "Milo", especie: "Perro", edad: "3 años", fecha: "2026-01-10", estado: "Bajo Tratamiento" },
+      { id: 2, nombre: "Luna", especie: "Gato", edad: "1 año", fecha: "2026-02-15", estado: "Bueno / Saludable" },
+      { id: 3, nombre: "Rocky", especie: "Perro", edad: "5 años", fecha: "2026-03-01", estado: "Bueno / Saludable" }
+    ];
+
+    let sanitarios = [
+      { id: 1, animal: "Milo", tipo: "Vacuna", detalle: "Antirrábica", fecha: "2026-03-20" },
+      { id: 2, animal: "Luna", tipo: "Desparasitación", detalle: "Pipeta Antipulgas", fecha: "2026-03-18" }
+    ];
+
+    let stock = [
+      { id: 1, nombre: "Alimento Perros Adultos", categoria: "Alimento", cantidad: 15, minimo: 30, unidad: "Kg" },
+      { id: 2, nombre: "Amoxicilina Suspensión", categoria: "Medicamento", cantidad: 8, minimo: 5, unidad: "Frascos" },
+      { id: 3, nombre: "Alimento Gatos", categoria: "Alimento", cantidad: 5, minimo: 15, unidad: "Kg" }
+    ];
+
+    // Navegación por pestañas
+    function switchTab(tabName) {
+      ['samira', 'mariano', 'kevin', 'ezequiel'].forEach(t => {
+        const section = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`btn-${t}`);
+        if (t === tabName) {
+          section.classList.remove('hidden');
+          btn.classList.add('bg-white', 'text-emerald-800', 'shadow');
+          btn.classList.remove('text-emerald-100');
+        } else {
+          section.classList.add('hidden');
+          btn.classList.remove('bg-white', 'text-emerald-800', 'shadow');
+          btn.classList.add('text-emerald-100');
+        }
+      });
+    }
+
+    // Renderizar datos
+    function renderAll() {
+      // 1. Render Animales
+      const tblAnim = document.getElementById('tbl-animales');
+      const selectSanAnim = document.getElementById('san-animal');
+      tblAnim.innerHTML = '';
+      selectSanAnim.innerHTML = '';
+
+      let countPerros = 0;
+      let countGatos = 0;
+      let countHealthy = 0;
+      let countAttention = 0;
+
+      animales.forEach(a => {
+        if (a.especie === 'Perro') countPerros++;
+        if (a.especie === 'Gato') countGatos++;
+        if (a.estado === 'Bueno / Saludable') countHealthy++;
+        else countAttention++;
+
+        const badgeColor = a.estado === 'Bueno / Saludable' ? 'bg-emerald-100 text-emerald-800' :
+                           a.estado === 'Bajo Tratamiento' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-800';
+        
+        tblAnim.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-semibold text-slate-800">${a.nombre}</td>
+            <td class="p-3 text-slate-600">${a.especie}</td>
+            <td class="p-3 text-slate-600">${a.edad}</td>
+            <td class="p-3 text-slate-600">${a.fecha}</td>
+            <td class="p-3"><span class="px-2 py-1 text-xs rounded-full font-medium ${badgeColor}">${a.estado}</span></td>
+            <td class="p-3 text-center">
+              <button onclick="openEditModal('animal', ${a.id})" class="text-indigo-600 hover:text-indigo-800 p-1 rounded transition" title="Editar Animal">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+
+        selectSanAnim.innerHTML += `<option value="${a.nombre}">${a.nombre} (${a.especie})</option>`;
+      });
+
+      document.getElementById('count-animals').innerText = `${animales.length} Registrados`;
+      document.getElementById('stat-total-animals').innerText = animales.length;
+      document.getElementById('stat-in-treatment').innerText = countAttention;
+
+      // Actualizar Estadísticas Panel Samira
+      const totalAnim = animales.length || 1;
+      const pctDogs = Math.round((countPerros / totalAnim) * 100);
+      const pctCats = Math.round((countGatos / totalAnim) * 100);
+
+      document.getElementById('stat-dogs-count').innerText = countPerros;
+      document.getElementById('stat-dogs-pct').innerText = `${pctDogs}%`;
+      document.getElementById('bar-dogs').style.width = `${pctDogs}%`;
+
+      document.getElementById('stat-cats-count').innerText = countGatos;
+      document.getElementById('stat-cats-pct').innerText = `${pctCats}%`;
+      document.getElementById('bar-cats').style.width = `${pctCats}%`;
+
+      document.getElementById('stat-healthy-count').innerText = `${countHealthy} animales`;
+      document.getElementById('stat-attention-count').innerText = `${countAttention} animales`;
+
+      // 2. Render Historial Sanitario
+      const tblSan = document.getElementById('tbl-sanitario');
+      tblSan.innerHTML = '';
+      sanitarios.forEach(s => {
+        tblSan.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-medium text-slate-800">${s.animal}</td>
+            <td class="p-3"><span class="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-700 rounded border border-indigo-200">${s.tipo}</span></td>
+            <td class="p-3 text-slate-600">${s.detalle}</td>
+            <td class="p-3 text-slate-600">${s.fecha}</td>
+            <td class="p-3 text-center">
+              <button onclick="openEditModal('sanitario', ${s.id})" class="text-indigo-600 hover:text-indigo-800 p-1 rounded transition" title="Editar Historial">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      document.getElementById('stat-total-sanitary').innerText = sanitarios.length;
+
+      // 3. Render Stock e Insumos
+      const tblStk = document.getElementById('tbl-stock');
+      const dashAlerts = document.getElementById('dash-alerts-container');
+      tblStk.innerHTML = '';
+      dashAlerts.innerHTML = '';
+      let lowStockCount = 0;
+
+      stock.forEach(st => {
+        const isLow = Number(st.cantidad) <= Number(st.minimo);
+        if (isLow) {
+          lowStockCount++;
+          dashAlerts.innerHTML += `
+            <div class="p-3 bg-rose-50 border-l-4 border-rose-500 rounded-r-lg">
+              <p class="text-xs font-bold text-rose-800">Alerta de Reposición Urgente</p>
+              <p class="text-xs text-rose-700 mt-0.5">${st.nombre} (${st.categoria})</p>
+              <p class="text-[10px] text-rose-600 mt-1">Disponible: ${st.cantidad} ${st.unidad} (Mínimo: ${st.minimo} ${st.unidad})</p>
+            </div>
+          `;
+        }
+
+        const alertBadge = isLow 
+          ? `<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-rose-100 text-rose-700 border border-rose-200"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Reponer</span>`
+          : `<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700"><i class="fa-solid fa-check mr-1"></i> Normal</span>`;
+
+        tblStk.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-medium text-slate-800">${st.nombre}</td>
+            <td class="p-3 text-slate-600">${st.categoria}</td>
+            <td class="p-3 font-bold ${isLow ? 'text-rose-600' : 'text-slate-800'}">${st.cantidad} ${st.unidad}</td>
+            <td class="p-3 text-slate-500">${st.minimo} ${st.unidad}</td>
+            <td class="p-3">${alertBadge}</td>
+            <td class="p-3 text-center">
+              <button onclick="openEditModal('stock', ${st.id})" class="text-indigo-600 hover:text-indigo-800 p-1 rounded transition" title="Editar Insumo">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      if (lowStockCount === 0) {
+        dashAlerts.innerHTML = `
+          <div class="p-4 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-medium flex items-center space-x-2">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            <span>Todos los insumos y medicamentos están sobre el nivel mínimo.</span>
+          </div>
+        `;
+      }
+
+      document.getElementById('stat-low-stock').innerText = lowStockCount;
+    }
+
+    // Funciones para agregar registros
+    function addAnimal(e) {
+      e.preventDefault();
+      const nuevo = {
+        id: Date.now(),
+        nombre: document.getElementById('anim-nombre').value,
+        especie: document.getElementById('anim-especie').value,
+        edad: document.getElementById('anim-edad').value,
+        fecha: document.getElementById('anim-fecha').value,
+        estado: document.getElementById('anim-estado').value
+      };
+      animales.push(nuevo);
+      document.getElementById('form-animal').reset();
+      renderAll();
+    }
+
+    function addSanitary(e) {
+      e.preventDefault();
+      const nuevo = {
+        id: Date.now(),
+        animal: document.getElementById('san-animal').value,
+        tipo: document.getElementById('san-tipo').value,
+        detalle: document.getElementById('san-detalle').value,
+        fecha: document.getElementById('san-fecha').value
+      };
+      sanitarios.unshift(nuevo);
+      document.getElementById('form-sanitario').reset();
+      renderAll();
+    }
+
+    function addStock(e) {
+      e.preventDefault();
+      const nuevo = {
+        id: Date.now(),
+        nombre: document.getElementById('stk-nombre').value,
+        categoria: document.getElementById('stk-categoria').value,
+        cantidad: Number(document.getElementById('stk-cantidad').value),
+        minimo: Number(document.getElementById('stk-minimo').value),
+        unidad: document.getElementById('stk-unidad').value
+      };
+      stock.push(nuevo);
+      document.getElementById('form-stock').reset();
+      renderAll();
+    }
+
+    // Funciones del Modal de Edición
+    function openEditModal(type, id) {
+      const modal = document.getElementById('modal-edit');
+      const modalFields = document.getElementById('modal-fields');
+      const modalTitle = document.getElementById('modal-title');
+
+      document.getElementById('edit-id').value = id;
+      document.getElementById('edit-type').value = type;
+
+      if (type === 'animal') {
+        const item = animales.find(a => a.id === id);
+        modalTitle.innerText = `Editar Animal: ${item.nombre}`;
+        modalFields.innerHTML = `
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre</label>
+            <input type="text" id="edit-field-1" value="${item.nombre}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Especie</label>
+              <select id="edit-field-2" class="w-full px-3 py-2 border rounded-lg text-sm">
+                <option value="Perro" ${item.especie === 'Perro' ? 'selected' : ''}>Perro</option>
+                <option value="Gato" ${item.especie === 'Gato' ? 'selected' : ''}>Gato</option>
+                <option value="Otro" ${item.especie === 'Otro' ? 'selected' : ''}>Otro</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Edad</label>
+              <input type="text" id="edit-field-3" value="${item.edad}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Fecha de Ingreso</label>
+            <input type="date" id="edit-field-4" value="${item.fecha}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Estado General</label>
+            <select id="edit-field-5" class="w-full px-3 py-2 border rounded-lg text-sm">
+              <option value="Bueno / Saludable" ${item.estado === 'Bueno / Saludable' ? 'selected' : ''}>Bueno / Saludable</option>
+              <option value="Bajo Tratamiento" ${item.estado === 'Bajo Tratamiento' ? 'selected' : ''}>Bajo Tratamiento</option>
+              <option value="Observación" ${item.estado === 'Observación' ? 'selected' : ''}>En Observación</option>
+            </select>
+          </div>
+        `;
+      } else if (type === 'sanitario') {
+        const item = sanitarios.find(s => s.id === id);
+        modalTitle.innerText = `Editar Historial Sanitario`;
+        
+        let animalOptions = animales.map(a => `<option value="${a.nombre}" ${a.nombre === item.animal ? 'selected' : ''}>${a.nombre}</option>`).join('');
+
+        modalFields.innerHTML = `
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Animal Paciente</label>
+            <select id="edit-field-1" class="w-full px-3 py-2 border rounded-lg text-sm">${animalOptions}</select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Tipo de Intervención</label>
+            <select id="edit-field-2" class="w-full px-3 py-2 border rounded-lg text-sm">
+              <option value="Vacuna" ${item.tipo === 'Vacuna' ? 'selected' : ''}>Vacuna</option>
+              <option value="Desparasitación" ${item.tipo === 'Desparasitación' ? 'selected' : ''}>Desparasitación</option>
+              <option value="Tratamiento" ${item.tipo === 'Tratamiento' ? 'selected' : ''}>Tratamiento Médico</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Detalle / Fármaco</label>
+            <input type="text" id="edit-field-3" value="${item.detalle}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Fecha de Aplicación</label>
+            <input type="date" id="edit-field-4" value="${item.fecha}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+          </div>
+        `;
+      } else if (type === 'stock') {
+        const item = stock.find(st => st.id === id);
+        modalTitle.innerText = `Editar Insumo: ${item.nombre}`;
+        modalFields.innerHTML = `
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre Insumo</label>
+            <input type="text" id="edit-field-1" value="${item.nombre}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Categoría</label>
+            <select id="edit-field-2" class="w-full px-3 py-2 border rounded-lg text-sm">
+              <option value="Alimento" ${item.categoria === 'Alimento' ? 'selected' : ''}>Alimento</option>
+              <option value="Medicamento" ${item.categoria === 'Medicamento' ? 'selected' : ''}>Medicamento</option>
+              <option value="Higiene / Otro" ${item.categoria === 'Higiene / Otro' ? 'selected' : ''}>Higiene / Otro</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Cantidad Actual</label>
+              <input type="number" id="edit-field-3" value="${item.cantidad}" required min="0" class="w-full px-3 py-2 border rounded-lg text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Mínimo Requerido</label>
+              <input type="number" id="edit-field-4" value="${item.minimo}" required min="1" class="w-full px-3 py-2 border rounded-lg text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Unidad de Medida</label>
+            <input type="text" id="edit-field-5" value="${item.unidad}" required class="w-full px-3 py-2 border rounded-lg text-sm">
+          </div>
+        `;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-edit').classList.add('hidden');
+    }
+
+    function saveEdit(e) {
+      e.preventDefault();
+      const id = Number(document.getElementById('edit-id').value);
+      const type = document.getElementById('edit-type').value;
+
+      if (type === 'animal') {
+        const index = animales.findIndex(a => a.id === id);
+        if (index !== -1) {
+          animales[index].nombre = document.getElementById('edit-field-1').value;
+          animales[index].especie = document.getElementById('edit-field-2').value;
+          animales[index].edad = document.getElementById('edit-field-3').value;
+          animales[index].fecha = document.getElementById('edit-field-4').value;
+          animales[index].estado = document.getElementById('edit-field-5').value;
+        }
+      } else if (type === 'sanitario') {
+        const index = sanitarios.findIndex(s => s.id === id);
+        if (index !== -1) {
+          sanitarios[index].animal = document.getElementById('edit-field-1').value;
+          sanitarios[index].tipo = document.getElementById('edit-field-2').value;
+          sanitarios[index].detalle = document.getElementById('edit-field-3').value;
+          sanitarios[index].fecha = document.getElementById('edit-field-4').value;
+        }
+      } else if (type === 'stock') {
+        const index = stock.findIndex(st => st.id === id);
+        if (index !== -1) {
+          stock[index].nombre = document.getElementById('edit-field-1').value;
+          stock[index].categoria = document.getElementById('edit-field-2').value;
+          stock[index].cantidad = Number(document.getElementById('edit-field-3').value);
+          stock[index].minimo = Number(document.getElementById('edit-field-4').value);
+          stock[index].unidad = document.getElementById('edit-field-5').value;
+        }
+      }
+
+      closeModal();
+      renderAll();
+    }
+
+    // Inicializar al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('input[type="date"]').forEach(inp => inp.value = today);
+      renderAll();
+    });
+  </script>
+</body>
+</html>
