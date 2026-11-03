@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Huellas &amp; Estilo | Accesorios para perros</title>
+  <meta name="description" content="Collares, correas, arneses, camas, juguetes, comederos y ropa para perros, organizados por tamaño.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip" href="#catalogo">Ir al catálogo</a>
+
+<header class="header">
+  <div class="wrap header-in">
+    <a class="logo" href="#inicio">Huellas &amp; Estilo</a>
+    <nav id="menu" class="menu" aria-label="Principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="cuenta.html">Mi cuenta</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="cart" href="carrito.html" aria-label="Carrito, 0 productos">Carrito <span id="cartCount" class="badge">0</span></a>
+    <button id="btnMenu" class="burger" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><span></span></button>
+  </div>
+</header>
+
+<main>
+  <section id="inicio" class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <h1>Todo para tu perro, a su medida</h1>
+        <p>Collares, correas, arneses, camas y más. Elegí por tamaño y ponele su nombre a lo que más usa.</p>
+        <a class="btn btn-cta" href="#catalogo">Ver catálogo</a>
+      </div>
+      <div class="hero-art" aria-hidden="true">🐕</div>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="t-cat">
+    <h2 id="t-cat">Categorías</h2>
+    <div id="categorias" class="cats"></div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="t-dest">
+    <h2 id="t-dest">Productos destacados</h2>
+    <div id="destacados" class="grid"></div>
+  </section>
+
+  <section class="band" aria-labelledby="t-ben">
+    <div class="wrap sec">
+      <h2 id="t-ben">Por qué elegirnos</h2>
+      <div class="ben">
+        <div><h3>Elegí por tamaño</h3><p>Filtrá por perro chico, mediano o grande y encontrá lo que le queda bien.</p></div>
+        <div><h3>Con su nombre</h3><p>Personalizá collares, placas y comederos antes de agregarlos al carrito.</p></div>
+        <div><h3>Pagá fácil</h3><p>Completá tu compra en pocos pasos con Mercado Pago.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalogo" class="wrap sec" aria-labelledby="t-cata">
+    <h2 id="t-cata">Catálogo</h2>
+
+    <div class="bar">
+      <label class="search"><span class="sr">Buscar productos</span>
+        <input id="q" type="search" placeholder="Buscá por nombre, por ejemplo: correa" autocomplete="off">
+      </label>
+      <button id="btnFiltros" class="btn btn-sec fbtn" aria-expanded="false" aria-controls="filtros">Filtros</button>
+    </div>
+
+    <div id="filtros" class="filtros">
+      <label>Categoría
+        <select id="fCat"><option value="">Todas</option></select>
+      </label>
+      <fieldset>
+        <legend>Tamaño de perro</legend>
+        <div id="chips" class="chips">
+          <button type="button" class="chip" data-tam="" aria-pressed="true">Todos</button>
+          <button type="button" class="chip" data-tam="chico" aria-pressed="false">Chico</button>
+          <button type="button" class="chip" data-tam="mediano" aria-pressed="false">Mediano</button>
+          <button type="button" class="chip" data-tam="grande" aria-pressed="false">Grande</button>
+        </div>
+      </fieldset>
+      <div class="precio-f">
+        <label>Precio mínimo <input id="pMin" type="number" min="0" step="500" inputmode="numeric" placeholder="$ 0"></label>
+        <label>Precio máximo <input id="pMax" type="number" min="0" step="500" inputmode="numeric" placeholder="$ sin tope"></label>
+      </div>
+      <label>Ordenar por
+        <select id="orden">
+          <option value="destacados">Destacados primero</option>
+          <option value="menor">Menor precio</option>
+          <option value="mayor">Mayor precio</option>
+          <option value="az">Nombre (A a Z)</option>
+        </select>
+      </label>
+      <button id="limpiar" type="button" class="btn btn-sec">Limpiar filtros</button>
+    </div>
+
+    <p id="conteo" class="conteo" role="status" aria-live="polite"></p>
+    <div id="grilla" class="grid"></div>
+    <div id="vacio" class="vacio" hidden>
+      <h3>No encontramos productos con esos filtros</h3>
+      <p>Probá con otra palabra, cambiá el tamaño o ampliá el rango de precio.</p>
+      <button type="button" class="btn btn-pri" data-limpiar>Limpiar filtros</button>
+    </div>
+  </section>
+</main>
+
+<footer id="contacto" class="footer">
+  <div class="wrap foot-in">
+    <div><strong class="logo">Huellas &amp; Estilo</strong><p>Accesorios para perros, pensados a su medida.</p></div>
+    <nav aria-label="Información">
+      <a href="nosotros.html">Quiénes somos</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="faq.html">Preguntas frecuentes</a>
+      <a href="terminos.html">Términos y condiciones</a>
+    </nav>
+  </div>
+  <p class="copy">Proyecto integrador - Los sin chamba - UTN FRSR</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="js/productos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
