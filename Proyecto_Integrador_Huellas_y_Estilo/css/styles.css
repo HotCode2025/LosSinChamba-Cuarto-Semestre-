@@ -1,0 +1,127 @@
+/* Huellas & Estilo - Módulo Catálogo. Mobile first. Es CSS válido también como SCSS. */
+:root {
+  --verde: #1F7F73; --azul: #264653; --naranja: #F4A261; --coral: #E76F51;
+  --crema: #FFF8F0; --gris: #6B7280; --borde: #E5E7EB; --radio: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body { margin: 0; font: 400 16px/1.6 "Open Sans", system-ui, sans-serif; color: var(--azul); background: #fff; }
+h1, h2, h3, .btn, .logo, .precio, .cart { font-family: "Poppins", system-ui, sans-serif; }
+h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 .75rem; font-weight: 700; }
+h2 { font-size: 1.375rem; margin: 0 0 1.25rem; font-weight: 600; }
+h3 { font-size: 1.0625rem; margin: 0 0 .25rem; font-weight: 600; }
+p { margin: 0 0 .75rem; }
+a { color: var(--verde); }
+img { max-width: 100%; display: block; }
+:focus-visible { outline: 3px solid var(--naranja); outline-offset: 2px; }
+.wrap { width: min(100% - 2rem, 1200px); margin-inline: auto; }
+.sec { padding-block: 2.5rem; }
+.sr, .skip:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: fixed; top: .5rem; left: .5rem; z-index: 100; background: #fff; padding: .5rem 1rem; }
+
+/* Botones */
+.btn { display: inline-block; border: 2px solid transparent; border-radius: 999px; padding: .6rem 1.25rem; font-weight: 600; font-size: .9375rem; cursor: pointer; text-decoration: none; text-align: center; transition: background-color .2s, color .2s; }
+.btn-pri { background: var(--verde); color: #fff; width: 100%; }
+.btn-pri:hover { background: var(--azul); }
+.btn-cta { background: var(--naranja); color: var(--azul); }
+.btn-cta:hover { background: #f8b684; }
+.btn-sec { background: #fff; color: var(--azul); border-color: var(--azul); }
+.btn-sec:hover { background: var(--azul); color: #fff; }
+
+/* Header */
+.header { position: sticky; top: 0; z-index: 50; background: var(--azul); color: #fff; }
+.header-in { display: flex; align-items: center; gap: 1rem; min-height: 64px; position: relative; }
+.logo { color: #fff; font-weight: 700; font-size: 1.125rem; text-decoration: none; margin-right: auto; }
+.menu { display: none; position: absolute; top: 64px; left: -1rem; right: -1rem; background: var(--azul); padding: .5rem 1rem 1rem; flex-direction: column; border-top: 1px solid rgba(255,255,255,.15); }
+.menu.open { display: flex; }
+.menu a, .cart { color: #fff; text-decoration: none; padding: .6rem 0; font-weight: 500; }
+.menu a:hover, .cart:hover { color: var(--naranja); }
+.badge { display: inline-block; min-width: 1.4rem; padding: 0 .4rem; border-radius: 999px; background: var(--naranja); color: var(--azul); text-align: center; font-size: .8125rem; font-weight: 700; }
+.burger { background: none; border: 0; width: 44px; height: 44px; cursor: pointer; position: relative; }
+.burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 10px; right: 10px; height: 2px; background: #fff; border-radius: 2px; }
+.burger::before { top: 15px; } .burger span { top: 21px; } .burger::after { top: 27px; }
+
+/* Hero */
+.hero { background: var(--crema); }
+.hero-in { display: grid; gap: 1.5rem; padding-block: 2.5rem; align-items: center; }
+.hero p { color: var(--gris); max-width: 46ch; margin-bottom: 1.25rem; }
+.hero-art { display: none; font-size: 9rem; text-align: center; }
+
+/* Categorías */
+.cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+.cat { display: flex; flex-direction: column; align-items: center; gap: .25rem; padding: 1rem .5rem; background: var(--crema); border: 2px solid transparent; border-radius: var(--radio); font: 600 .9375rem "Poppins", sans-serif; color: var(--azul); cursor: pointer; }
+.cat span { font-size: 2rem; }
+.cat:hover { border-color: var(--coral); }
+
+/* Tarjetas y grilla */
+.grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.card { display: flex; flex-direction: column; border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; background: #fff; }
+.card-img { display: grid; place-items: center; aspect-ratio: 1; background: var(--crema); font-size: 4rem; text-decoration: none; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { display: flex; flex-direction: column; flex: 1; padding: 1rem; }
+.tags { display: flex; flex-wrap: wrap; gap: .375rem; margin-bottom: .5rem; min-height: 1.5rem; }
+.tag { background: var(--naranja); color: var(--azul); border-radius: 6px; padding: 0 .5rem; font-size: .75rem; font-weight: 600; line-height: 1.5rem; }
+.tag-s { background: var(--crema); }
+.desc { color: var(--gris); font-size: .9375rem; }
+.tam { color: var(--gris); font-size: .8125rem; }
+.precio { font-size: 1.25rem; font-weight: 600; margin: auto 0 .75rem; padding-top: .5rem; }
+
+/* Beneficios */
+.band { background: var(--crema); }
+.ben { display: grid; gap: 1.25rem; }
+.ben div { border-left: 4px solid var(--coral); padding-left: 1rem; }
+.ben p { color: var(--gris); margin: 0; }
+
+/* Catálogo: buscador y filtros */
+.bar { display: flex; gap: .75rem; margin-bottom: 1rem; }
+.search { flex: 1; }
+input, select { width: 100%; font: inherit; color: var(--azul); background: #fff; border: 2px solid var(--borde); border-radius: 10px; padding: .6rem .75rem; min-height: 44px; }
+input:focus, select:focus { border-color: var(--verde); outline: none; }
+.filtros { display: none; gap: 1rem; padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--crema); }
+.filtros.open { display: grid; }
+.filtros label, .filtros legend { display: block; font-size: .875rem; font-weight: 600; margin-bottom: .25rem; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip { border: 2px solid var(--azul); background: #fff; color: var(--azul); border-radius: 999px; padding: .4rem 1rem; font: 600 .875rem "Poppins", sans-serif; cursor: pointer; min-height: 40px; }
+.chip[aria-pressed="true"] { background: var(--verde); border-color: var(--verde); color: #fff; }
+.precio-f { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.conteo { color: var(--gris); font-size: .9375rem; }
+.vacio { text-align: center; padding: 2.5rem 1rem; background: var(--crema); border-radius: var(--radio); }
+.vacio[hidden] { display: none; }
+
+/* Footer y aviso */
+.footer { background: var(--azul); color: #fff; padding-top: 2rem; }
+.footer .logo { display: block; margin-bottom: .5rem; }
+.footer p { color: rgba(255,255,255,.8); }
+.foot-in { display: grid; gap: 1.5rem; }
+.footer nav { display: flex; flex-direction: column; gap: .25rem; }
+.footer nav a { color: #fff; }
+.copy { border-top: 1px solid rgba(255,255,255,.2); text-align: center; padding: 1rem; margin: 1.5rem 0 0; font-size: .875rem; }
+.toast { position: fixed; left: 50%; bottom: 1.25rem; transform: translate(-50%, 150%); background: var(--azul); color: #fff; padding: .75rem 1.25rem; border-radius: 10px; transition: transform .25s; z-index: 80; max-width: calc(100% - 2rem); }
+.toast.show { transform: translate(-50%, 0); }
+
+/* Tablet: 768 px a 1023 px (2 columnas) */
+@media (min-width: 768px) {
+  h1 { font-size: 2.25rem; }
+  .cats { grid-template-columns: repeat(4, 1fr); }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .ben, .foot-in { grid-template-columns: repeat(3, 1fr); }
+  .filtros { display: grid; grid-template-columns: 1fr 1fr; align-items: end; }
+  .fbtn { display: none; }
+  .hero-in { grid-template-columns: 1.4fr 1fr; }
+  .hero-art { display: block; }
+}
+
+/* Escritorio: 1024 px o más (4 columnas, menú horizontal) */
+@media (min-width: 1024px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.75rem; }
+  .grid { grid-template-columns: repeat(4, 1fr); }
+  .cats { grid-template-columns: repeat(7, 1fr); }
+  .burger { display: none; }
+  .menu, .menu.open { display: flex; position: static; flex-direction: row; gap: 1.5rem; padding: 0; border: 0; background: none; margin-right: 1rem; }
+  .filtros { grid-template-columns: 1fr 1.4fr 1.6fr 1fr auto; }
+  .foot-in { grid-template-columns: 2fr 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
