@@ -49,7 +49,7 @@ img { max-width: 100%; display: block; }
 
 /* Categorías */
 .cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
-.cat { display: flex; flex-direction: column; align-items: center; gap: .25rem; padding: 1rem .5rem; background: var(--crema); border: 2px solid transparent; border-radius: var(--radio); font: 600 .9375rem "Poppins", sans-serif; color: var(--azul); cursor: pointer; }
+.cat { text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: .25rem; padding: 1rem .5rem; background: var(--crema); border: 2px solid transparent; border-radius: var(--radio); font: 600 .9375rem "Poppins", sans-serif; color: var(--azul); cursor: pointer; }
 .cat span { font-size: 2rem; }
 .cat:hover { border-color: var(--coral); }
 
@@ -124,4 +124,25 @@ fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
   .foot-in { grid-template-columns: 2fr 1fr; }
 }
 
+.mas { margin-top: 1.5rem; text-align: center; }
+.titulo-pag { font-size: 1.625rem; margin-bottom: 1.25rem; }
+.menu a[aria-current="page"] { color: var(--naranja); }
+
+.texto { max-width: 760px; margin-inline: auto; }
+.texto h2 { margin-top: 1.75rem; font-size: 1.125rem; }
+.texto ul { padding-left: 1.25rem; }
+.form { display: grid; gap: 1rem; margin-top: 1.25rem; }
+.form label { font-weight: 600; font-size: .875rem; }
+.form input, textarea { margin-top: .25rem; }
+textarea { width: 100%; font: inherit; color: var(--azul); border: 2px solid var(--borde); border-radius: 10px; padding: .6rem .75rem; resize: vertical; }
+textarea:focus { border-color: var(--verde); outline: none; }
+.form .btn-pri { width: auto; justify-self: start; }
+.gracias { background: var(--crema); border-left: 4px solid var(--verde); padding: .75rem 1rem; border-radius: 8px; }
+.gracias[hidden] { display: none; }
+details { border: 1px solid var(--borde); border-radius: 10px; padding: .75rem 1rem; margin-bottom: .75rem; }
+summary { cursor: pointer; font-weight: 600; }
+details p { margin: .5rem 0 0; color: var(--gris); }
+
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+body { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; }

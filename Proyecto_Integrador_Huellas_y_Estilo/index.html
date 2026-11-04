@@ -11,14 +11,14 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<a class="skip" href="#catalogo">Ir al catálogo</a>
+<a class="skip" href="#main">Saltar al contenido</a>
 
 <header class="header">
   <div class="wrap header-in">
     <a class="logo" href="#inicio">Huellas &amp; Estilo</a>
     <nav id="menu" class="menu" aria-label="Principal">
       <a href="#inicio">Inicio</a>
-      <a href="#catalogo">Catálogo</a>
+      <a href="catalogo.html">Catálogo</a>
       <a href="cuenta.html">Mi cuenta</a>
       <a href="#contacto">Contacto</a>
     </nav>
@@ -27,13 +27,13 @@
   </div>
 </header>
 
-<main>
+<main id="main">
   <section id="inicio" class="hero">
     <div class="wrap hero-in">
       <div>
         <h1>Todo para tu perro, a su medida</h1>
         <p>Collares, correas, arneses, camas y más. Elegí por tamaño y ponele su nombre a lo que más usa.</p>
-        <a class="btn btn-cta" href="#catalogo">Ver catálogo</a>
+        <a class="btn btn-cta" href="catalogo.html">Ver catálogo</a>
       </div>
       <div class="hero-art" aria-hidden="true">🐕</div>
     </div>
@@ -47,6 +47,7 @@
   <section class="wrap sec" aria-labelledby="t-dest">
     <h2 id="t-dest">Productos destacados</h2>
     <div id="destacados" class="grid"></div>
+    <p class="mas"><a class="btn btn-sec" href="catalogo.html">Ver todo el catálogo</a></p>
   </section>
 
   <section class="band" aria-labelledby="t-ben">
@@ -60,52 +61,6 @@
     </div>
   </section>
 
-  <section id="catalogo" class="wrap sec" aria-labelledby="t-cata">
-    <h2 id="t-cata">Catálogo</h2>
-
-    <div class="bar">
-      <label class="search"><span class="sr">Buscar productos</span>
-        <input id="q" type="search" placeholder="Buscá por nombre, por ejemplo: correa" autocomplete="off">
-      </label>
-      <button id="btnFiltros" class="btn btn-sec fbtn" aria-expanded="false" aria-controls="filtros">Filtros</button>
-    </div>
-
-    <div id="filtros" class="filtros">
-      <label>Categoría
-        <select id="fCat"><option value="">Todas</option></select>
-      </label>
-      <fieldset>
-        <legend>Tamaño de perro</legend>
-        <div id="chips" class="chips">
-          <button type="button" class="chip" data-tam="" aria-pressed="true">Todos</button>
-          <button type="button" class="chip" data-tam="chico" aria-pressed="false">Chico</button>
-          <button type="button" class="chip" data-tam="mediano" aria-pressed="false">Mediano</button>
-          <button type="button" class="chip" data-tam="grande" aria-pressed="false">Grande</button>
-        </div>
-      </fieldset>
-      <div class="precio-f">
-        <label>Precio mínimo <input id="pMin" type="number" min="0" step="500" inputmode="numeric" placeholder="$ 0"></label>
-        <label>Precio máximo <input id="pMax" type="number" min="0" step="500" inputmode="numeric" placeholder="$ sin tope"></label>
-      </div>
-      <label>Ordenar por
-        <select id="orden">
-          <option value="destacados">Destacados primero</option>
-          <option value="menor">Menor precio</option>
-          <option value="mayor">Mayor precio</option>
-          <option value="az">Nombre (A a Z)</option>
-        </select>
-      </label>
-      <button id="limpiar" type="button" class="btn btn-sec">Limpiar filtros</button>
-    </div>
-
-    <p id="conteo" class="conteo" role="status" aria-live="polite"></p>
-    <div id="grilla" class="grid"></div>
-    <div id="vacio" class="vacio" hidden>
-      <h3>No encontramos productos con esos filtros</h3>
-      <p>Probá con otra palabra, cambiá el tamaño o ampliá el rango de precio.</p>
-      <button type="button" class="btn btn-pri" data-limpiar>Limpiar filtros</button>
-    </div>
-  </section>
 </main>
 
 <footer id="contacto" class="footer">
