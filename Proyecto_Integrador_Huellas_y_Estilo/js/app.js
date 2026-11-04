@@ -102,33 +102,38 @@
 
   async function iniciar() {
     todos = await obtenerProductos();
-    leerURL();
 
-    $("#fCat").insertAdjacentHTML("beforeend", CATS.map((c) => `<option value="${c.id}">${c.n}</option>`).join(""));
-    $("#categorias").innerHTML = CATS.map((c) => `<button type="button" class="cat" data-cat="${c.id}"><span aria-hidden="true">${c.e}</span>${c.n}</button>`).join("");
-    $("#destacados").innerHTML = todos.filter((p) => p.destacado).slice(0, 4).map(tarjeta).join("");
-    sincronizarCampos(); render();
+    // Página de inicio
+    if ($("#categorias")) {
+      $("#categorias").innerHTML = CATS.map((c) => `<a class="cat" href="catalogo.html?cat=${c.id}"><span aria-hidden="true">${c.e}</span>${c.n}</a>`).join("");
+      $("#destacados").innerHTML = todos.filter((p) => p.destacado).slice(0, 4).map(tarjeta).join("");
+    }
 
-    $("#q").addEventListener("input", debounce((e) => { state.q = e.target.value; render(); }));
-    $("#fCat").addEventListener("change", (e) => { state.cat = e.target.value; render(); });
-    $("#orden").addEventListener("change", (e) => { state.orden = e.target.value; render(); });
-    $("#pMin").addEventListener("input", debounce((e) => { state.min = e.target.value; render(); }, 350));
-    $("#pMax").addEventListener("input", debounce((e) => { state.max = e.target.value; render(); }, 350));
-    $("#chips").addEventListener("click", (e) => {
-      const c = e.target.closest(".chip"); if (!c) return;
-      state.tam = c.dataset.tam; sincronizarCampos(); render();
-    });
-    $("#limpiar").addEventListener("click", limpiar);
+    // Página del catálogo
+    if ($("#grilla")) {
+      leerURL();
+      $("#fCat").insertAdjacentHTML("beforeend", CATS.map((c) => `<option value="${c.id}">${c.n}</option>`).join(""));
+      sincronizarCampos(); render();
 
+      $("#q").addEventListener("input", debounce((e) => { state.q = e.target.value; render(); }));
+      $("#fCat").addEventListener("change", (e) => { state.cat = e.target.value; render(); });
+      $("#orden").addEventListener("change", (e) => { state.orden = e.target.value; render(); });
+      $("#pMin").addEventListener("input", debounce((e) => { state.min = e.target.value; render(); }, 350));
+      $("#pMax").addEventListener("input", debounce((e) => { state.max = e.target.value; render(); }, 350));
+      $("#chips").addEventListener("click", (e) => {
+        const c = e.target.closest(".chip"); if (!c) return;
+        state.tam = c.dataset.tam; sincronizarCampos(); render();
+      });
+      $("#limpiar").addEventListener("click", limpiar);
+      alternar($("#btnFiltros"), $("#filtros"));
+    }
+
+    // En las dos páginas
     document.addEventListener("click", (e) => {
       const add = e.target.closest("[data-add]"); if (add) agregar(Number(add.dataset.add));
       if (e.target.closest("[data-limpiar]")) limpiar();
-      const cat = e.target.closest("[data-cat]");
-      if (cat) { state.cat = cat.dataset.cat; sincronizarCampos(); render(); $("#catalogo").scrollIntoView({ behavior: "smooth" }); }
     });
-
     alternar($("#btnMenu"), $("#menu"));
-    alternar($("#btnFiltros"), $("#filtros"));
     $("#menu").addEventListener("click", (e) => { if (e.target.tagName === "A") { $("#menu").classList.remove("open"); $("#btnMenu").setAttribute("aria-expanded", "false"); } });
   }
 
