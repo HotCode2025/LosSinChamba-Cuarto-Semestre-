@@ -262,39 +262,44 @@ class Personaje {
     // dato propio de CADA objeto (como el color o el peso del Animal del
     // video). Las funciones definidas más abajo en la clase son los
     // MÉTODOS: las acciones que ese objeto puede hacer.
-    constructor({ id, nombre, emoji, titulo = '', descripcion = '', foto, tinte = 'rgba(255, 255, 255, 0.03)', vidas = 3 }) {
-        this.id          = id;           // 'aang'  → también el nombre del .webp
-        this.nombre      = nombre;       // 'Aang'
-        this.emoji       = emoji;        // respaldo si la foto no carga
-        this.titulo      = titulo;       // 'Maestro Aire'
-        this.descripcion = descripcion;  // tooltip de la tarjeta
-        this.tinte       = tinte;        // color de fondo de su tarjeta
-        this.vidasMax    = vidas;        // vidas con las que arranca
-        this.vidas       = vidas;        // vidas actuales
+    constructor({ id, nombre, emoji, titulo = '', descripcion = '', foto, tinte = 'rgba(255, 255, 255, 0.03)', vidas = 3, x = 0, y = 0 }) {
+        this.id          = id;           
+        this.nombre      = nombre;       
+        this.emoji       = emoji;        
+        this.titulo      = titulo;       
+        this.descripcion = descripcion;  
+        this.tinte       = tinte;        
+        this.vidasMax    = vidas;        
+        this.vidas       = vidas;        
 
-        // Si no le pasamos foto, la busca sola en /img. Si le pasamos
-        // foto: null, el personaje se dibuja directamente con su emoji.
         this.foto = (foto === undefined) ? `./img/${id}.webp` : foto;
 
-        // El personaje se guarda las referencias de SU tarjeta en la arena,
-        // así después sabe actualizar su propia barra de vida.
         this.barraVida  = null;
         this.textoVidas = null;
 
-        //CLASE 6: Cada personaje nace con su propia lista de ataques
         this.ataques = [];
         
-        // LO NUEVO DE LA CLASE 10: Propiedades para moverse en el mapa
-        this.x = 20;
-        this.y = 40;
-        this.ancho = 60;
-        this.alto = 80;
+        // Coordenadas del mapa
+        this.x = x;
+        this.y = y;
+        this.ancho = 40; // El profe pidió bajarlo a 40
+        this.alto = 40;
         this.velocidadX = 0;
         this.velocidadY = 0;
         
-        // Cargamos la imagen lista para usar en el Canvas
         this.mapaFoto = new Image();
         this.mapaFoto.src = this.foto;
+    }
+
+    // CLASE 12: Método para que el personaje se dibuje a sí mismo en el canvas
+    dibujarEnMapa(lienzo) {
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        );
     }
 
     // ---------- MÉTODOS DE COMBATE ----------
@@ -478,29 +483,28 @@ const ATAQUES = [
 const aang = new Personaje({
     id: 'aang', nombre: 'Aang', emoji: '🌪️', titulo: 'Maestro Aire',
     descripcion: 'Usa su bastón y el elemento aire para ataques rápidos y movilidad.',
-    tinte: 'rgba(252, 211, 77, 0.14)'
+    tinte: 'rgba(252, 211, 77, 0.14)', x: 200, y: 190
 });
-// Le inyectamos los ataques (por ahora usan todos los mismos 3 movimientos básicos)
 aang.ataques.push(...ATAQUES);
 
 const katara = new Personaje({
     id: 'katara', nombre: 'Katara', emoji: '💧', titulo: 'Maestra Agua',
     descripcion: 'Utiliza un frasco de agua y artes marciales con control de agua.',
-    tinte: 'rgba(56, 189, 248, 0.14)'
+    tinte: 'rgba(56, 189, 248, 0.14)', x: 150, y: 95
 });
 katara.ataques.push(...ATAQUES);
 
 const sokka = new Personaje({
     id: 'sokka', nombre: 'Sokka', emoji: '🪃', titulo: 'Guerrero',
     descripcion: 'Pelea cuerpo a cuerpo con su bumerán y espada de hueso/meteorito.',
-    tinte: 'rgba(214, 178, 140, 0.14)'
+    tinte: 'rgba(214, 178, 140, 0.14)', x: 50, y: 150
 });
 sokka.ataques.push(...ATAQUES);
 
 const haru = new Personaje({
     id: 'haru', nombre: 'Haru', emoji: '🪨', titulo: 'Maestro Tierra',
     descripcion: 'Usa el dominio de la tierra para arrojar rocas a los enemigos.',
-    tinte: 'rgba(34, 197, 94, 0.14)'
+    tinte: 'rgba(34, 197, 94, 0.14)', x: 260, y: 50
 });
 haru.ataques.push(...ATAQUES);
 
@@ -508,7 +512,7 @@ const zuko = new Personaje({
     id: 'zuko', nombre: 'Zuko', emoji: '🔥', titulo: 'Maestro Fuego',
     descripcion: 'Príncipe desterrado de la Nación del Fuego, domina las llamas con precisión.',
     tinte: 'rgba(239, 68, 68, 0.14)',
-    foto: './img/zuko.jpeg'
+    foto: './img/zuko.jpeg', x: 80, y: 120
 });
 zuko.ataques.push(...ATAQUES);
 
@@ -516,7 +520,7 @@ const toph = new Personaje({
     id: 'toph', nombre: 'Toph', emoji: '🪨', titulo: 'Maestra Tierra',
     descripcion: 'Maestra Tierra ciega que "ve" con vibraciones; inventora del metalcontrol.',
     tinte: 'rgba(34, 197, 94, 0.14)',
-    foto: './img/toph.jpeg'
+    foto: './img/toph.jpeg', x: 210, y: 200
 });
 toph.ataques.push(...ATAQUES);
 
@@ -826,42 +830,20 @@ class Juego {
 
         this.sonido.clic();
 
-        // clonar() para que el catálogo quede intacto: peleamos con copias
+        // El jugador es una copia del personaje seleccionado
         this.jugador = this.buscarPersonaje(elegido.value).clonar();
-        this.enemigo = this.personajeAleatorio().clonar();
-
-        // La arena se arma pidiéndole a cada personaje que se dibuje
-        this.arena.replaceChildren(
-            this.jugador.crearTarjetaArena(),
-            this.crearSeparadorVS(),
-            this.enemigo.crearTarjetaArena()
-        );
+        
+        // Asignamos una posición inicial fija para el jugador al empezar
+        this.jugador.x = 20;
+        this.jugador.y = 30;
 
         this.terminado = false;
         this.seccionPersonaje.classList.add('oculto');
         
-        // CLASE 9: Comentamos la ida a la arena y mostramos el mapa
-        // this.seccionAtaque.classList.remove('oculto');
+        // CLASE 9, 10 y 11: Vamos a la arena del mapa en vez de ir al combate
         this.seccionMapa.classList.remove('oculto');
         
-        // Dibujamos el personaje elegido en el Canvas
-        //const imagenPrueba = new Image();
-        // CLASE 10: Arrancamos el motor que pinta el mapa cada 50 milisegundos
-        //intervalo = setInterval(pintarPersonaje, 50);
-
-        //Clase 11: Iniciamos el motor del canvas y los controles
         iniciarMapa();
-
-        //imagenPrueba.src = this.jugador.foto || ''; 
-        
-        //imagenPrueba.onload = () => {
-        //    this.lienzo.drawImage(imagenPrueba, 20, 40, 60, 80);
-        //};
-
-        this.seccionMensajes.classList.remove('oculto');
-        this.mostrarMensaje(
-            `Sos ${this.jugador.presentarse()} — el enemigo es ${this.enemigo.presentarse()}. ¡Que empiece el combate!`
-        );
     }
 
     buscarPersonaje(id) {
@@ -1086,79 +1068,110 @@ window.fabricarPersonajes = fabricarPersonajes;
 
 
 // ============================================================
-// CLASES 10 Y 11 - FUNCIONES DE MOVIMIENTO Y MAPA (CANVAS)
+// CLASES 10, 11 Y 12 - MAPA Y COLISIONES
 // ============================================================
 
-let intervalo; // Variable para controlar el loop del juego
+let intervalo;
 
-// Cargamos la imagen de fondo del mapa
 const mapaBackground = new Image();
 mapaBackground.src = './img/mapa.jpg';
 
 function iniciarMapa() {
-    // Achicamos el canvas como pide el profe
     juego.mapa.width = 320;
     juego.mapa.height = 240;
-
-    // Arrancamos el motor que pinta el mapa cada 50 milisegundos
     intervalo = setInterval(pintarCanvas, 50);
 
-    // Conectamos el teclado
     window.addEventListener('keydown', sePresionoUnaTecla);
     window.addEventListener('keyup', detenerMovimiento);
 }
 
 function pintarCanvas() {
-    // 1. Limpiamos el canvas entero
+    // 1. Limpiar y dibujar fondo
     juego.lienzo.clearRect(0, 0, juego.mapa.width, juego.mapa.height);
-    
-    // 2. Dibujamos el fondo primero (para que quede abajo)
-    juego.lienzo.drawImage(
-        mapaBackground,
-        0, 0,
-        juego.mapa.width, juego.mapa.height
-    );
+    juego.lienzo.drawImage(mapaBackground, 0, 0, juego.mapa.width, juego.mapa.height);
 
-    // 3. Actualizamos la posición del jugador sumándole la velocidad
+    // 2. Mover al jugador
     juego.jugador.x = juego.jugador.x + juego.jugador.velocidadX;
     juego.jugador.y = juego.jugador.y + juego.jugador.velocidadY;
     
-    // 4. Dibujamos al jugador encima del fondo
-    juego.lienzo.drawImage(
-        juego.jugador.mapaFoto,
-        juego.jugador.x,
-        juego.jugador.y,
-        juego.jugador.ancho,
-        juego.jugador.alto
-    );
-}
+    // 3. Dibujar al jugador (usando el método de la Clase 12)
+    juego.jugador.dibujarEnMapa(juego.lienzo);
 
-// Funciones para las teclas del teclado
-function sePresionoUnaTecla(evento) {
-    switch (evento.key) {
-        case 'ArrowUp':
-            moverArriba();
-            break;
-        case 'ArrowDown':
-            moverAbajo();
-            break;
-        case 'ArrowLeft':
-            moverIzquierda();
-            break;
-        case 'ArrowRight':
-            moverDerecha();
-            break;
+    // 4. Dibujar a todos los enemigos (el catálogo menos el que elegiste)
+    const enemigosEnMapa = juego.catalogo.filter(p => p.id !== juego.jugador.id);
+    enemigosEnMapa.forEach(enemigo => {
+        enemigo.dibujarEnMapa(juego.lienzo);
+    });
+
+    // 5. CLASE 12: Revisar colisiones solo si el jugador se está moviendo
+    if (juego.jugador.velocidadX !== 0 || juego.jugador.velocidadY !== 0) {
+        enemigosEnMapa.forEach(enemigo => revisarColision(enemigo));
     }
 }
 
-// Funciones de movimiento
+// Lógica matemática para saber si dos cuadrados se tocan (Clase 12)
+function revisarColision(enemigo) {
+    const arribaEnemigo    = enemigo.y;
+    const abajoEnemigo     = enemigo.y + enemigo.alto;
+    const derechaEnemigo   = enemigo.x + enemigo.ancho;
+    const izquierdaEnemigo = enemigo.x;
+
+    const arribaPersonaje    = juego.jugador.y;
+    const abajoPersonaje     = juego.jugador.y + juego.jugador.alto;
+    const derechaPersonaje   = juego.jugador.x + juego.jugador.ancho;
+    const izquierdaPersonaje = juego.jugador.x;
+
+    if (
+        abajoPersonaje < arribaEnemigo ||
+        arribaPersonaje > abajoEnemigo ||
+        derechaPersonaje < izquierdaEnemigo ||
+        izquierdaPersonaje > derechaEnemigo
+    ) {
+        return; // No hay choque
+    }
+
+    // SI LLEGA ACÁ, ES PORQUE CHOCARON
+    detenerMovimiento();
+    clearInterval(intervalo); // Frena el motor del mapa
+    
+    // Ocultar el mapa y mostrar la arena de combate
+    juego.seccionMapa.classList.add('oculto');
+    juego.seccionAtaque.classList.remove('oculto');
+    juego.seccionMensajes.classList.remove('oculto');
+
+    // Configurar al enemigo con el que chocaste
+    juego.enemigo = enemigo.clonar();
+
+    // Dibujar las tarjetas en la arena
+    juego.arena.replaceChildren(
+        juego.jugador.crearTarjetaArena(),
+        juego.crearSeparadorVS(),
+        juego.enemigo.crearTarjetaArena()
+    );
+
+    juego.mostrarMensaje(
+        `Chocaste contra ${juego.enemigo.presentarse()}. ¡Que empiece el combate!`
+    );
+}
+
+// --- Controles de movimiento ---
+function sePresionoUnaTecla(evento) {
+    switch (evento.key) {
+        case 'ArrowUp':    moverArriba(); break;
+        case 'ArrowDown':  moverAbajo(); break;
+        case 'ArrowLeft':  moverIzquierda(); break;
+        case 'ArrowRight': moverDerecha(); break;
+    }
+}
+
 function moverDerecha()   { juego.jugador.velocidadX = 5; }
 function moverIzquierda() { juego.jugador.velocidadX = -5; }
 function moverAbajo()     { juego.jugador.velocidadY = 5; }
 function moverArriba()    { juego.jugador.velocidadY = -5; }
 
-// Frena al personaje cuando soltamos la tecla o el botón del mouse
 function detenerMovimiento() {
-    juego.jugador.velocidadX = 0;
-    juego.jugador.velocidadY = 0;
+    if(juego.jugador) {
+        juego.jugador.velocidadX = 0;
+        juego.jugador.velocidadY = 0;
+    }
 }
