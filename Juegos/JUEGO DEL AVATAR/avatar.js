@@ -847,7 +847,10 @@ class Juego {
         // Dibujamos el personaje elegido en el Canvas
         //const imagenPrueba = new Image();
         // CLASE 10: Arrancamos el motor que pinta el mapa cada 50 milisegundos
-        intervalo = setInterval(pintarPersonaje, 50);
+        //intervalo = setInterval(pintarPersonaje, 50);
+
+        //Clase 11: Iniciamos el motor del canvas y los controles
+        iniciarMapa();
 
         //imagenPrueba.src = this.jugador.foto || ''; 
         
@@ -1082,19 +1085,45 @@ window.Ataque             = Ataque;
 window.fabricarPersonajes = fabricarPersonajes;
 
 
-// CLASE 10 - FUNCIONES DE MOVIMIENTO PARA EL MAPA
+// ============================================================
+// CLASES 10 Y 11 - FUNCIONES DE MOVIMIENTO Y MAPA (CANVAS)
+// ============================================================
 
 let intervalo; // Variable para controlar el loop del juego
 
-function pintarPersonaje() {
-    // 1. Limpiamos el canvas entero para borrar el dibujo anterior
+// Cargamos la imagen de fondo del mapa
+const mapaBackground = new Image();
+mapaBackground.src = './img/mapa.jpg';
+
+function iniciarMapa() {
+    // Achicamos el canvas como pide el profe
+    juego.mapa.width = 320;
+    juego.mapa.height = 240;
+
+    // Arrancamos el motor que pinta el mapa cada 50 milisegundos
+    intervalo = setInterval(pintarCanvas, 50);
+
+    // Conectamos el teclado
+    window.addEventListener('keydown', sePresionoUnaTecla);
+    window.addEventListener('keyup', detenerMovimiento);
+}
+
+function pintarCanvas() {
+    // 1. Limpiamos el canvas entero
     juego.lienzo.clearRect(0, 0, juego.mapa.width, juego.mapa.height);
     
-    // 2. Actualizamos la posición sumándole la velocidad
+    // 2. Dibujamos el fondo primero (para que quede abajo)
+    juego.lienzo.drawImage(
+        mapaBackground,
+        0, 0,
+        juego.mapa.width, juego.mapa.height
+    );
+
+    // 3. Actualizamos la posición del jugador sumándole la velocidad
     juego.jugador.x = juego.jugador.x + juego.jugador.velocidadX;
     juego.jugador.y = juego.jugador.y + juego.jugador.velocidadY;
     
-    // 3. Dibujamos al personaje en su nueva posición
+    // 4. Dibujamos al jugador encima del fondo
     juego.lienzo.drawImage(
         juego.jugador.mapaFoto,
         juego.jugador.x,
@@ -1104,13 +1133,31 @@ function pintarPersonaje() {
     );
 }
 
-// Funciones que cambian la velocidad al mantener apretado el botón
+// Funciones para las teclas del teclado
+function sePresionoUnaTecla(evento) {
+    switch (evento.key) {
+        case 'ArrowUp':
+            moverArriba();
+            break;
+        case 'ArrowDown':
+            moverAbajo();
+            break;
+        case 'ArrowLeft':
+            moverIzquierda();
+            break;
+        case 'ArrowRight':
+            moverDerecha();
+            break;
+    }
+}
+
+// Funciones de movimiento
 function moverDerecha()   { juego.jugador.velocidadX = 5; }
 function moverIzquierda() { juego.jugador.velocidadX = -5; }
 function moverAbajo()     { juego.jugador.velocidadY = 5; }
 function moverArriba()    { juego.jugador.velocidadY = -5; }
 
-// Función que frena al personaje cuando soltamos el botón
+// Frena al personaje cuando soltamos la tecla o el botón del mouse
 function detenerMovimiento() {
     juego.jugador.velocidadX = 0;
     juego.jugador.velocidadY = 0;
