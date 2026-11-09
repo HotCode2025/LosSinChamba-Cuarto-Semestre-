@@ -1,34 +1,34 @@
 /* ======================================================
-   LA LEYENDA DE AANG — ESTILOS
+   LA LEYENDA DE AANG — ESTILOS ELEMENTALES
    ====================================================== */
 
 :root {
-    --bg-1: #170a05;
-    --bg-2: #2b1206;
-    --panel: rgba(43, 22, 11, 0.92);
-    --panel-2: rgba(15, 7, 3, 0.35);
-    --border: rgba(251, 191, 91, 0.18);
-    --border-strong: rgba(251, 191, 91, 0.32);
+    
+    --bg-1: #0a0e1a;          /* Azul de medianoche profundo */
+    --bg-2: #0b132b;          /* Azul espiritual */
+    --panel: rgba(13, 19, 33, 0.88); /* Cristal místico oscuro traslúcido */
+    --panel-2: rgba(5, 7, 12, 0.5);
+    --border: rgba(245, 158, 11, 0.25); /* Bordes dorados/ámbar sutiles de la serie */
+    --border-strong: rgba(245, 158, 11, 0.45);
 
-    --amber: #f59e0b;
-    --amber-soft: #fcd34d;
-    --amber-strong: #d97706;
-    --blue: #38bdf8;
-    --blue-strong: #2563eb;
-    --red: #ef4444;
-    --red-strong: #dc2626;
-    --green: #22c55e;
+    --amber: #f59e0b;         /* Ámbar de los Nómadas del Aire */
+    --amber-soft: #fcd34d;    /* Oro de Aang */
+    --amber-strong: #d97706;  /* Fuego del dragón */
+    --blue: #38bdf8;          /* Azul espiritual / Tribu Agua */
+    --blue-strong: #1d4ed8;
+    --red: #ef4444;           /* Rojo Nación del Fuego */
+    --red-strong: #b91c1c;
+    --green: #10b981;         /* Verde Reino de la Tierra */
 
-    --ink: #fdf3e6;
-    --ink-dim: #c7ab8e;
+    --ink: #fef3c7;           /* Pergamino claro */
+    --ink-dim: #d97706;       /* Ámbar apagado */
 
-    --win: #22c55e;
+    --win: #10b981;
     --lose: #ef4444;
-    --tie: #eab308;
+    --tie: #f59e0b;
 }
 
 /* ====== BASE ====== */
-/* REQUERIMIENTO: Background a todo el sitio */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -40,30 +40,27 @@ body {
     color: var(--ink);
     min-height: 100vh;
     padding: 2.5rem 1rem 3rem;
-    background:
-        radial-gradient(1100px 550px at 85% -10%, rgba(245, 158, 11, 0.22), transparent 60%),
-        radial-gradient(900px 500px at -10% 110%, rgba(239, 68, 68, 0.16), transparent 60%),
-        linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
-    background-attachment: fixed;
+    
+    background: 
+        radial-gradient(circle at 50% 30%, rgba(13, 19, 33, 0.4) 0%, rgba(10, 14, 26, 0.95) 100%),
+        url('./img/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
-/* Textura sutil */
+/* Partículas místicas de viento y espíritu en el aire (opcional/decorativo) */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     background-image:
-        radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.015) 0, transparent 1px),
-        radial-gradient(circle at 75% 70%, rgba(255, 255, 255, 0.015) 0, transparent 1px);
-    background-size: 3px 3px;
+        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0, transparent 2px),
+        radial-gradient(circle at 80% 40%, rgba(245, 158, 11, 0.05) 0, transparent 2px);
+    background-size: 8px 8px;
     pointer-events: none;
     z-index: -1;
 }
 
-/* ====== TIPOGRAFÍA ====== */
-/* REQUERIMIENTO: Tipografía (importada desde Google Fonts en el HTML) */
-/* REQUERIMIENTO: Color y background al h1 */
-/* REQUERIMIENTO: Formato y layout a los titulos */
+/* ====== TIPOGRAFÍA Y TÍTULO ====== */
 h1 {
     font-family: 'Cinzel', serif;
     text-align: center;
@@ -74,65 +71,96 @@ h1 {
     margin: 0 auto 2rem;
     padding: 1.1rem 1.6rem;
     color: #fff;
-    background: linear-gradient(90deg, #7c2d12 0%, #ea580c 35%, #f59e0b 70%, #fde68a 100%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    /* Degradado de fuego y espíritu */
+    background: linear-gradient(90deg, #b91c1c 0%, #ea580c 35%, #f59e0b 70%, #fcd34d 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 12px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-    box-shadow: 0 20px 50px -20px rgba(245, 158, 11, 0.55);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 45px -15px rgba(245, 158, 11, 0.6);
 }
 
-/* ====== TÍTULO "AVATAR / COMBATE ELEMENTAL" ====== */
 .titulo-principal {
     text-align: center;
     max-width: 680px;
-    margin: 0 auto 2rem;
+    margin: 0 auto 2.5rem;
 }
 
 .logo-avatar {
     font-family: 'Cinzel', serif;
-    font-size: clamp(2.4rem, 8vw, 4rem);
+    font-size: clamp(2.8rem, 9vw, 4.5rem);
     font-weight: 700;
-    letter-spacing: 0.12em;
-    margin: 0 0 0.3rem;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.2rem;
     padding: 0;
-    background: linear-gradient(90deg, #7c2d12 0%, #ea580c 35%, #f59e0b 70%, #fde68a 100%);
+    background: linear-gradient(90deg, #ea580c 10%, #f59e0b 50%, #fcd34d 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 2px 12px rgba(245, 158, 11, 0.35);
+    filter: drop-shadow(0 3px 15px rgba(245, 158, 11, 0.5));
 }
 
 .subtitulo-combate {
     font-family: 'Cinzel', serif;
     font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-    letter-spacing: 0.3em;
+    letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: var(--ink-dim);
+    color: var(--amber-soft);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-/* Fila decorativa de los 4 elementos, arriba del catálogo */
+/* Fila decorativa de los 4 elementos */
 .fila-elementos {
     display: flex;
     justify-content: center;
-    gap: 1.4rem;
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+    gap: 1.8rem;
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
 }
 
 h2 {
     font-family: 'Cinzel', serif;
     text-align: center;
     color: var(--amber-soft);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     letter-spacing: 0.08em;
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1.5px solid var(--border);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ====== SECCIONES (Contenedores translúcidos) ====== */
+section {
+    max-width: 720px;
+    margin: 0 auto 1.8rem;
+    
+   
+    background: var(--panel);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 2.2rem;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px); /* Desenfoque místico de fondo */
+}
+
+/* ====== SECCIONES (Contenedores translúcidos) ====== */
+section {
+    max-width: 720px;
+    margin: 0 auto 1.8rem;
+    
+   
+    background: var(--panel);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 2.2rem;
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px); /* Desenfoque místico de fondo */
 }
 
 /* ====== BOTÓN DE SONIDO ====== */
-/* SPRINT 5: música y efectos generados con Web Audio API (clase Sonido
-   en avatar.js), no hay archivos de audio que cargar. */
 .boton-sonido {
     position: fixed;
     top: 1rem;
@@ -145,21 +173,19 @@ h2 {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(13, 19, 33, 0.8);
     border: 1px solid var(--border);
     color: var(--ink);
     border-radius: 50%;
-    box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
-.boton-sonido:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.12);
+.boton-sonido:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-/* ====== HISTORIAL PERSISTENTE (localStorage) ====== */
-/* SPRINT 4: pendiente de la retro ("Incorporar sistema de puntuación
-   persistente"). Los valores viven en el objeto this.estadisticas de
-   Juego y se guardan en localStorage; esta sección solo los muestra. */
+/* ====== HISTORIAL PERSISTENTE ====== */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
@@ -172,7 +198,7 @@ h2 {
     flex-direction: column;
     align-items: center;
     padding: 0.8rem 0.4rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border);
     border-radius: 10px;
 }
@@ -185,7 +211,7 @@ h2 {
 }
 
 .stat-etiqueta {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.03em;
     color: var(--ink-dim);
     margin-top: 0.2rem;
@@ -194,26 +220,19 @@ h2 {
 
 .boton-borrar-historial {
     width: 100%;
-    color: var(--ink-dim);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-}
-
-.boton-borrar-historial:hover:not(:disabled) {
     color: var(--ink);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-/* ====== LAYOUT GENERAL ====== */
-/* REQUERIMIENTO: Flexbox y los tipos de display */
-section {
-    max-width: 720px;
-    margin: 0 auto 1.5rem;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.55);
+.boton-borrar-historial:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 /* ====== BARRA DEL CATÁLOGO (buscador + contador) ====== */

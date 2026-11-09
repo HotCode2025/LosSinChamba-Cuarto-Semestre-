@@ -143,23 +143,20 @@ class Sonido {
         }
     }
 
-    // ---------- MÚSICA DE FONDO ----------
-    // Un loop ambiental generado a partir de una escala pentatónica menor
-    // (clima "elemental", nada de melodías con derechos de autor). Se
-    // agenda con el reloj del propio AudioContext en vez de un setInterval
-    // "a ojo", para que las notas no se desfasen con el tiempo.
     iniciarMusica() {
         this.asegurarContexto();
         if (!this.contexto || this.reloj) return;
 
-        const escala = [220, 246.94, 261.63, 329.63, 392];
+        // Escala pentatónica menor (sonido oriental místico)
+        const escala = [293.66, 349.23, 392.00, 440.00, 523.25];
         const notasPorCompas = 4;
-        const duracionCompas = notasPorCompas * 1100;
+        const duracionCompas = notasPorCompas * 1200;
 
         const agendarProximoCompas = () => {
             for (let i = 0; i < notasPorCompas; i++) {
                 const nota = escala[Math.floor(Math.random() * escala.length)];
-                this.tono({ frecuencia: nota, duracion: 1.6, tipo: 'sine', volumen: 0.045, retraso: i * 1.1 });
+                // Usamos 'triangle' en vez de 'sine' para que suene como una flauta de bambú
+                this.tono({ frecuencia: nota, duracion: 2.0, tipo: 'triangle', volumen: 0.035, retraso: i * 1.2 });
             }
             this.reloj = setTimeout(agendarProximoCompas, duracionCompas);
         };
@@ -512,7 +509,7 @@ const zuko = new Personaje({
     id: 'zuko', nombre: 'Zuko', emoji: '🔥', titulo: 'Maestro Fuego',
     descripcion: 'Príncipe desterrado de la Nación del Fuego, domina las llamas con precisión.',
     tinte: 'rgba(239, 68, 68, 0.14)',
-    foto: './img/zuko.jpeg', x: 80, y: 120
+    foto: './img/zuko.png', x: 80, y: 120
 });
 zuko.ataques.push(...ATAQUES);
 
@@ -520,7 +517,7 @@ const toph = new Personaje({
     id: 'toph', nombre: 'Toph', emoji: '🪨', titulo: 'Maestra Tierra',
     descripcion: 'Maestra Tierra ciega que "ve" con vibraciones; inventora del metalcontrol.',
     tinte: 'rgba(34, 197, 94, 0.14)',
-    foto: './img/toph.jpeg', x: 210, y: 200
+    foto: './img/toph.png', x: 210, y: 200
 });
 toph.ataques.push(...ATAQUES);
 
