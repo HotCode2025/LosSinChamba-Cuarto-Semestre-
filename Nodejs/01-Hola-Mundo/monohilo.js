@@ -6,3 +6,4 @@ setInterval(function() {
     i++;
 
 }, 1000);
+console.log("Ultima ejecución")
