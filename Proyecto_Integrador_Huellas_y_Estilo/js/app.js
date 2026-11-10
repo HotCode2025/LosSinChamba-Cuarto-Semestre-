@@ -125,7 +125,7 @@
         state.tam = c.dataset.tam; sincronizarCampos(); render();
       });
       $("#limpiar").addEventListener("click", limpiar);
-      alternar($("#btnFiltros"), $("#filtros"));
+      alternar($("#btnFiltros"), $("#filtros")); 
     }
 
     // En las dos páginas
