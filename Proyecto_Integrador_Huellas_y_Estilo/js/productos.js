@@ -15,4 +15,4 @@ const PRODUCTOS = [
   { id: 12, nombre: "Bebedero antivuelco",  categoria: "comederos", tamanos: ["chico", "mediano"],           precio: 9400,  descripcion: "Mantiene el agua limpia y sin derrames.",     destacado: false, personalizable: false, imagen: "img/productos/bebedero-antivuelco.jpeg" },
   { id: 13, nombre: "Piloto impermeable",   categoria: "ropa",      tamanos: ["chico", "mediano", "grande"], precio: 15900, descripcion: "Con capucha, para los días de lluvia.",       destacado: false, personalizable: false, imagen: "img/productos/impermeable.jpg" },
   { id: 14, nombre: "Sweater de lana",      categoria: "ropa",      tamanos: ["chico", "mediano"],           precio: 12800, descripcion: "Abriga sin limitar el movimiento.",           destacado: false, personalizable: false, imagen: "img/productos/sweater.jpg" }
-];
+]; 
