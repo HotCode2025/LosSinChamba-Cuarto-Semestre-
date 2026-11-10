@@ -1,0 +1,33 @@
+/* Estilos exclusivos del módulo Producto y Personalización (Mariano Rasgido). */
+.migas { display:flex; flex-wrap:wrap; gap:.55rem; color:var(--gris); font-size:.875rem; margin-bottom:1.5rem; }
+.migas a { text-decoration:none; }
+.detalle-producto { display:grid; gap:2rem; align-items:start; }
+.detalle-producto[hidden], .estado-producto[hidden] { display:none; }
+.galeria { min-width:0; }
+.imagen-principal { display:grid; place-items:center; overflow:hidden; background:var(--crema); border-radius:var(--radio); aspect-ratio:1 / 1; border:1px solid var(--borde); }
+.imagen-principal img { width:100%; height:100%; object-fit:contain; }
+.miniaturas { display:flex; gap:.65rem; flex-wrap:wrap; margin-top:.75rem; }
+.miniatura { width:76px; height:76px; padding:3px; border:2px solid var(--borde); border-radius:10px; background:#fff; cursor:pointer; overflow:hidden; }
+.miniatura[aria-pressed="true"] { border-color:var(--verde); }
+.miniatura img { width:100%; height:100%; object-fit:cover; }
+.info-producto { min-width:0; }
+.categoria-producto { color:var(--gris); text-transform:capitalize; font-size:.875rem; margin:.5rem 0; }
+.info-producto h1 { margin-bottom:.4rem; }
+.precio-detalle { color:var(--verde); font:700 1.75rem "Poppins",sans-serif; margin:.6rem 0; }
+.descripcion-producto { color:var(--gris); max-width:60ch; }
+.form-producto { display:grid; gap:1.1rem; margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--borde); }
+.campo-producto { display:grid; gap:.35rem; }
+.campo-producto label { font-weight:600; font-size:.9rem; }
+.campo-producto small { color:var(--gris); font-size:.8rem; }
+.campo-producto input, .campo-producto select { max-width:100%; }
+.cantidad-campo { max-width:150px; }
+.personalizacion { display:grid; gap:.8rem; padding:1rem; border:1px solid #f4d3a9; background:var(--crema); border-radius:var(--radio); }
+.personalizacion h2 { font-size:1.1rem; margin:.5rem 0 .2rem; }
+.personalizacion p { color:var(--gris); font-size:.9rem; margin:0; }
+.btn-agregar { margin-top:.25rem; }
+.nota-producto { color:var(--gris); font-size:.8rem; margin:0; }
+.error-producto { color:#a52a2a; background:#fff1f0; border-radius:8px; padding:.65rem .8rem; margin:0; }
+.error-producto[hidden] { display:none; }
+.estado-producto { padding:1.25rem; background:var(--crema); border-radius:var(--radio); }
+.volver-catalogo { display:inline-block; margin-top:1.25rem; font-weight:600; text-decoration:none; }
+@media (min-width:768px) { .detalle-producto { grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:3rem; } .imagen-principal { max-height:580px; } }
