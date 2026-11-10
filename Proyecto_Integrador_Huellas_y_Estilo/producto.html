@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalle del producto | Huellas &amp; Estilo</title>
+  <meta name="description" content="Conocé los detalles y personalizá los accesorios para tu perro.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/producto.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="header">
+  <div class="wrap header-in">
+    <a class="logo" href="index.html">Huellas &amp; Estilo</a>
+    <nav id="menu" class="menu" aria-label="Principal">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="cuenta.html">Mi cuenta</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <a class="cart" href="carrito.html" aria-label="Carrito">Carrito <span id="cartCount" class="badge">0</span></a>
+    <button id="btnMenu" class="burger" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><span></span></button>
+  </div>
+</header>
+
+<main id="main" class="wrap sec">
+  <nav class="migas" aria-label="Ruta de navegación">
+    <a href="index.html">Inicio</a><span aria-hidden="true">/</span><a href="catalogo.html">Catálogo</a><span aria-hidden="true">/</span><span id="migaActual">Producto</span>
+  </nav>
+
+  <div id="estadoProducto" class="estado-producto" role="status" aria-live="polite">Cargando producto...</div>
+  <section id="detalleProducto" class="detalle-producto" hidden aria-labelledby="nombreProducto">
+    <div class="galeria">
+      <div class="imagen-principal">
+        <img id="imagenPrincipal" src="" alt="">
+      </div>
+      <div id="miniaturas" class="miniaturas" aria-label="Galería de imágenes del producto"></div>
+    </div>
+
+    <div class="info-producto">
+      <div class="tags" id="etiquetasProducto"></div>
+      <p class="categoria-producto" id="categoriaProducto"></p>
+      <h1 id="nombreProducto"></h1>
+      <p class="precio-detalle" id="precioProducto"></p>
+      <p id="descripcionProducto" class="descripcion-producto"></p>
+
+      <form id="formProducto" class="form-producto" novalidate>
+        <div class="campo-producto">
+          <label for="tamanoProducto">Tamaño</label>
+          <select id="tamanoProducto" name="tamano" required>
+            <option value="">Seleccioná un tamaño</option>
+          </select>
+          <small id="ayudaTamano">Elegí el tamaño adecuado para tu perro.</small>
+        </div>
+
+        <div id="bloquePersonalizacion" class="personalizacion" hidden>
+          <div>
+            <span class="tag">Personalizable</span>
+            <h2>Agregale su nombre 🐾</h2>
+            <p>Escribí el nombre de tu mascota para preparar este producto.</p>
+          </div>
+          <div class="campo-producto">
+            <label for="nombreMascota">Nombre de la mascota</label>
+            <input id="nombreMascota" name="nombreMascota" type="text" maxlength="20" placeholder="Ej.: Toby" autocomplete="off">
+            <small>Hasta 20 caracteres. No incluyas datos de contacto.</small>
+          </div>
+        </div>
+
+        <div class="campo-producto cantidad-campo">
+          <label for="cantidadProducto">Cantidad</label>
+          <input id="cantidadProducto" name="cantidad" type="number" min="1" max="20" value="1" required>
+        </div>
+
+        <p id="errorProducto" class="error-producto" role="alert" hidden></p>
+        <button class="btn btn-pri btn-agregar" type="submit">Agregar al carrito</button>
+        <p class="nota-producto">La selección y personalización se enviarán junto con el producto al carrito.</p>
+      </form>
+      <a class="volver-catalogo" href="catalogo.html">← Volver al catálogo</a>
+    </div>
+  </section>
+</main>
+
+<footer id="contacto" class="footer">
+  <div class="wrap foot-in">
+    <div><strong class="logo">Huellas &amp; Estilo</strong><p>Accesorios para perros, pensados a su medida.</p></div>
+    <nav aria-label="Información">
+      <a href="nosotros.html">Quiénes somos</a><a href="contacto.html">Contacto</a>
+      <a href="faq.html">Preguntas frecuentes</a><a href="terminos.html">Términos y condiciones</a>
+    </nav>
+  </div>
+  <p class="copy">Proyecto integrador - Los sin chamba - UTN FRSR</p>
+</footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="js/productos.js"></script>
+<script src="js/producto.js"></script>
+</body>
+</html>
