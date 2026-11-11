@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
     
-    <!-- Favicon redondo para la pestaña (con versión para forzar la actualización de caché) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="./media/LogoVeterinaria.png?v=4">
     <link rel="shortcut icon" type="image/png" href="./media/LogoVeterinaria.png?v=4">
     
@@ -20,27 +20,58 @@
         </a>
     </header>
 
-    <!--shop content-->
+    <!-- Content productos -->
     <div class="card-products-container">
         <div class="card-products" id="shopContent"></div>
     </div>
 
-    <!--cart btn (4.1: con contador de productos)-->
+    <!-- Carrito btn -->
     <div class="cart-btn" id="cart-btn">
         🛒
         <span class="cart-counter" id="cart-counter">0</span>
     </div>
     
-    <!--modal-->
+    <!-- Modal -->
     <div class="modal-overlay" id="modal-overlay"></div>
     <div class="modal-container" id="modal-container"></div>
 
-    <!--4.2: SDK de Mercado Pago (necesita la public_key)-->
+    <!-- SDK de Mercado Pago -->
     <script src="https://sdk.mercadopago.com/js/v2"></script>
 
     <script src="./js/products.js"></script>
     <script src="./js/index.js"></script>
     <script src="./js/cart.js"></script>
     <script src="./js/checkout.js"></script>
+
+    <!-- Script de integración rápida para probar Mercado Pago -->
+    <script>
+      async function pagarConMercadoPago(itemsCarrito = []) {
+        try {
+          const response = await fetch('/create_preference', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ items: itemsCarrito })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error en el servidor: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          if (data.init_point || data.sandbox_init_point) {
+            // Redirige al checkout de Mercado Pago
+            window.location.href = data.sandbox_init_point || data.init_point;
+          } else {
+            alert('No se pudo obtener el link de pago.');
+          }
+        } catch (error) {
+          console.error('Error al procesar el pago:', error);
+          alert('Hubo un error al generar el pago con Mercado Pago.');
+        }
+      }
+    </script>
 </body>
 </html>
