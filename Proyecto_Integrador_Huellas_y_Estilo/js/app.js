@@ -12,8 +12,22 @@
   const money = (n) => new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", maximumFractionDigits: 0 }).format(n);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  // Hoy lee los datos de ejemplo. Con el backend: const r = await fetch("/api/productos"); return r.json();
-  async function obtenerProductos() { return PRODUCTOS; }
+ const STORAGE_KEY = "huellas_productos_v1";
+
+async function obtenerProductos() {
+  try {
+    const guardados = localStorage.getItem(STORAGE_KEY);
+
+    if (guardados) {
+      const datos = JSON.parse(guardados);
+      if (Array.isArray(datos)) return datos;
+    }
+  } catch (error) {
+    console.warn("No se pudieron leer los productos guardados:", error);
+  }
+
+  return Array.isArray(PRODUCTOS) ? PRODUCTOS : [];
+}
 
   const state = { q: "", cat: "", tam: "", min: "", max: "", orden: "destacados" };
   let todos = [];
