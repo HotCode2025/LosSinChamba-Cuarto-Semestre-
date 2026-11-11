@@ -43,3 +43,30 @@ Para mantener la organización de forma sencilla dentro del repositorio de la ma
 - **Sprint 2:** Buscador, carrito, registro e inicio de sesión.
 - **Sprint 3:** Pagos, envío, confirmación y panel de administración de productos.
 - **Sprint 4:** Gestión de pedidos, historial, pruebas finales, correcciones y presentación.
+
+
+## 🛒 Módulo de Carrito y Checkout — Kevin Castilla
+
+Se incorporó el módulo `carrito.html`, junto con `js/carrito.js` y `css/carrito.css`.
+
+### Funcionalidades
+- Recibe productos agregados desde el catálogo y desde el detalle del producto mediante el evento `carrito:agregar`.
+- Guarda el carrito en `localStorage`, por lo que los productos se mantienen al cambiar de página o recargar.
+- Agrupa variantes iguales (producto, tamaño y nombre personalizado), permite aumentar/disminuir cantidades y eliminar artículos.
+- Calcula subtotal y total automáticamente en pesos argentinos.
+- Solicita datos del comprador y dirección de envío, valida los campos y muestra el resumen de la orden.
+- Incluye un modo de demostración para recorrer el checkout sin cobrar dinero.
+
+### Integración con Mercado Pago Checkout Pro (Sandbox)
+El checkout utiliza el backend Java ubicado en `backend/`. Al presionar **Pagar con Mercado Pago**, el frontend solicita `POST http://localhost:8080/api/pagos/preferencia`; el backend crea una preferencia con el Access Token de prueba y devuelve `init_point` para abrir el Checkout Pro de Mercado Pago.
+
+**Modo sencillo para la demostración local:** no se configuran URLs de retorno. El comprador sale de la tienda y llega al checkout de prueba de Mercado Pago. Así se puede mostrar el flujo de pago sin usar ngrok ni publicar el proyecto. Para volver automáticamente a la tienda después del pago, Mercado Pago requiere una URL pública HTTPS, pero eso no es necesario para esta demostración.
+
+Para ejecutarlo se necesita Java 17 y Maven. En una terminal PowerShell abierta dentro de `backend`, configurá el Access Token de prueba y ejecutá `mvn spring-boot:run`:
+
+```powershell
+$env:MP_ACCESS_TOKEN="TEST-TU_ACCESS_TOKEN"
+mvn spring-boot:run
+```
+
+Luego abrí `index.html` con Live Server. El botón de pago abre el checkout de Mercado Pago usando `init_point`. No compartas ni subas el Access Token al repositorio. Para producción se deben verificar los pagos desde el servidor mediante la API y/o Webhooks, y validar los precios contra la base de datos.

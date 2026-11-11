@@ -168,12 +168,6 @@
       detail: { id: producto.id, cantidad, producto: itemCarrito }
     }));
 
-    // También se actualiza el contador visual como respuesta inmediata.
-    const contador = $("#cartCount");
-    if (contador) {
-      const actual = Number(contador.textContent) || 0;
-      contador.textContent = String(actual + cantidad);
-    }
 
     mostrarAviso(`Agregaste ${cantidad} × ${producto.nombre} al carrito.`);
     $("#formProducto").reset();

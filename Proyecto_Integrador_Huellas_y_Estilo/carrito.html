@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito y compra | Huellas &amp; Estilo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/carrito.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header class="header"><div class="wrap header-in">
+  <a class="logo" href="index.html">Huellas &amp; Estilo</a>
+  <nav id="menu" class="menu" aria-label="Principal"><a href="index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="index.html#contacto">Contacto</a></nav>
+  <a class="cart" href="carrito.html" aria-label="Carrito">Carrito <span id="cartCount" class="badge">0</span></a>
+  <button id="btnMenu" class="burger" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú"><span></span></button>
+</div></header>
+<main id="main" class="wrap sec checkout-page">
+  <h1 class="titulo-pag">Tu carrito</h1>
+  <div class="stepper" aria-label="Pasos de compra">
+    <span data-step-indicator="cart" class="active">1. Carrito</span><span data-step-indicator="checkout">2. Envío y pago</span><span data-step-indicator="confirmation">3. Confirmación</span>
+  </div>
+  <section data-step="cart" id="cartContent" hidden>
+    <div id="cartItems" class="cart-items"></div>
+    <aside class="summary">
+      <h2>Resumen de compra</h2><div class="summary-line"><span>Subtotal</span><strong id="cartSubtotal">$ 0</strong></div>
+      <div class="summary-line"><span>Envío</span><span>A coordinar</span></div>
+      <div class="summary-line total"><span>Total</span><strong id="cartTotal">$ 0</strong></div>
+      <p class="muted">El costo y la disponibilidad del envío se confirmarán con el comprador.</p>
+      <button id="goCheckout" class="btn btn-pri">Continuar con la compra</button>
+      <a class="continue-link" href="catalogo.html">← Seguir comprando</a>
+    </aside>
+  </section>
+  <section id="cartEmpty" class="empty-cart" hidden>
+    <div aria-hidden="true">🛒</div><h2>Tu carrito está vacío</h2><p>Explorá el catálogo y encontrá algo para tu mascota.</p><a class="btn btn-pri" href="catalogo.html">Ver catálogo</a>
+  </section>
+  <section data-step="checkout" hidden>
+    <div class="checkout-layout">
+      <form id="checkoutForm" class="checkout-form">
+        <h2>Datos del comprador</h2>
+        <div class="form-grid">
+          <label>Nombre y apellido<input name="nombre" autocomplete="name" required minlength="3"></label>
+          <label>Correo electrónico<input name="email" type="email" autocomplete="email" required></label>
+          <label>Teléfono<input name="telefono" type="tel" autocomplete="tel" required></label>
+        </div>
+        <h2>Datos de envío</h2>
+        <div class="form-grid">
+          <label class="wide">Dirección<input name="direccion" autocomplete="street-address" required></label>
+          <label>Localidad<input name="localidad" autocomplete="address-level2" required></label>
+          <label>Provincia<input name="provincia" autocomplete="address-level1" required></label>
+          <label>Código postal<input name="cp" autocomplete="postal-code" required></label>
+          <label class="wide">Referencia (opcional)<input name="referencia" placeholder="Piso, departamento, entre calles..."></label>
+        </div>
+        <p id="paymentError" class="payment-error" role="alert" hidden></p>
+        <div class="checkout-actions"><button type="button" id="backCart" class="btn btn-sec">Volver al carrito</button><button type="submit" id="payButton" class="btn btn-pri">Pagar con Mercado Pago</button></div>
+        <p class="muted">Serás redirigido al entorno seguro de Mercado Pago para completar el pago de prueba.</p>
+      </form>
+      <aside class="summary"><h2>Tu compra</h2><div class="summary-line total"><span>Total</span><strong id="checkoutTotal">$ 0</strong></div></aside>
+    </div>
+  </section>
+  <section data-step="confirmation" class="confirmation" hidden>
+    <div class="success-icon">✓</div><h2 id="confirmationTitle">Resultado del pago</h2><p id="confirmationMessage">Resumen de tu operación.</p>
+    <div id="confirmationSummary" class="confirmation-summary"></div>
+    <a id="returnCart" class="btn btn-pri" href="catalogo.html">Volver al catálogo</a>
+  </section>
+</main>
+<footer class="footer"><div class="wrap sec"><a class="logo" href="index.html">Huellas &amp; Estilo</a><p>Accesorios pensados para acompañar cada aventura.</p></div><p class="copy">© 2026 Huellas &amp; Estilo</p></footer>
+<script src="js/carrito.js"></script>
+<script>
+document.getElementById("btnMenu").addEventListener("click",()=>{const m=document.getElementById("menu");const opened=m.classList.toggle("open");document.getElementById("btnMenu").setAttribute("aria-expanded",String(opened));});
+</script>
+</body></html>

@@ -89,7 +89,7 @@
     const p = todos.find((x) => x.id === id); if (!p) return;
     carrito += 1; $("#cartCount").textContent = carrito;
     // El módulo de carrito escucha este evento para guardar el producto.
-    document.dispatchEvent(new CustomEvent("carrito:agregar", { detail: { id: p.id, cantidad: 1 } }));
+    document.dispatchEvent(new CustomEvent("carrito:agregar", { detail: { id: p.id, cantidad: 1, producto: { ...p, cantidad: 1, tamano: "", nombreMascota: "" } } }));
     aviso(`Agregaste "${p.nombre}" al carrito`);
   }
 

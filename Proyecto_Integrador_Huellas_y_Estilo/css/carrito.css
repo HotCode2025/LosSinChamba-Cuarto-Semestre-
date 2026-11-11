@@ -1,0 +1,36 @@
+/* Estilos del módulo Carrito y Checkout - Kevin Castilla */
+.checkout-page{max-width:1050px}
+.stepper{display:flex;gap:.6rem;flex-wrap:wrap;margin:0 0 1.5rem}
+.stepper span{padding:.45rem .85rem;border-radius:999px;background:var(--crema);color:var(--gris);font-size:.85rem;font-weight:600}
+.stepper span.active{background:var(--verde);color:#fff}
+#cartContent{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:1.5rem;align-items:start}
+.cart-items{display:grid;gap:1rem}
+.cart-item{display:grid;grid-template-columns:100px minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1rem;border:1px solid var(--borde);border-radius:var(--radio)}
+.cart-item img{width:100px;height:100px;object-fit:contain;background:var(--crema);border-radius:10px}
+.cart-item-info h3{margin:0 0 .25rem}.cart-item-info p,.muted{font-size:.85rem;color:var(--gris)}
+.line-total{white-space:nowrap}
+.qty-controls{display:flex;align-items:center;gap:.55rem;margin-top:.65rem}
+.qty-controls button{border:1px solid var(--borde);background:white;border-radius:7px;min-width:32px;min-height:32px;cursor:pointer;color:var(--azul)}
+.qty-controls .remove-item{border:0;color:#a33;background:transparent;text-decoration:underline}
+.summary{border:1px solid var(--borde);border-radius:var(--radio);padding:1.25rem;background:var(--crema)}
+.summary h2{font-size:1.15rem}.summary-line{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--borde)}
+.summary-line.total{font-size:1.15rem;border:0;margin-bottom:.6rem}
+.summary .btn{margin-top:.5rem}.continue-link{display:block;text-align:center;margin-top:1rem;text-decoration:none;font-size:.9rem}
+.empty-cart{text-align:center;padding:3rem 1rem;background:var(--crema);border-radius:var(--radio)}
+.empty-cart>div{font-size:3rem}.empty-cart p{color:var(--gris)}
+.checkout-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(230px,.7fr);gap:1.5rem;align-items:start}
+.checkout-form{border:1px solid var(--borde);border-radius:var(--radio);padding:1.25rem}
+.checkout-form h2{font-size:1.2rem;margin:0 0 1rem}.checkout-form h2:not(:first-child){margin-top:1.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-grid label{font-size:.9rem;font-weight:600}.form-grid input{display:block;margin-top:.3rem}
+.form-grid .wide{grid-column:1/-1}
+.checkout-actions{display:flex;gap:.75rem;margin-top:1rem}.checkout-actions .btn{flex:1}
+.payment-error{padding:.75rem;background:#fff1f0;color:#a52a2a;border-radius:8px}
+.demo-panel{margin-top:1.25rem;padding:1rem;border:1px dashed var(--verde);border-radius:var(--radio)}
+.demo-panel p{color:var(--gris);margin:.25rem 0 .75rem}
+.confirmation{max-width:650px;margin:2rem auto;text-align:center;padding:2rem;background:var(--crema);border-radius:var(--radio)}
+.success-icon{display:grid;place-items:center;margin:0 auto 1rem;width:58px;height:58px;border-radius:50%;background:var(--verde);color:white;font-size:2rem}
+.confirmation-summary{text-align:left;background:white;border-radius:10px;padding:1rem;margin:1.25rem 0}
+.confirmation-summary ul{padding-left:1.25rem}
+[data-step][hidden],#cartEmpty[hidden],#cartContent[hidden]{display:none}
+@media(max-width:760px){#cartContent,.checkout-layout{grid-template-columns:1fr}.cart-item{grid-template-columns:76px minmax(0,1fr)}.cart-item img{width:76px;height:76px}.line-total{grid-column:2}.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.checkout-actions{flex-direction:column}}
