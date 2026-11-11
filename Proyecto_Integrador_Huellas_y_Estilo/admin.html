@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel de Administración | Huellas &amp; Estilo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .admin-container{max-width:1050px;margin:40px auto;padding:20px}
+    .admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;background:#fff;padding:22px;border:1px solid #ddd;border-radius:12px;margin:22px 0 34px}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group.full{grid-column:1/-1}
+    .form-group label,.group-title{font-weight:600}
+    .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font:inherit}
+    .form-group textarea{min-height:85px;resize:vertical}
+    .checks{display:flex;flex-wrap:wrap;gap:12px}
+    .checks label{font-weight:400;display:flex;align-items:center;gap:5px}
+    .checks input{width:auto}
+    .admin-actions{display:flex;gap:10px;flex-wrap:wrap;grid-column:1/-1}
+    .btn-admin{border:0;border-radius:6px;padding:10px 16px;cursor:pointer;font-weight:600}
+    .btn-save{background:#218838;color:white}.btn-cancel{background:#e9ecef;color:#222}
+    .admin-table{width:100%;border-collapse:collapse;margin-top:16px;background:#fff}
+    .admin-table th,.admin-table td{border:1px solid #ddd;padding:10px;text-align:left;vertical-align:middle}
+    .admin-table th{background:#f5f5f5}
+    .admin-table img{width:58px;height:58px;object-fit:cover;border-radius:7px}
+    .btn-accion{padding:7px 10px;border:0;border-radius:5px;cursor:pointer;color:#fff;margin:2px}
+    .btn-editar{background:#e0a800;color:#222}.btn-eliminar{background:#c82333}
+    .preview{width:110px;height:110px;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:none}
+    .hint{font-size:.88rem;color:#666}
+    .table-wrap{overflow-x:auto}
+    @media(max-width:650px){.admin-form{grid-template-columns:1fr}.form-group.full,.admin-actions{grid-column:auto}.admin-container{padding:12px}}
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="wrap header-in">
+    <a class="logo" href="index.html">Huellas &amp; Estilo</a>
+    <nav id="menu" class="menu" aria-label="Principal">
+      <a href="index.html#inicio">Inicio</a><a href="catalogo.html">Catálogo</a>
+      <a href="cuenta.html">Mi cuenta</a><a href="admin.html" style="font-weight:bold;color:var(--accent,#e67e22)">Admin</a>
+    </nav>
+    <a class="cart" href="carrito.html">Carrito <span id="cartCount" class="badge">0</span></a>
+  </div>
+</header>
+
+<main class="admin-container">
+  <h1>Panel de Administración</h1>
+  <p>Agregá, editá o eliminá productos. Los cambios se reflejan en Inicio y en el Catálogo de este navegador.</p>
+
+  <h2 id="formTitulo">Agregar producto</h2>
+  <form id="formProducto" class="admin-form">
+    <input type="hidden" id="prodId">
+    <div class="form-group">
+      <label for="nombre">Nombre del producto</label>
+      <input id="nombre" required maxlength="100" placeholder="Ej.: Collar reflectivo">
+    </div>
+    <div class="form-group">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" required>
+        <option value="">Seleccioná...</option>
+        <option value="collares">Collares</option><option value="correas">Correas</option>
+        <option value="arneses">Arneses</option><option value="camas">Camas</option>
+        <option value="juguetes">Juguetes</option><option value="comederos">Comederos</option>
+        <option value="ropa">Ropa</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="precio">Precio ($)</label>
+      <input id="precio" type="number" min="0" step="1" required placeholder="Ej.: 8500">
+    </div>
+    <div class="form-group">
+      <label for="stock">Stock</label>
+      <input id="stock" type="number" min="0" step="1" required value="0">
+    </div>
+    <div class="form-group full">
+      <span class="group-title">Tamaños disponibles</span>
+      <div class="checks">
+        <label><input type="checkbox" name="tamano" value="chico"> Chico</label>
+        <label><input type="checkbox" name="tamano" value="mediano"> Mediano</label>
+        <label><input type="checkbox" name="tamano" value="grande"> Grande</label>
+      </div>
+    </div>
+    <div class="form-group full">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" maxlength="500" placeholder="Contá las características del producto"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="imagen">Fotografía del producto</label>
+      <input id="imagen" type="file" accept="image/*">
+      <span class="hint">Elegí una imagen JPG, PNG o WEBP. Se guarda en este navegador.</span>
+    </div>
+    <div class="form-group">
+      <label>Vista previa</label>
+      <img id="preview" class="preview" alt="Vista previa del producto">
+      <span id="imagenActual" class="hint">Todavía no seleccionaste una imagen.</span>
+    </div>
+    <div class="form-group full">
+      <div class="checks">
+        <label><input id="destacado" type="checkbox"> Mostrar en Productos destacados</label>
+        <label><input id="personalizable" type="checkbox"> Producto personalizable</label>
+      </div>
+    </div>
+    <div class="admin-actions">
+      <button type="submit" class="btn-admin btn-save" id="btnGuardar">Agregar producto</button>
+      <button type="button" class="btn-admin btn-cancel" id="btnCancelar" hidden>Cancelar edición</button>
+    </div>
+  </form>
+
+  <h2>Inventario actual</h2>
+  <p id="totalProductos" class="hint"></p>
+  <div class="table-wrap">
+    <table class="admin-table">
+      <thead><tr><th>Foto</th><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+      <tbody id="tablaProductos"></tbody>
+    </table>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot-in"><div><strong class="logo">Huellas &amp; Estilo</strong><p>Accesorios para perros, pensados a su medida.</p></div></div>
+  <p class="copy">Proyecto integrador - Los sin chamba - UTN FRSR</p>
+</footer>
+
+<script src="js/productos.js"></script>
+<script>
+(() => {
+  const KEY = "huellas_productos_v1";
+  const $ = (id) => document.getElementById(id);
+  const form = $("formProducto");
+  let imagenSeleccionada = "";
+  const escapar = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const categoriaNombre = {collares:"Collares",correas:"Correas",arneses:"Arneses",camas:"Camas",juguetes:"Juguetes",comederos:"Comederos",ropa:"Ropa"};
+
+  function obtenerProductos() {
+    try {
+      const guardados = localStorage.getItem(KEY);
+      if (guardados) {
+        const lista = JSON.parse(guardados);
+        if (Array.isArray(lista)) return lista;
+      }
+    } catch (e) { console.error(e); }
+    const iniciales = (typeof PRODUCTOS !== "undefined" && Array.isArray(PRODUCTOS) ? PRODUCTOS : []).map(p => ({...p, stock: Number(p.stock ?? 0)}));
+    localStorage.setItem(KEY, JSON.stringify(iniciales));
+    return iniciales;
+  }
+  function guardarLista(lista) {
+    try { localStorage.setItem(KEY, JSON.stringify(lista)); return true; }
+    catch (e) {
+      alert("No se pudieron guardar los productos. La imagen puede ser demasiado grande para el almacenamiento del navegador. Probá con una imagen más liviana.");
+      return false;
+    }
+  }
+  function renderTabla() {
+    const productos = obtenerProductos();
+    $("totalProductos").textContent = `${productos.length} producto(s) cargado(s).`;
+    $("tablaProductos").innerHTML = productos.length ? productos.map(p => `
+      <tr>
+        <td>${p.imagen ? `<img src="${escapar(p.imagen)}" alt="${escapar(p.nombre)}">` : "—"}</td>
+        <td><strong>${escapar(p.nombre)}</strong></td>
+        <td>${escapar(categoriaNombre[p.categoria] || p.categoria)}</td>
+        <td>$${Number(p.precio || 0).toLocaleString("es-AR")}</td>
+        <td>${Number(p.stock || 0)}</td>
+        <td><button type="button" class="btn-accion btn-editar" data-editar="${escapar(p.id)}">Editar</button>
+        <button type="button" class="btn-accion btn-eliminar" data-eliminar="${escapar(p.id)}">Eliminar</button></td>
+      </tr>`).join("") : '<tr><td colspan="6" style="text-align:center">No hay productos cargados.</td></tr>';
+  }
+  function limpiarFormulario() {
+    form.reset(); $("prodId").value = ""; $("stock").value = 0;
+    imagenSeleccionada = ""; $("preview").removeAttribute("src"); $("preview").style.display = "none";
+    $("imagenActual").textContent = "Todavía no seleccionaste una imagen.";
+    $("formTitulo").textContent = "Agregar producto"; $("btnGuardar").textContent = "Agregar producto";
+    $("btnCancelar").hidden = true;
+  }
+  function cargarEdicion(id) {
+    const p = obtenerProductos().find(x => String(x.id) === String(id));
+    if (!p) return;
+    $("prodId").value = p.id; $("nombre").value = p.nombre || "";
+    $("categoria").value = p.categoria || ""; $("precio").value = p.precio ?? "";
+    $("stock").value = p.stock ?? 0; $("descripcion").value = p.descripcion || "";
+    $("destacado").checked = Boolean(p.destacado); $("personalizable").checked = Boolean(p.personalizable);
+    document.querySelectorAll('input[name="tamano"]').forEach(c => c.checked = (p.tamanos || []).includes(c.value));
+    imagenSeleccionada = p.imagen || "";
+    if (imagenSeleccionada) { $("preview").src = imagenSeleccionada; $("preview").style.display = "block"; $("imagenActual").textContent = "Imagen actual (podés reemplazarla)."; }
+    else { $("preview").style.display = "none"; $("imagenActual").textContent = "Este producto no tiene imagen."; }
+    $("formTitulo").textContent = "Editar producto"; $("btnGuardar").textContent = "Guardar cambios"; $("btnCancelar").hidden = false;
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  $("imagen").addEventListener("change", () => {
+    const file = $("imagen").files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { alert("Seleccioná un archivo de imagen válido."); $("imagen").value = ""; return; }
+    if (file.size > 2 * 1024 * 1024) { alert("La imagen supera los 2 MB. Elegí una imagen más liviana."); $("imagen").value = ""; return; }
+    const reader = new FileReader();
+    reader.onload = () => { imagenSeleccionada = reader.result; $("preview").src = imagenSeleccionada; $("preview").style.display = "block"; $("imagenActual").textContent = file.name; };
+    reader.readAsDataURL(file);
+  });
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const tamanos = [...document.querySelectorAll('input[name="tamano"]:checked')].map(c => c.value);
+    if (!tamanos.length) { alert("Seleccioná al menos un tamaño."); return; }
+    const lista = obtenerProductos();
+    const idActual = $("prodId").value;
+    const anterior = lista.find(p => String(p.id) === String(idActual));
+    const producto = {
+      id: anterior ? anterior.id : Math.max(0, ...lista.map(p => Number(p.id) || 0)) + 1,
+      nombre: $("nombre").value.trim(), categoria: $("categoria").value,
+      precio: Number($("precio").value), stock: Number($("stock").value),
+      descripcion: $("descripcion").value.trim(), tamanos,
+      destacado: $("destacado").checked, personalizable: $("personalizable").checked,
+      imagen: imagenSeleccionada || ""
+    };
+    if (anterior) lista[lista.findIndex(p => String(p.id) === String(idActual))] = producto;
+    else lista.push(producto);
+    if (!guardarLista(lista)) return;
+    alert(anterior ? "Producto actualizado correctamente." : "Producto agregado correctamente.");
+    limpiarFormulario(); renderTabla();
+  });
+  $("tablaProductos").addEventListener("click", e => {
+    const editar = e.target.closest("[data-editar]");
+    const eliminar = e.target.closest("[data-eliminar]");
+    if (editar) cargarEdicion(editar.dataset.editar);
+    if (eliminar && confirm("¿Seguro que querés eliminar este producto?")) {
+      const nuevaLista = obtenerProductos().filter(p => String(p.id) !== String(eliminar.dataset.eliminar));
+      if (guardarLista(nuevaLista)) { if ($("prodId").value === eliminar.dataset.eliminar) limpiarFormulario(); renderTabla(); }
+    }
+  });
+  $("btnCancelar").addEventListener("click", limpiarFormulario);
+  renderTabla();
+})();
+</script>
+</body>
+</html>
