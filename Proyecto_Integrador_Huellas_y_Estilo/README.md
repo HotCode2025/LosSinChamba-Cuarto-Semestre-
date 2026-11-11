@@ -78,9 +78,11 @@ Esto seria mi parte del Proyecto Huellas y Estilos.
 
 ---
 
+---
+
 ## ⚙️ Módulo de Usuarios y Administración — Ezequiel Díaz
 
-Se desarrolló el panel de administración de productos mediante `admin.html`, utilizando JavaScript y almacenamiento local (`localStorage`).
+Se desarrolló el panel de administración de productos mediante `admin.html` y JavaScript, permitiendo gestionar el catálogo de la tienda.
 
 ### Funcionalidades implementadas
 
@@ -92,16 +94,14 @@ Se desarrolló el panel de administración de productos mediante `admin.html`, u
 - Selección de categorías y tamaños.
 - Carga y vista previa de imágenes.
 - Configuración de productos destacados y personalizables.
+- Almacenamiento de los cambios mediante `localStorage`.
 
-### Integración con el catálogo y el carrito
+### Integración con el catálogo
 
 - Se modificó la función `obtenerProductos()` de `js/app.js` para recuperar los productos guardados desde el panel de administración.
-- Se utiliza `huellas_productos_v1` como clave de almacenamiento en `localStorage`.
-- Se incorporó `js/carrito.js` en `catalogo.html` para permitir que los productos agregados desde el catálogo se guarden correctamente en el carrito.
-- Los cambios realizados desde el panel de administración se reflejan en el catálogo.
+- Se utiliza la clave `huellas_productos_v1` de `localStorage` para almacenar y recuperar los productos administrados.
+- Los productos agregados o modificados desde el panel se reflejan en el catálogo.
 
 ### Estado actual
 
-El panel de administración y su integración con el catálogo funcionan mediante JavaScript y `localStorage`.
-
-La conexión de este módulo con el backend Java y la base de datos MongoDB queda pendiente para una futura integración.
+El panel de administración y su integración con el catálogo funcionan mediante JavaScript y almacenamiento local (`localStorage`). La conexión con el backend Java y MongoDB queda pendiente para una futura integración.
