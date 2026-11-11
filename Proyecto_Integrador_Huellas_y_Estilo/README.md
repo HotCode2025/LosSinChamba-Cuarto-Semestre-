@@ -72,3 +72,6 @@ mvn spring-boot:run
 Esto se hace con Mercado Pago Developers
 ```
 Luego abrí `index.html` con Live Server. El botón de pago abre el checkout de Mercado Pago usando `init_point`. 
+```
+Esto seria mi parte del Proyecto Huellas y Estilos.
+```
