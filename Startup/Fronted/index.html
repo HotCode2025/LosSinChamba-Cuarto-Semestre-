@@ -34,32 +34,28 @@
       </div>
     </div>
 
-    <!-- Navegación por Pestañas / Integrantes -->
+    <!-- Navegación por Pestañas -->
     <nav class="bg-emerald-800/60 border-t border-emerald-600/40">
       <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-4 overflow-x-auto py-1">
         
         <button onclick="switchTab('samira')" id="btn-samira" class="tab-btn active px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center space-x-2 transition-all bg-white text-emerald-800 shadow">
           <i class="fa-solid fa-chart-line text-emerald-600"></i>
           <span>Panel & Estadísticas</span>
-          <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold uppercase">Samira</span>
         </button>
 
         <button onclick="switchTab('mariano')" id="btn-mariano" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-100 hover:bg-emerald-700/50 flex items-center space-x-2 transition-all">
           <i class="fa-solid fa-dog"></i>
           <span>Registro y Animales</span>
-          <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded font-medium uppercase">Mariano</span>
         </button>
 
         <button onclick="switchTab('kevin')" id="btn-kevin" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-100 hover:bg-emerald-700/50 flex items-center space-x-2 transition-all">
           <i class="fa-solid fa-notes-medical"></i>
           <span>Historial Sanitario</span>
-          <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded font-medium uppercase">Kevin C.</span>
         </button>
 
         <button onclick="switchTab('ezequiel')" id="btn-ezequiel" class="tab-btn px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-100 hover:bg-emerald-700/50 flex items-center space-x-2 transition-all">
           <i class="fa-solid fa-boxes-stacked"></i>
           <span>Stock y Alertas</span>
-          <span class="text-[10px] bg-emerald-900/60 text-emerald-200 px-1.5 py-0.5 rounded font-medium uppercase">Ezequiel</span>
         </button>
 
       </div>
@@ -69,14 +65,13 @@
   <!-- Contenido Principal -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
 
-    <!-- SECCIÓN 1: SAMIRA - PANEL PRINCIPAL Y ESTADÍSTICAS -->
+    <!-- SECCIÓN 1: PANEL PRINCIPAL Y ESTADÍSTICAS -->
     <section id="tab-samira" class="space-y-6">
       <div class="flex justify-between items-center pb-2 border-b border-slate-200">
         <div>
           <h2 class="text-2xl font-bold text-slate-800">Panel Principal e Indicadores</h2>
           <p class="text-slate-500 text-sm">Resumen general del refugio y alertas en tiempo real</p>
         </div>
-        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Samira</span>
       </div>
 
       <!-- Tarjetas de Métricas -->
@@ -178,14 +173,13 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 2: MARIANO - REGISTRO Y LISTADO DE ANIMALES -->
+    <!-- SECCIÓN 2: REGISTRO Y LISTADO DE ANIMALES -->
     <section id="tab-mariano" class="space-y-6 hidden">
       <div class="flex justify-between items-center pb-2 border-b border-slate-200">
         <div>
           <h2 class="text-2xl font-bold text-slate-800">Registro y Listado de Animales</h2>
           <p class="text-slate-500 text-sm">Alta de nuevos animales, edición y ficha individual</p>
         </div>
-        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Mariano</span>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -259,14 +253,13 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 3: KEVIN CASTILLA - SEGUIMIENTO E HISTORIAL SANITARIO -->
+    <!-- SECCIÓN 3: SEGUIMIENTO E HISTORIAL SANITARIO -->
     <section id="tab-kevin" class="space-y-6 hidden">
       <div class="flex justify-between items-center pb-2 border-b border-slate-200">
         <div>
           <h2 class="text-2xl font-bold text-slate-800">Seguimiento e Historial Sanitario</h2>
           <p class="text-slate-500 text-sm">Control de vacunas, desparasitaciones, tratamientos y edición</p>
         </div>
-        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Kevin Castilla</span>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -331,14 +324,13 @@
       </div>
     </section>
 
-    <!-- SECCIÓN 4: EZEQUIEL - CONTROL DE INSUMOS, CANTIDADES Y ALERTAS -->
+    <!-- SECCIÓN 4: CONTROL DE INSUMOS, CANTIDADES Y ALERTAS -->
     <section id="tab-ezequiel" class="space-y-6 hidden">
       <div class="flex justify-between items-center pb-2 border-b border-slate-200">
         <div>
           <h2 class="text-2xl font-bold text-slate-800">Control de Stock y Alertas de Insumos</h2>
           <p class="text-slate-500 text-sm">Gestión de alimentos, medicamentos, edición y niveles de reposición</p>
         </div>
-        <span class="text-xs bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium">Módulo: Ezequiel</span>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -520,7 +512,7 @@
       document.getElementById('stat-total-animals').innerText = animales.length;
       document.getElementById('stat-in-treatment').innerText = countAttention;
 
-      // Actualizar Estadísticas Panel Samira
+      // Actualizar Estadísticas del Panel
       const totalAnim = animales.length || 1;
       const pctDogs = Math.round((countPerros / totalAnim) * 100);
       const pctCats = Math.round((countGatos / totalAnim) * 100);
