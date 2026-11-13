@@ -1,0 +1,9 @@
+{
+  "name": "refugio-los-sin-chamba",
+  "version": "1.0.0",
+  "description": "MVP Sistema de gestión para refugios de animales - Los Sin Chamba (UTN FRSR)",
+  "main": "server.js",
+  "scripts": { "start": "node --disable-warning=ExperimentalWarning server.js" },
+  "engines": { "node": ">=22.5" },
+  "license": "MIT"
+}
